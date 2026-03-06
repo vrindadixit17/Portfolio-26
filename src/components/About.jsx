@@ -1,12 +1,13 @@
 import { useEffect, useRef } from "react";
 import img1 from "../assets/about/about1.png";
 import img2 from "../assets/about/about2.png";
+import TextPressure from "../components/TextPressure";
 
 /*
   Add inside <head> of your index.html:
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Italianno&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet" />
 */
 
 const css = `
@@ -40,32 +41,34 @@ const css = `
     align-items: center;
     box-sizing: border-box;
     overflow: hidden;
+    overflow-x: clip;
     font-family: 'DM Sans', sans-serif;
   }
 
-  /* LEFT — untouched */
   .about-left {
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 32px 0;
+    height: 100%;
   }
 
-  .about-name {
-    font-family: 'Bebas Neue', 'Arial Narrow', Arial, sans-serif;
-    font-size: clamp(100px, 13vw, 170px);
-    font-weight: 400;
-    line-height: 0.88;
-    color: #5A4FDB;
-    letter-spacing: -5px;
-    text-transform: uppercase;
-    font-style: normal;
-    animation: fadeUp 0.7s cubic-bezier(.22,1,.36,1) both;
-    margin: 0;
-    padding: 0;
-    -webkit-text-stroke: 7px #5A4FDB;
-    text-align: center;
+  .name-wrap {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .name-row {
+    width: 100%;
+    height: clamp(110px, 14vw, 180px);
+  }
+
+  /* Override TextPressure stroke color to pink for personality */
+  .name-row .stroke span::after {
+    -webkit-text-stroke-color: #F020A0 !important;
+    -webkit-text-stroke-width: 2px !important;
   }
 
   .pills-wrap {
@@ -93,7 +96,6 @@ const css = `
   }
   .pill:hover { filter: brightness(1.12); transform: scale(1.02); }
 
-  /* RIGHT — redesigned */
   .about-right {
     position: relative;
     height: 100vh;
@@ -114,24 +116,46 @@ const css = `
     font-size: 12px;
     line-height: 1.5;
     color: #6b7280;
-    text-align: center;
+    text-align: right;
     font-family: 'DM Sans', sans-serif;
     margin: 0;
+    max-width: 100%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+  }
+
+  .bottom-text {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #6b7280;
+    position: absolute;
+    bottom: 4%;
+    right: 0%;
+    width: 46%;
+    font-family: 'DM Sans', sans-serif;
+    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    z-index: 4;
   }
 
   .card-green {
     background: transparent !important;
     padding: 0 !important;
-    border-radius: 22px;
+    border-radius: 0;
     transform: rotate(6deg);
-    width: 44%;
+    width: 70%;
     box-shadow: 0 20px 50px rgba(0,0,0,0.16);
     animation: cardTiltIn 0.7s 0.2s cubic-bezier(.22,1,.36,1) both;
     transition: transform 0.3s;
     overflow: hidden;
     position: absolute;
     top: 2%;
-    right: 2%;
+    right: -4%;
     z-index: 2;
   }
   .card-green:hover { transform: rotate(4deg) scale(1.02); }
@@ -140,37 +164,20 @@ const css = `
   .card-red {
     background: transparent !important;
     padding: 0 !important;
-    border-radius: 18px;
+    border-radius: 0;
     transform: rotate(-8deg);
-    width: 34%;
+    width: 50%;
     box-shadow: 0 14px 40px rgba(0,0,0,0.16);
     animation: cardTiltIn2 0.7s 0.4s cubic-bezier(.22,1,.36,1) both;
     transition: transform 0.3s;
     overflow: hidden;
     position: absolute;
-    top: 42%;
-    left: 20%;
+    top: 36%;
+    left: -2%;
     z-index: 3;
   }
   .card-red:hover { transform: rotate(-6deg) scale(1.03); }
   .card-red img { width: 100%; display: block; object-fit: cover; aspect-ratio: 3/4; }
-
-  .bottom-text {
-    font-size: 12px;
-    line-height: 1.5;
-    color: #6b7280;
-    position: absolute;
-    bottom: 4%;
-    right: 2%;
-    width: 30%;
-    animation: fadeIn 0.8s 0.6s both;
-    font-family: 'DM Sans', sans-serif;
-    text-align: right;
-    -webkit-line-clamp: 7;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    z-index: 4;
-  }
 `;
 
 export default function About() {
@@ -195,9 +202,41 @@ export default function About() {
   return (
     <section className="about-section">
 
-      {/* LEFT — untouched */}
+      {/* LEFT */}
       <div className="about-left">
-        <p className="about-name">VRINDA<br />DIXIT</p>
+        <div className="name-wrap">
+          <div className="name-row">
+            <TextPressure
+              text="VRINDA"
+              flex={true}
+              alpha={false}
+              stroke={true}
+              scale={true}
+              width={true}
+              weight={true}
+              italic={false}
+              textColor="#5A4FDB"
+              strokeColor="#5A4FDB"
+              minFontSize={60}
+            />
+          </div>
+          <div className="name-row">
+            <TextPressure
+              text="DIXIT"
+              flex={true}
+              alpha={false}
+              stroke={true}
+              scale={true}
+              width={true}
+              weight={true}
+              italic={false}
+              textColor="#5A4FDB"
+              strokeColor="#5A4FDB"
+              minFontSize={60}
+            />
+          </div>
+        </div>
+
         <div className="pills-wrap">
           {pills.map((email, i) => (
             <div key={i} className="pill" style={{ animationDelay: `${0.5 + i * 0.09}s` }}>
@@ -215,17 +254,13 @@ export default function About() {
 
       {/* RIGHT */}
       <div className="about-right">
-
         <div className="card-green">
           <img src={img1} alt="Vrinda" />
         </div>
-
         <div className="card-red">
           <img src={img2} alt="Vrinda" />
         </div>
-
         <p className="bottom-text">{bodyText}</p>
-
       </div>
 
     </section>
