@@ -1,9 +1,21 @@
 import { useState, useEffect } from 'react';
 import GooeyNav from './GooeyNav';
 
-export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+// Map each nav item to the section id it corresponds to
+const NAV_ITEMS = [
+  { label: 'HOME',     href: '#home',      sectionId: 'home'      },
+  { label: 'ABOUT',    href: '#about',     sectionId: 'about'     },
+  { label: 'SKILLS',    href: '#skills',     sectionId: 'skills'     },
+  { label: 'WORKS',    href: '#works',     sectionId: 'works'     },
+  { label: 'PROJECTS',    href: '#projects', sectionId: 'projects' },
+  { label: 'SERVICES', href: '#services',  sectionId: 'services'  },
+];
 
+export default function Navbar() {
+  const [scrolled, setScrolled]         = useState(false);
+  const [activeIndex, setActiveIndex]   = useState(0);
+
+  // ── 1. scrolled state (hero leaves viewport) ──────────────────────────────
   useEffect(() => {
     const hero = document.querySelector('#home') || document.querySelector('#hero');
     if (!hero) {
@@ -11,12 +23,45 @@ export default function Navbar() {
       window.addEventListener('scroll', onScroll, { passive: true });
       return () => window.removeEventListener('scroll', onScroll);
     }
-    const observer = new IntersectionObserver(
+    const obs = new IntersectionObserver(
       ([entry]) => setScrolled(!entry.isIntersecting),
       { threshold: 0.15 }
     );
-    observer.observe(hero);
-    return () => observer.disconnect();
+    obs.observe(hero);
+    return () => obs.disconnect();
+  }, []);
+
+  // ── 2. active nav index based on which section is in view ─────────────────
+  useEffect(() => {
+    const observers = [];
+
+    // Track which sections are currently intersecting
+    const visible = new Map(); // sectionId → intersectionRatio
+
+    NAV_ITEMS.forEach(({ sectionId }, idx) => {
+      const el = document.querySelector(`#${sectionId}`);
+      if (!el) return;
+
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          visible.set(sectionId, entry.isIntersecting ? entry.intersectionRatio : 0);
+
+          // Pick the section with the highest visible ratio
+          let bestIdx = 0;
+          let bestRatio = -1;
+          NAV_ITEMS.forEach(({ sectionId: sid }, i) => {
+            const ratio = visible.get(sid) || 0;
+            if (ratio > bestRatio) { bestRatio = ratio; bestIdx = i; }
+          });
+          setActiveIndex(bestIdx);
+        },
+        { threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0], rootMargin: '-10% 0px -10% 0px' }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach(o => o.disconnect());
   }, []);
 
   return (
@@ -43,7 +88,7 @@ export default function Navbar() {
           position: sticky;
           top: 0;
           z-index: 100;
-          background: #FDF9F5;
+          background: transparent;
           width: 100%;
         }
 
@@ -54,7 +99,6 @@ export default function Navbar() {
           width: 100%;
         }
 
-        /* vrinda — always far left */
         .navbar-logo {
           font-family: 'Italianno', cursive;
           font-size: 2rem;
@@ -64,45 +108,41 @@ export default function Navbar() {
           text-decoration: none;
           white-space: nowrap;
           flex-shrink: 0;
-          transition: font-size 0.35s ease;
+          overflow: hidden;
+          max-width: 120px;
+          opacity: 1;
+          transition:
+            font-size 0.35s ease,
+            opacity 0.3s ease,
+            max-width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+            margin-right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .scrolled-state .navbar-logo {
           font-size: 1.6rem;
+          opacity: 0;
+          max-width: 0;
+          margin-right: 0;
+          pointer-events: none;
         }
 
-        /* spacer — takes all available space, pushing nav+portfolio right */
-        /* hero: spacer is 1 unit, nav is centered visually via equal spacers */
-        .navbar-spacer-left {
-          flex: 1;
-          transition: flex 0.45s cubic-bezier(0.22,1,0.36,1);
-        }
-        /* when scrolled, collapse left spacer so nav+portfolio hug the right */
-        .scrolled-state .navbar-spacer-left {
-          flex: 1;
-        }
+        .navbar-spacer-left { flex: 1; }
 
-        /* nav wrapper — centered in hero by equal spacers on both sides */
-        .navbar-nav-wrap {
-          flex-shrink: 0;
-        }
+        .navbar-nav-wrap { flex-shrink: 0; }
 
-        /* right spacer — mirrors left in hero, collapses on scroll */
         .navbar-spacer-right {
           flex: 1;
           display: flex;
           justify-content: flex-end;
-          transition: flex 0.45s cubic-bezier(0.22,1,0.36,1),
-                      opacity 0.3s ease;
+          transition: flex 0.45s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease;
+          overflow: hidden;
         }
         .scrolled-state .navbar-spacer-right {
           flex: 0;
-          overflow: hidden;
           opacity: 0;
           pointer-events: none;
           width: 0;
         }
 
-        /* portfolio word */
         .navbar-portfolio {
           font-family: 'Italianno', cursive;
           font-size: 2rem;
@@ -134,15 +174,13 @@ export default function Navbar() {
           font-weight: 500;
           transition: gap 0.45s cubic-bezier(0.22,1,0.36,1);
         }
-        .scrolled-state .gooey-nav-container nav ul {
-          gap: 0.2em;
-        }
+        .scrolled-state .gooey-nav-container nav ul { gap: 0.2em; }
+
         .gooey-nav-container nav ul li {
           border-radius: 100vw;
           position: relative;
           cursor: pointer;
-          transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-          box-shadow: 0 0 0.5px 1.5px transparent;
+          transition: color 0.3s ease;
           color: #1C1C1C;
         }
         .gooey-nav-container nav ul li a {
@@ -150,9 +188,6 @@ export default function Navbar() {
           padding: 0.35em 0.9em;
           text-decoration: none;
           color: inherit;
-        }
-        .gooey-nav-container nav ul li:focus-within:has(:focus-visible) {
-          box-shadow: 0 0 0.5px 1.5px white;
         }
         .gooey-nav-container nav ul li::after { content: none; }
 
@@ -166,8 +201,19 @@ export default function Navbar() {
           place-items: center;
           z-index: 1;
         }
-        .gooey-nav-container .effect.text { display: none; }
-        .gooey-nav-container .effect.text.active { display: none; }
+
+        /* ── text layer: transparent normally, dark on active (shows inside pill) ── */
+        .gooey-nav-container .effect.text {
+          color: transparent;
+          transition: color 0.3s ease;
+          font-family: 'Poppins', sans-serif;
+          font-size: 0.82rem;
+          font-weight: 500;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+        .gooey-nav-container .effect.text.active { color: #1C1C1C; }
+
         .gooey-nav-container .effect.filter { filter: none; mix-blend-mode: normal; }
         .gooey-nav-container .effect.filter::before { content: none; }
         .gooey-nav-container .effect.filter::after {
@@ -180,66 +226,49 @@ export default function Navbar() {
           z-index: -1;
           border-radius: 12px;
         }
-        .gooey-nav-container .effect.active::after {
-          animation: pill 0.3s ease both;
-        }
+        .gooey-nav-container .effect.active::after { animation: pill 0.3s ease both; }
         @keyframes pill { to { transform: scale(1); opacity: 1; } }
 
         .particle, .point {
-          display: block;
-          opacity: 0;
+          display: block; opacity: 0;
           width: 20px; height: 20px;
-          border-radius: 100%;
-          transform-origin: center;
+          border-radius: 100%; transform-origin: center;
         }
         .particle {
           --time: 5s;
           position: absolute;
-          top: calc(50% - 8px);
-          left: calc(50% - 8px);
+          top: calc(50% - 8px); left: calc(50% - 8px);
           animation: particle calc(var(--time)) ease 1 -350ms;
         }
         .point {
-          background: var(--color);
-          opacity: 1;
+          background: var(--color); opacity: 1;
           animation: point calc(var(--time)) ease 1 -350ms;
         }
         @keyframes particle {
-          0%   { transform: rotate(0deg) translate(var(--start-x), var(--start-y)); opacity: 1; animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
-          70%  { transform: rotate(calc(var(--rotate) * 0.5)) translate(calc(var(--end-x) * 1.2), calc(var(--end-y) * 1.2)); opacity: 1; animation-timing-function: ease; }
-          85%  { transform: rotate(calc(var(--rotate) * 0.66)) translate(var(--end-x), var(--end-y)); opacity: 1; }
-          100% { transform: rotate(calc(var(--rotate) * 1.2)) translate(calc(var(--end-x) * 0.5), calc(var(--end-y) * 0.5)); opacity: 1; }
+          0%   { transform: rotate(0deg) translate(var(--start-x), var(--start-y)); opacity: 1; animation-timing-function: cubic-bezier(0.55,0,1,0.45); }
+          70%  { transform: rotate(calc(var(--rotate)*0.5)) translate(calc(var(--end-x)*1.2),calc(var(--end-y)*1.2)); opacity:1; animation-timing-function:ease; }
+          85%  { transform: rotate(calc(var(--rotate)*0.66)) translate(var(--end-x),var(--end-y)); opacity:1; }
+          100% { transform: rotate(calc(var(--rotate)*1.2)) translate(calc(var(--end-x)*0.5),calc(var(--end-y)*0.5)); opacity:1; }
         }
         @keyframes point {
-          0%   { transform: scale(0); opacity: 0; animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
-          25%  { transform: scale(calc(var(--scale) * 0.25)); }
-          38%  { opacity: 1; }
-          65%  { transform: scale(var(--scale)); opacity: 1; animation-timing-function: ease; }
-          85%  { transform: scale(var(--scale)); opacity: 1; }
-          100% { transform: scale(0); opacity: 0; }
+          0%   { transform:scale(0); opacity:0; animation-timing-function:cubic-bezier(0.55,0,1,0.45); }
+          25%  { transform:scale(calc(var(--scale)*0.25)); }
+          38%  { opacity:1; }
+          65%  { transform:scale(var(--scale)); opacity:1; animation-timing-function:ease; }
+          85%  { transform:scale(var(--scale)); opacity:1; }
+          100% { transform:scale(0); opacity:0; }
         }
       `}</style>
 
       <div className={`navbar-outer ${scrolled ? 'scrolled-state' : ''}`}>
         <header className="navbar-wrapper">
-
-          {/* always far left */}
           <a className="navbar-logo" href="#home">vrinda</a>
-
-          {/* left spacer — pushes nav to center in hero */}
           <div className="navbar-spacer-left" />
-
-          {/* nav links — centered in hero, right-aligned when scrolled */}
           <div className="navbar-nav-wrap">
             <GooeyNav
-              items={[
-                { label: 'HOME',     href: '#home'      },
-                { label: 'ABOUT',    href: '#about'     },
-                { label: 'WORKS',    href: '#works'     },
-                { label: 'SERVICES', href: '#services'  },
-                { label: 'WORKS',    href: '#portfolio' },
-              ]}
-              initialActiveIndex={0}
+              items={NAV_ITEMS}
+              initialActiveIndex={activeIndex}
+              activeIndex={activeIndex}
               animationTime={600}
               particleCount={15}
               particleDistances={[90, 10]}
@@ -248,12 +277,9 @@ export default function Navbar() {
               colors={[1, 2, 3, 1, 2, 3, 1, 4]}
             />
           </div>
-
-          {/* right spacer with portfolio — mirrors left spacer, collapses on scroll */}
           <div className="navbar-spacer-right">
             <a className="navbar-portfolio" href="#portfolio">portfolio</a>
           </div>
-
         </header>
       </div>
     </>
