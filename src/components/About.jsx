@@ -3,13 +3,6 @@ import img1 from "../assets/about/about1.png";
 import img2 from "../assets/about/about2.png";
 import TextPressure from "../components/TextPressure";
 
-/*
-  Add inside <head> of your index.html:
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Italianno&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet" />
-*/
-
 const css = `
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
@@ -34,13 +27,13 @@ const css = `
 
   .about-section {
     background: #FDF9F5;
-    height: 100vh;
+    min-height: 100vh;
     padding: 0 4vw;
     display: grid;
     grid-template-columns: 38% 24% 38%;
     align-items: center;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow: visible;
     overflow-x: clip;
     font-family: 'DM Sans', sans-serif;
   }

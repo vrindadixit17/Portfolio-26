@@ -1,20 +1,96 @@
-import React from "react";
-import LiquidEther from "./LiquidEther";
+
 import flowerImg from "../assets/emojis/flower.png";
 import smileyImg from "../assets/emojis/smiley.png";
 import cupImg from "../assets/emojis/cup.png";
 import heartImg from "../assets/emojis/heart.png";
 
+import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 const cards = [
-  { id: "edu",  title: "Education",      icon: flowerImg, bg: "#E8184A", rotate: "9.78deg",  items: ["St. Gregorios school - 94%", "Maharaja Surajmal Institute of Technology - 9.34"] },
-  { id: "exp",  title: "Experience",     icon: smileyImg, bg: "#D4A8F0", rotate: "-4.38deg", items: ["Student body head & Coordinator intern at AICTE", "IOT Trainee/Intern at NSIC", "UI/UX Intern at Effred Technologies"] },
-  { id: "soft", title: "Software Skills",icon: cupImg,    bg: "#CCEE22", rotate: "3.88deg",  items: ["Full Stack: MERN stack (mongoDB, express.js, react, node.js)", "Tools: Figma, Adobe Illustrator, PowerBI, Excel, MySQL", "Languages: C, C++, Java, JavaScript, Python"] },
-  { id: "misc", title: "Misc. activites",icon: heartImg,  bg: "#E86820", rotate: "-1.38deg", items: ["President of ASTITVA - The Dance Society of MSIT", "Graphic and UI/UX Designer at Google Developers Group on campus", "Debater"] },
+  { id: "edu",  title: "Education",       icon: flowerImg, bg: "#E8184A", items: ["St. Gregorios school - 94%", "Maharaja Surajmal Institute of Technology - 9.34"] },
+  { id: "exp",  title: "Experience",      icon: smileyImg, bg: "#D4A8F0", items: ["Student body head & Coordinator intern at AICTE", "IOT Trainee/Intern at NSIC", "UI/UX Intern at Effred Technologies"] },
+  { id: "soft", title: "Software Skills", icon: cupImg,    bg: "#CCEE22", items: ["Full Stack: MERN stack (mongoDB, express.js, react, node.js)", "Tools: Figma, Adobe Illustrator, PowerBI, Excel, MySQL", "Languages: C, C++, Java, JavaScript, Python"] },
+  { id: "misc", title: "Misc. activites", icon: heartImg,  bg: "#E86820", items: ["President of ASTITVA - The Dance Society of MSIT", "Graphic and UI/UX Designer at Google Developers Group on campus", "Debater"] },
 ];
 
+// Base transforms: exact rotations + overlap offset per card
+const baseTransforms = [
+  "rotate(9.78deg)  translateX(-80px)",
+  "rotate(-4.38deg) translateX(-26px)",
+  "rotate(3.88deg)  translateX(26px)",
+  "rotate(-1.38deg) translateX(80px)",
+];
+
+const getNoRotationTransform = (t) =>
+  t.replace(/rotate\([\s\S]*?\)/, "rotate(0deg)");
+
+const getPushedTransform = (t, offsetX) => {
+  const match = t.match(/translateX\(([-0-9.]+)px\)/);
+  if (match) {
+    const newX = parseFloat(match[1]) + offsetX;
+    return t.replace(/translateX\(([-0-9.]+)px\)/, `translateX(${newX}px)`);
+  }
+  return `${t} translateX(${offsetX}px)`;
+};
+
 export default function Skills() {
-  const [hovered, setHovered] = React.useState(null);
+  const containerRef = useRef(null);
+
+  // Bounce-in on mount
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".skill-card",
+        { scale: 0 },
+        { scale: 1, stagger: 0.06, ease: "elastic.out(1, 0.8)", delay: 0.4 }
+      );
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
+
+  const pushSiblings = (hoveredIdx) => {
+    if (!containerRef.current) return;
+    const q = gsap.utils.selector(containerRef);
+    cards.forEach((_, i) => {
+      const target = q(`.skill-card-${i}`);
+      gsap.killTweensOf(target);
+      const base = baseTransforms[i];
+      if (i === hoveredIdx) {
+        gsap.to(target, {
+          transform: getNoRotationTransform(base) + " translateY(-10px)",
+          duration: 0.4,
+          ease: "back.out(1.4)",
+          overwrite: "auto",
+          zIndex: 10,
+        });
+      } else {
+        const offsetX = i < hoveredIdx ? -60 : 60;
+        gsap.to(target, {
+          transform: getPushedTransform(base, offsetX),
+          duration: 0.4,
+          ease: "back.out(1.4)",
+          delay: Math.abs(hoveredIdx - i) * 0.05,
+          overwrite: "auto",
+        });
+      }
+    });
+  };
+
+  const resetAll = () => {
+    if (!containerRef.current) return;
+    const q = gsap.utils.selector(containerRef);
+    cards.forEach((_, i) => {
+      const target = q(`.skill-card-${i}`);
+      gsap.killTweensOf(target);
+      gsap.to(target, {
+        transform: baseTransforms[i],
+        duration: 0.4,
+        ease: "back.out(1.4)",
+        overwrite: "auto",
+      });
+    });
+  };
 
   return (
     <>
@@ -27,19 +103,27 @@ export default function Skills() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
-        padding: "80px 32px 60px",
+        padding: "80px 60px 60px",
         fontFamily: "'Poppins', sans-serif",
       }}>
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexWrap: "wrap",
-        }}>
+
+        {/* Cards row */}
+        <div
+          ref={containerRef}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+            paddingTop: "50px",
+            paddingBottom: "30px",
+            width: "100%",
+          }}
+        >
           {cards.map((card, idx) => (
             <div
               key={card.id}
+              className={`skill-card skill-card-${idx}`}
               style={{
                 width: "222px",
                 minHeight: "290px",
@@ -47,17 +131,16 @@ export default function Skills() {
                 padding: "60px 20px 26px",
                 position: "relative",
                 background: card.bg,
-                transform: hovered === card.id
-                  ? "rotate(0deg) translateY(-10px)"
-                  : `rotate(${card.rotate})`,
-                transition: "transform 0.22s cubic-bezier(.34,1.56,.64,1)",
+                transform: baseTransforms[idx],
                 flexShrink: 0,
                 cursor: "default",
-                zIndex: hovered === card.id ? 10 : idx,
+                // overlap via negative margin
                 marginLeft: idx === 0 ? "0" : "-28px",
+                // stacking: later cards on top by default
+                zIndex: idx,
               }}
-              onMouseEnter={() => setHovered(card.id)}
-              onMouseLeave={() => setHovered(null)}
+              onMouseEnter={() => pushSiblings(idx)}
+              onMouseLeave={resetAll}
             >
               <img
                 src={card.icon}
@@ -103,7 +186,7 @@ export default function Skills() {
           ))}
         </div>
 
-        <div style={{ marginTop: "60px" }}>
+        <div style={{ marginTop: "40px" }}>
           <button style={{
             fontFamily: "'Poppins', sans-serif",
             fontSize: "0.82rem",
@@ -118,6 +201,7 @@ export default function Skills() {
             see more &gt;
           </button>
         </div>
+
       </section>
     </>
   );
