@@ -85,7 +85,7 @@ export default function Skills() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&family=Poppins:wght@600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=Poppins:wght@800&family=DM+Sans:wght@400;500&display=swap');
 
         .skills-section {
           background: #FDF9F5;
@@ -108,11 +108,11 @@ export default function Skills() {
           line-height: 1;
         }
         .skills-subtitle {
-          font-size: 0.75rem;
+        font-family: 'Italianno', cursive;
+          font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+          color: #FF7EDF;
           font-weight: 500;
-          letter-spacing: 2px;
-          text-transform: uppercase;
-          color: #aaa;
+          text-transform: lowercase;
         }
 
         .skills-cards-row {
@@ -128,7 +128,7 @@ export default function Skills() {
         .skill-card {
           width: 222px;
           min-height: 290px;
-          border-radius: 26px;
+          border-radius: 10px;
           padding: 60px 20px 26px;
           position: relative;
           flex-shrink: 0;
@@ -195,7 +195,7 @@ export default function Skills() {
         {/* header — same as Works */}
         <div className="skills-title-row">
           <h2 className="skills-title">SKILLS</h2>
-          <span className="skills-subtitle">what i bring</span>
+          <span className="skills-subtitle">what i bring to the table</span>
         </div>
 
         {/* animated cards */}

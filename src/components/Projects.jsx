@@ -260,7 +260,7 @@ export default function Projects() {
         /* card base */
         .proj-bento-card {
           background: ${COLORS.dark};
-          border-radius: 18px;
+          border-radius: 10px;
           border: 1px solid #2a2a2a;
           display: flex;
           flex-direction: column;
@@ -348,10 +348,10 @@ export default function Projects() {
           display: inline-block;
           margin-top: 10px;
           font-family: 'DM Sans', sans-serif;
-          font-size: 0.6rem;
-          font-weight: 600;
-          letter-spacing: 1.5px;
-          text-transform: uppercase;
+          font-size: 0.65rem;
+          font-weight: 500;
+          letter-spacing: 0.5px;
+          text-transform: lowercase;
           color: ${COLORS.dark};
           background: ${COLORS.lime};
           border: none;

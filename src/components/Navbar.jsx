@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { label: 'SKILLS',    href: '#skills',     sectionId: 'skills'     },
   { label: 'WORKS',    href: '#works',     sectionId: 'works'     },
   { label: 'PROJECTS',    href: '#projects', sectionId: 'projects' },
-  { label: 'SERVICES', href: '#services',  sectionId: 'services'  },
+  { label: 'CONTACT', href: '#contact',  sectionId: 'contact'  },
 ];
 
 export default function Navbar() {
