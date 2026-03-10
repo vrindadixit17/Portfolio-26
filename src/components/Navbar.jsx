@@ -85,12 +85,15 @@ export default function Navbar() {
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         .navbar-outer {
-          position: sticky;
-          top: 0;
-          z-index: 100;
-          background: transparent;
-          width: 100%;
-        }
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: transparent;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
 
         .navbar-wrapper {
           display: flex;
@@ -124,6 +127,25 @@ export default function Navbar() {
           margin-right: 0;
           pointer-events: none;
         }
+
+        .scrolled-state .navbar-wrapper {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 100px;
+  padding: 8px 20px;
+  width: auto;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  transition: all 0.45s cubic-bezier(0.22,1,0.36,1);
+}
+
+.navbar-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 12px 32px;
+  width: 100%;
+  transition: all 0.45s cubic-bezier(0.22,1,0.36,1);
+}
 
         .navbar-spacer-left { flex: 1; }
 
