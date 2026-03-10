@@ -91,15 +91,14 @@ export default function Navbar() {
   background: transparent;
   width: 100%;
   display: flex;
-  justify-content: center;
-  padding: 12px 0;
+  justify-content: flex-end;
+  padding: 12px 32px;
 }
-
         .navbar-wrapper {
           display: flex;
           align-items: center;
           padding: 12px 32px;
-          width: 100%;
+          width: auto;
         }
 
         .navbar-logo {
@@ -136,7 +135,6 @@ export default function Navbar() {
   padding: 8px 20px;
   width: auto;
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  transition: all 0.45s cubic-bezier(0.22,1,0.36,1);
 }
 
 .navbar-wrapper {
