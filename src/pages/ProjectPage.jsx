@@ -1,20 +1,23 @@
 import { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { works } from "../components/Works";
 
-/**
- * ProjectPage
- * Props:
- *   project  — one item from the works array (num, title, tag, desc, img, images[])
- *   onBack   — function to go back to works
- *
- * Each project in your works array should have an `images` field:
- *   images: [img1, img2, img3, ...]  (imported assets)
- */
-export default function ProjectPage({ project, onBack }) {
+export default function ProjectPage() {
+  const { slug } = useParams();
+  const navigate = useNavigate();
+  const project = works.find(w => w.slug === slug);
+
   useEffect(() => {
     window.scrollTo({ top: 0 });
-  }, []);
+  }, [slug]);
 
-  if (!project) return null;
+  if (!project) {
+    return (
+      <div style={{ background: "#FDF9F5", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "sans-serif" }}>
+        Project not found. <button onClick={() => navigate(-1)}>Go back</button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -30,7 +33,6 @@ export default function ProjectPage({ project, onBack }) {
         /* ── HERO ── */
         .pp-hero {
           padding: 48px 48px 0;
-          position: relative;
         }
 
         .pp-back {
@@ -50,8 +52,8 @@ export default function ProjectPage({ project, onBack }) {
           transition: color 0.2s ease;
         }
         .pp-back:hover { color: #CC1F3A; }
-        .pp-back svg { transition: transform 0.2s ease; }
         .pp-back:hover svg { transform: translateX(-3px); }
+        .pp-back svg { transition: transform 0.2s ease; }
 
         .pp-meta {
           display: flex;
@@ -110,15 +112,13 @@ export default function ProjectPage({ project, onBack }) {
           background: #1C1C1C;
           animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both;
         }
-
         .pp-gallery-item:nth-child(1) { animation-delay: 0s; }
         .pp-gallery-item:nth-child(2) { animation-delay: 0.06s; }
         .pp-gallery-item:nth-child(3) { animation-delay: 0.12s; }
         .pp-gallery-item:nth-child(4) { animation-delay: 0.18s; }
         .pp-gallery-item:nth-child(5) { animation-delay: 0.24s; }
-        .pp-gallery-item:nth-child(6) { animation-delay: 0.3s; }
+        .pp-gallery-item:nth-child(6) { animation-delay: 0.30s; }
 
-        /* first image spans full width */
         .pp-gallery-item.full {
           column-span: all;
           margin-bottom: 12px;
@@ -128,6 +128,17 @@ export default function ProjectPage({ project, onBack }) {
           width: 100%;
           display: block;
           object-fit: cover;
+        }
+
+        /* empty state */
+        .pp-empty {
+          column-span: all;
+          text-align: center;
+          padding: 80px 0;
+          font-size: 0.8rem;
+          color: #bbb;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
         }
 
         /* ── FOOTER ── */
@@ -144,6 +155,7 @@ export default function ProjectPage({ project, onBack }) {
           font-size: 1.6rem;
           color: #FF7EDF;
           text-decoration: none;
+          cursor: pointer;
         }
 
         .pp-footer-num {
@@ -159,21 +171,18 @@ export default function ProjectPage({ project, onBack }) {
         }
 
         @media (max-width: 600px) {
-          .pp-hero, .pp-divider, .pp-gallery, .pp-footer {
-            padding-left: 24px;
-            padding-right: 24px;
-          }
-          .pp-divider { margin-left: 24px; margin-right: 24px; }
-          .pp-gallery { columns: 1; }
+          .pp-hero { padding: 32px 24px 0; }
+          .pp-divider { margin: 24px 24px; }
+          .pp-gallery { padding: 0 24px 60px; columns: 1; }
+          .pp-footer { padding: 24px; }
           .pp-meta { flex-direction: column; align-items: flex-start; }
           .pp-desc { text-align: left; }
         }
       `}</style>
 
       <div className="pp-wrap">
-        {/* HERO */}
         <div className="pp-hero">
-          <button className="pp-back" onClick={onBack}>
+          <button className="pp-back" onClick={() => navigate(-1)}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M9 2L4 7L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
@@ -191,21 +200,20 @@ export default function ProjectPage({ project, onBack }) {
 
         <div className="pp-divider" />
 
-        {/* GALLERY */}
         <div className="pp-gallery">
-          {project.images && project.images.map((src, i) => (
-            <div
-              key={i}
-              className={`pp-gallery-item${i === 0 ? ' full' : ''}`}
-            >
-              <img src={src} alt={`${project.title} ${i + 1}`} />
-            </div>
-          ))}
+          {project.images && project.images.length > 0 ? (
+            project.images.map((src, i) => (
+              <div key={i} className={`pp-gallery-item${i === 0 ? ' full' : ''}`}>
+                <img src={src} alt={`${project.title} ${i + 1}`} />
+              </div>
+            ))
+          ) : (
+            <div className="pp-empty">images coming soon</div>
+          )}
         </div>
 
-        {/* FOOTER */}
         <div className="pp-footer">
-          <a className="pp-footer-logo" href="#home">vrinda</a>
+          <span className="pp-footer-logo" onClick={() => navigate("/")}>vrinda</span>
           <span className="pp-footer-num">0{project.num} / 05</span>
         </div>
       </div>

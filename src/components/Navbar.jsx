@@ -1,22 +1,29 @@
 import { useState, useEffect } from 'react';
 import GooeyNav from './GooeyNav';
 
-// Map each nav item to the section id it corresponds to
 const NAV_ITEMS = [
   { label: 'HOME',     href: '#home',      sectionId: 'home'      },
   { label: 'ABOUT',    href: '#about',     sectionId: 'about'     },
-  { label: 'SKILLS',    href: '#skills',     sectionId: 'skills'     },
   { label: 'WORKS',    href: '#works',     sectionId: 'works'     },
-  { label: 'PROJECTS',    href: '#projects', sectionId: 'projects' },
-  { label: 'CONTACT', href: '#contact',  sectionId: 'contact'  },
+  { label: 'SERVICES', href: '#services',  sectionId: 'services'  },
+  { label: 'WORKS',    href: '#portfolio', sectionId: 'portfolio' },
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled]         = useState(false);
-  const [activeIndex, setActiveIndex]   = useState(0);
+  const [scrolled, setScrolled]       = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  
+const [dark, setDark] = useState(false);
+const toggle = () => {
+  setDark(d => {
+    const next = !d;
+    document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
+    return next;
+  });
+};
 
-  // ── 1. scrolled state (hero leaves viewport) ──────────────────────────────
   useEffect(() => {
+    document.documentElement.setAttribute('data-theme', 'light');
     const hero = document.querySelector('#home') || document.querySelector('#hero');
     if (!hero) {
       const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.8);
@@ -31,24 +38,16 @@ export default function Navbar() {
     return () => obs.disconnect();
   }, []);
 
-  // ── 2. active nav index based on which section is in view ─────────────────
   useEffect(() => {
     const observers = [];
-
-    // Track which sections are currently intersecting
-    const visible = new Map(); // sectionId → intersectionRatio
-
-    NAV_ITEMS.forEach(({ sectionId }, idx) => {
+    const visible = new Map();
+    NAV_ITEMS.forEach(({ sectionId }) => {
       const el = document.querySelector(`#${sectionId}`);
       if (!el) return;
-
       const obs = new IntersectionObserver(
         ([entry]) => {
           visible.set(sectionId, entry.isIntersecting ? entry.intersectionRatio : 0);
-
-          // Pick the section with the highest visible ratio
-          let bestIdx = 0;
-          let bestRatio = -1;
+          let bestIdx = 0, bestRatio = -1;
           NAV_ITEMS.forEach(({ sectionId: sid }, i) => {
             const ratio = visible.get(sid) || 0;
             if (ratio > bestRatio) { bestRatio = ratio; bestIdx = i; }
@@ -60,7 +59,6 @@ export default function Navbar() {
       obs.observe(el);
       observers.push(obs);
     });
-
     return () => observers.forEach(o => o.disconnect());
   }, []);
 
@@ -74,37 +72,94 @@ export default function Navbar() {
           --color-2: #5862E9;
           --color-3: #ED6951;
           --color-4: #DCFA40;
-          --linear-ease: linear(
-            0, 0.068, 0.19 2.7%, 0.804 8.1%, 1.037, 1.199 13.2%, 1.245,
-            1.27 15.8%, 1.274, 1.272 17.4%, 1.249 19.1%, 0.996 28%, 0.949,
-            0.928 33.3%, 0.926, 0.933 36.8%, 1.001 45.6%, 1.013,
-            1.019 50.8%, 1.018 54.4%, 1 63.1%, 0.995 68%, 1.001 85%, 1
-          );
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+        /* ── Outer bar ── */
         .navbar-outer {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: transparent;
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  padding: 12px 32px;
-}
-        .navbar-wrapper {
+          position: sticky;
+          top: 0;
+          z-index: 100;
+          background: transparent;
+          width: 100%;
           display: flex;
           align-items: center;
+          justify-content: space-between;
           padding: 12px 32px;
-          width: auto;
+          pointer-events: none; /* let clicks pass through except on children */
         }
 
+        /* re-enable pointer events on actual interactive children */
+        .navbar-outer > * { pointer-events: all; }
+
+        /* ── Left pill: theme toggle ── */
+        .navbar-left-pill {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: var(--nav-pill, rgba(255,255,255,0.85));
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-radius: 100px;
+          padding: 6px 14px 6px 10px;
+          box-shadow: var(--nav-pill-shadow, 0 4px 24px rgba(0,0,0,0.08));
+          transition: background 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .theme-toggle {
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-size: 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+          transition: transform 0.3s ease;
+          line-height: 1;
+        }
+        .theme-toggle:hover { transform: rotate(20deg); }
+
+        .navbar-left-label {
+          font-family: 'Poppins', sans-serif;
+          font-size: 0.6rem;
+          font-weight: 500;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--text-muted, #999);
+          white-space: nowrap;
+          transition: color 0.4s ease;
+        }
+
+        /* hide label when scrolled */
+        .scrolled-state .navbar-left-label {
+          display: none;
+        }
+
+        /* ── Right side: logo + nav + portfolio ── */
+        .navbar-right {
+          display: flex;
+          align-items: center;
+          gap: 0;
+          transition: all 0.45s cubic-bezier(0.22,1,0.36,1);
+        }
+
+        /* condensed: wrap right side in a pill too */
+        .scrolled-state .navbar-right {
+          background: var(--nav-pill, rgba(255,255,255,0.85));
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-radius: 100px;
+          padding: 8px 20px;
+          box-shadow: var(--nav-pill-shadow, 0 4px 24px rgba(0,0,0,0.08));
+        }
+
+        /* ── Logo ── */
         .navbar-logo {
           font-family: 'Italianno', cursive;
           font-size: 2rem;
-          color: #FF7EDF;
+          color: var(--pink, #FF7EDF);
           font-weight: 400;
           line-height: 1;
           text-decoration: none;
@@ -114,59 +169,38 @@ export default function Navbar() {
           max-width: 120px;
           opacity: 1;
           transition:
-            font-size 0.35s ease,
             opacity 0.3s ease,
             max-width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
             margin-right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+          margin-right: 16px;
         }
         .scrolled-state .navbar-logo {
-          font-size: 1.6rem;
           opacity: 0;
           max-width: 0;
           margin-right: 0;
           pointer-events: none;
         }
 
-        .scrolled-state .navbar-wrapper {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 100px;
-  padding: 8px 20px;
-  width: auto;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-}
-
-.navbar-wrapper {
-  display: flex;
-  align-items: center;
-  padding: 12px 32px;
-  width: 100%;
-  transition: all 0.45s cubic-bezier(0.22,1,0.36,1);
-}
-
-        .navbar-spacer-left { flex: 1; }
-
-        .navbar-nav-wrap { flex-shrink: 0; }
-
-        .navbar-spacer-right {
-          flex: 1;
-          display: flex;
-          justify-content: flex-end;
-          transition: flex 0.45s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease;
+        /* ── Portfolio link ── */
+        .navbar-portfolio-wrap {
           overflow: hidden;
+          max-width: 160px;
+          opacity: 1;
+          transition:
+            opacity 0.3s ease,
+            max-width 0.4s cubic-bezier(0.22,1,0.36,1);
+          margin-left: 16px;
         }
-        .scrolled-state .navbar-spacer-right {
-          flex: 0;
+        .scrolled-state .navbar-portfolio-wrap {
           opacity: 0;
+          max-width: 0;
           pointer-events: none;
-          width: 0;
         }
 
         .navbar-portfolio {
           font-family: 'Italianno', cursive;
           font-size: 2rem;
-          color: #FF7EDF;
+          color: var(--pink, #FF7EDF);
           font-weight: 400;
           line-height: 1;
           text-decoration: none;
@@ -188,7 +222,7 @@ export default function Navbar() {
           margin: 0;
           position: relative;
           z-index: 3;
-          color: #1C1C1C;
+          color: var(--text, #1C1C1C);
           font-family: 'Poppins', sans-serif;
           font-size: 0.82rem;
           font-weight: 500;
@@ -201,7 +235,7 @@ export default function Navbar() {
           position: relative;
           cursor: pointer;
           transition: color 0.3s ease;
-          color: #1C1C1C;
+          color: var(--text, #1C1C1C);
         }
         .gooey-nav-container nav ul li a {
           display: inline-block;
@@ -221,8 +255,6 @@ export default function Navbar() {
           place-items: center;
           z-index: 1;
         }
-
-        /* ── text layer: transparent normally, dark on active (shows inside pill) ── */
         .gooey-nav-container .effect.text {
           color: transparent;
           transition: color 0.3s ease;
@@ -233,14 +265,13 @@ export default function Navbar() {
           overflow: hidden;
         }
         .gooey-nav-container .effect.text.active { color: #1C1C1C; }
-
         .gooey-nav-container .effect.filter { filter: none; mix-blend-mode: normal; }
         .gooey-nav-container .effect.filter::before { content: none; }
         .gooey-nav-container .effect.filter::after {
           content: '';
           position: absolute;
           inset: 0;
-          background: #FF7EDF;
+          background: var(--pink, #FF7EDF);
           transform: scale(0);
           opacity: 0;
           z-index: -1;
@@ -281,26 +312,36 @@ export default function Navbar() {
       `}</style>
 
       <div className={`navbar-outer ${scrolled ? 'scrolled-state' : ''}`}>
-        <header className="navbar-wrapper">
+
+        {/* ── LEFT: theme toggle pill ── */}
+        <div className="navbar-left-pill">
+          <button className="theme-toggle" onClick={toggle} aria-label="Toggle theme">
+            {dark ? '☀️' : '🌙'}
+          </button>
+          <span className="navbar-left-label">{dark ? 'day' : 'night'}</span>
+        </div>
+
+        {/* ── RIGHT: logo + nav + portfolio ── */}
+        <div className="navbar-right">
           <a className="navbar-logo" href="#home">vrinda</a>
-          <div className="navbar-spacer-left" />
-          <div className="navbar-nav-wrap">
-            <GooeyNav
-              items={NAV_ITEMS}
-              initialActiveIndex={activeIndex}
-              activeIndex={activeIndex}
-              animationTime={600}
-              particleCount={15}
-              particleDistances={[90, 10]}
-              particleR={100}
-              timeVariance={300}
-              colors={[1, 2, 3, 1, 2, 3, 1, 4]}
-            />
-          </div>
-          <div className="navbar-spacer-right">
+
+          <GooeyNav
+            items={NAV_ITEMS}
+            initialActiveIndex={activeIndex}
+            activeIndex={activeIndex}
+            animationTime={600}
+            particleCount={15}
+            particleDistances={[90, 10]}
+            particleR={100}
+            timeVariance={300}
+            colors={[1, 2, 3, 1, 2, 3, 1, 4]}
+          />
+
+          <div className="navbar-portfolio-wrap">
             <a className="navbar-portfolio" href="#portfolio">portfolio</a>
           </div>
-        </header>
+        </div>
+
       </div>
     </>
   );
