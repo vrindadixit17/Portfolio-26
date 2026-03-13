@@ -9,10 +9,11 @@ const phones = [img1, img2, img3, img4, img5];
 export default function Hero() {
   return (
     <>
+
       <style>{`
         .hero {
           min-height: 100vh;
-          background: #FDF9F5;
+          background: var(--bg);
 
           display: flex;
           align-items: flex-start; /* move phones toward top */

@@ -7,6 +7,7 @@ import w4 from "../assets/works/Zine.png";
 import w5 from "../assets/works/WellnessCo.png";
 import noire from "../assets/works2/noire.png";
 
+
 export const works = [
   {
     num: "1",
@@ -65,7 +66,7 @@ export default function Works() {
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=Poppins:wght@800&family=DM+Sans:wght@400;500&display=swap');
 
         .works-section {
-          background: #FDF9F5;
+          background: var(--bg);
           padding: 40px 48px 48px;
           font-family: 'DM Sans', sans-serif;
         }

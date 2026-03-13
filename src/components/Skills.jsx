@@ -88,7 +88,7 @@ export default function Skills() {
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=Poppins:wght@800&family=DM+Sans:wght@400;500&display=swap');
 
         .skills-section {
-          background: #FDF9F5;
+          background: var(--bg);
           padding: 40px 48px 48px;
           font-family: 'DM Sans', sans-serif;
         }

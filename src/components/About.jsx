@@ -20,7 +20,7 @@ const css = `
   }
 
   .about-section {
-    background: #FDF9F5;
+    background: var(--bg);
     height: 100vh;
     padding: 0 4vw;
     display: grid;
