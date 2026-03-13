@@ -29,7 +29,7 @@ export default function Contact() {
 
         .c-section {
           min-height: 100vh;
-          background: #FDF9F5;
+          background: var(--bg);
           display: flex;
           flex-direction: column;
           justify-content: center;

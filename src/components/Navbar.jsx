@@ -141,6 +141,7 @@ const toggle = () => {
         .navbar-right {
           display: flex;
           align-items: center;
+          background: transparent;
           gap: 0;
           transition: all 0.45s cubic-bezier(0.22,1,0.36,1);
         }

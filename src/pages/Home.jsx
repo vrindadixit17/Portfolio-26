@@ -8,7 +8,7 @@ import Contact from "../components/Contact"
 
 export default function Home() {
   return (
-    <div className="bg-[#f4f2ef] min-h-screen">
+    <div style={{ background: 'var(--bg)', minHeight: '100vh', transition: 'background 0.4s ease' }}>
       <Navbar />
       <div id="home"><Hero /></div>
       <div id="about"><About /></div>
