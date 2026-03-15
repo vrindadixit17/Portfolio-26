@@ -33,17 +33,18 @@ export default function Contact() {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          padding: 80px 48px 60px;
+          padding: 80px 48px 100px;
           position: relative;
           overflow: hidden;
           font-family: 'Poppins', sans-serif;
+          transition: background 0.4s ease;
         }
 
         /* ── BIG RED HEADLINE ── */
         .c-headline {
           font-family: 'Bebas Neue', sans-serif;
           font-size: clamp(7rem, 20vw, 18rem);
-          color: #CC1F3A;
+          color: var(--red);
           line-height: 0.88;
           letter-spacing: 0.01em;
           position: relative;
@@ -52,23 +53,30 @@ export default function Contact() {
           animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
         }
 
-        /* ── TILTED CARD ── */
-        .c-card-wrap {
+        /* ── BODY ROW ── */
+        .c-body {
+          display: flex;
+          align-items: center;
+          gap: 80px;
           position: relative;
           z-index: 2;
           margin-top: -3.5vw;
+        }
+
+        /* ── TILTED CARD ── */
+        .c-card-wrap {
+          flex: 1.2;
           perspective: 1000px;
         }
 
         .c-card {
-          background: #5862E9;
+          background: var(--blue);
           border-radius: 10px;
           padding: 44px 48px;
           transform: rotate(-6deg);
           transform-origin: left center;
           transition: transform 0.25s ease;
           will-change: transform;
-          max-width: 680px;
           animation: slideIn 0.8s 0.15s cubic-bezier(0.22,1,0.36,1) both;
         }
 
@@ -109,7 +117,7 @@ export default function Contact() {
         }
         .c-input::placeholder { color: rgba(253,249,245,0.3); }
         .c-input:focus {
-          border-color: #FF7EDF;
+          border-color: var(--pink);
           background: rgba(253,249,245,0.14);
         }
 
@@ -131,7 +139,7 @@ export default function Contact() {
           transition: background 0.2s ease, color 0.2s ease, transform 0.18s ease;
         }
         .c-submit:hover {
-          background: #CC1F3A;
+          background: var(--red);
           color: #FDF9F5;
           transform: translateY(-2px);
         }
@@ -147,56 +155,90 @@ export default function Contact() {
           gap: 10px;
           text-align: center;
         }
-        .c-sent-mark {
-          font-size: 2.4rem;
-          color: #FF7EDF;
+        .c-sent-mark { font-size: 2.4rem; color: var(--pink); }
+        .c-sent-title { font-family: 'Italianno', cursive; font-size: 2.8rem; color: #FDF9F5; }
+        .c-sent-sub { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(253,249,245,0.55); }
+
+        /* ── RIGHT INFO PANEL ── */
+        .c-info {
+          flex: 0.8;
+          display: flex;
+          flex-direction: column;
+          gap: 0;
         }
-        .c-sent-title {
-          font-family: 'Italianno', cursive;
-          font-size: 2.8rem;
-          color: #FDF9F5;
+
+        .c-info-item {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          padding: 24px 0;
+          border-bottom: 1px solid var(--divider);
         }
-        .c-sent-sub {
-          font-size: 0.72rem;
-          letter-spacing: 0.14em;
+        .c-info-item:first-child { padding-top: 0; }
+        .c-info-item:last-child { border-bottom: none; }
+
+        .c-info-icon {
+          font-size: 1.1rem;
+          margin-bottom: 4px;
+        }
+
+        .c-info-label {
+          font-size: 0.6rem;
+          font-weight: 600;
+          letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: rgba(253,249,245,0.55);
+          color: var(--text-muted);
         }
+
+        .c-info-value {
+          font-size: 0.8rem;
+          font-weight: 500;
+          color: var(--text);
+          text-decoration: none;
+          transition: color 0.2s ease;
+          font-family: 'Poppins', sans-serif;
+        }
+        a.c-info-value:hover { color: var(--red); }
 
         /* ── FOOTER ROW ── */
         .c-footer {
           position: absolute;
-          bottom: 10px;
+          bottom: 28px;
           left: 48px;
           right: 48px;
           display: flex;
           justify-content: space-between;
           align-items: center;
           z-index: 3;
+          border-top: 1px solid var(--divider);
+          padding-top: 16px;
         }
 
         .c-footer-logo {
           font-family: 'Italianno', cursive;
           font-size: 1.8rem;
-          color: #FF7EDF;
+          color: var(--pink);
           text-decoration: none;
         }
 
-        .c-footer-links {
-          display: flex;
-          gap: 28px;
+        .c-footer-copy {
+          font-size: 0.65rem;
+          color: var(--text-muted);
+          letter-spacing: 0.08em;
         }
+
+        .c-footer-links { display: flex; gap: 28px; }
 
         .c-footer-link {
           font-size: 0.68rem;
           font-weight: 500;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: #999;
+          color: var(--text-muted);
           text-decoration: none;
           transition: color 0.2s ease;
         }
-        .c-footer-link:hover { color: #CC1F3A; }
+        .c-footer-link:hover { color: var(--red); }
 
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(32px); }
@@ -207,10 +249,12 @@ export default function Contact() {
           to   { opacity: 1; transform: rotate(-6deg) translateX(0); }
         }
 
-        @media (max-width: 600px) {
-          .c-section { padding: 60px 24px 80px; }
-          .c-card { padding: 32px 28px; transform: rotate(-3deg); }
-          .c-row { flex-direction: column; gap: 14px; }
+        @media (max-width: 768px) {
+          .c-body { flex-direction: column; gap: 40px; margin-top: 20px; }
+          .c-card-wrap { width: 100%; }
+          .c-card { transform: rotate(-3deg); padding: 32px 28px; }
+          .c-info { width: 100%; }
+          .c-section { padding: 60px 24px 100px; }
           .c-footer { left: 24px; right: 24px; }
         }
       `}</style>
@@ -219,50 +263,80 @@ export default function Contact() {
 
         <h2 className="c-headline">CONTACT</h2>
 
-        <div className="c-card-wrap">
-          <div
-            className="c-card"
-            ref={cardRef}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-          >
-            {sent ? (
-              <div className="c-sent">
-                <div className="c-sent-mark">✦</div>
-                <div className="c-sent-title">message sent!</div>
-                <div className="c-sent-sub">I'll get back to you soon</div>
-              </div>
-            ) : (
-              <>
-                <div className="c-row">
-                  <div className="c-field">
-                    <label className="c-label">name</label>
-                    <input className="c-input" type="text" placeholder="your name"
-                      value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
+        <div className="c-body">
+
+          {/* LEFT: tilted form card */}
+          <div className="c-card-wrap">
+            <div
+              className="c-card"
+              ref={cardRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+            >
+              {sent ? (
+                <div className="c-sent">
+                  <div className="c-sent-mark">✦</div>
+                  <div className="c-sent-title">message sent!</div>
+                  <div className="c-sent-sub">I'll get back to you soon</div>
+                </div>
+              ) : (
+                <>
+                  <div className="c-row">
+                    <div className="c-field">
+                      <label className="c-label">name</label>
+                      <input className="c-input" type="text" placeholder="your name"
+                        value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
+                    </div>
+                    <div className="c-field">
+                      <label className="c-label">email</label>
+                      <input className="c-input" type="email" placeholder="your email"
+                        value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+                    </div>
                   </div>
                   <div className="c-field">
-                    <label className="c-label">email</label>
-                    <input className="c-input" type="email" placeholder="your email"
-                      value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
+                    <label className="c-label">message</label>
+                    <textarea className="c-input" placeholder="tell me about your project..."
+                      value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} />
                   </div>
-                </div>
-                <div className="c-field">
-                  <label className="c-label">message</label>
-                  <textarea className="c-input" placeholder="tell me about your project..."
-                    value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} />
-                </div>
-                <button className="c-submit" onClick={handleSubmit}>send message →</button>
-              </>
-            )}
+                  <button className="c-submit" onClick={handleSubmit}>send message →</button>
+                </>
+              )}
+            </div>
           </div>
+
+          {/* RIGHT: contact info */}
+          <div className="c-info">
+            <div className="c-info-item">
+              <span className="c-info-icon">📍</span>
+              <span className="c-info-label">Find me</span>
+              <span className="c-info-value">New Delhi, India</span>
+            </div>
+            <div className="c-info-item">
+              <span className="c-info-icon">✉️</span>
+              <span className="c-info-label">Mail me</span>
+              <a className="c-info-value" href="mailto:dixitvrinda1704@gmail.com">dixitvrinda1704@gmail.com</a>
+            </div>
+            <div className="c-info-item">
+              <span className="c-info-icon">📸</span>
+              <span className="c-info-label">Follow</span>
+              <a className="c-info-value" href="#">@vrinda.design</a>
+            </div>
+            <div className="c-info-item">
+              <span className="c-info-icon">💼</span>
+              <span className="c-info-label">LinkedIn</span>
+              <a className="c-info-value" href="#">vrinda dixit</a>
+            </div>
+          </div>
+
         </div>
 
         <footer className="c-footer">
           <a className="c-footer-logo" href="#home">vrinda</a>
+          <span className="c-footer-copy">© 2025 — all rights reserved</span>
           <nav className="c-footer-links">
             <a className="c-footer-link" href="#">instagram</a>
             <a className="c-footer-link" href="#">linkedin</a>
-            <a className="c-footer-link" href="mailto:hello@vrinda.design">email</a>
+            <a className="c-footer-link" href="mailto:dixitvrinda1704@gmail.com">email</a>
           </nav>
         </footer>
 
