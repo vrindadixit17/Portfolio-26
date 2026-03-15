@@ -12,15 +12,15 @@ const NAV_ITEMS = [
 export default function Navbar() {
   const [scrolled, setScrolled]       = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  
-const [dark, setDark] = useState(false);
-const toggle = () => {
-  setDark(d => {
-    const next = !d;
-    document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
-    return next;
-  });
-};
+  const [dark, setDark]               = useState(false);
+
+  const toggle = () => {
+    setDark(d => {
+      const next = !d;
+      document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
+      return next;
+    });
+  };
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', 'light');
@@ -87,74 +87,78 @@ const toggle = () => {
           align-items: center;
           justify-content: space-between;
           padding: 12px 32px;
-          pointer-events: none; /* let clicks pass through except on children */
+          pointer-events: none;
         }
 
-        /* re-enable pointer events on actual interactive children */
         .navbar-outer > * { pointer-events: all; }
 
-        /* ── Left pill: theme toggle ── */
-        .navbar-left-pill {
+        /* ── LEFT: theme toggle ── */
+        .navbar-left {
           display: flex;
           align-items: center;
           gap: 8px;
-          background: var(--nav-pill, rgba(255,255,255,0.85));
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          border-radius: 100px;
-          padding: 6px 14px 6px 10px;
-          box-shadow: var(--nav-pill-shadow, 0 4px 24px rgba(0,0,0,0.08));
-          transition: background 0.4s ease, box-shadow 0.4s ease;
+          flex-shrink: 0;
+          transition: opacity 0.3s ease;
         }
 
         .theme-toggle {
           background: none;
-          border: none;
+          border: 1.5px solid var(--pink, #FF7EDF);
           cursor: pointer;
-          font-size: 1rem;
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 0;
-          transition: transform 0.3s ease;
+          font-size: 1rem;
+          color: var(--pink, #FF7EDF);
+          transition: transform 0.3s ease, background 0.2s ease, color 0.2s ease;
           line-height: 1;
+          padding: 0;
         }
-        .theme-toggle:hover { transform: rotate(20deg); }
+        .theme-toggle:hover {
+          background: var(--pink, #FF7EDF);
+          color: #FDF9F5;
+          transform: rotate(20deg);
+        }
 
         .navbar-left-label {
-          font-family: 'Poppins', sans-serif;
-          font-size: 0.6rem;
-          font-weight: 500;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: var(--text-muted, #999);
+          font-family: 'Italianno', cursive;
+          font-size: 1.2rem;
+          color: var(--pink, #FF7EDF);
           white-space: nowrap;
-          transition: color 0.4s ease;
+          transition: color 0.4s ease, opacity 0.3s ease, max-width 0.4s ease;
+          overflow: hidden;
+          max-width: 80px;
         }
-
-        /* hide label when scrolled */
         .scrolled-state .navbar-left-label {
-          display: none;
+          opacity: 0;
+          max-width: 0;
         }
 
-        /* ── Right side: logo + nav + portfolio ── */
-        .navbar-right {
-          display: flex;
-          align-items: center;
-          background: transparent;
-          gap: 0;
-          transition: all 0.45s cubic-bezier(0.22,1,0.36,1);
-        }
+        /* ── CENTER: logo + nav + portfolio ── */
+        .navbar-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all 0.45s cubic-bezier(0.22,1,0.36,1);
+}
 
-        /* condensed: wrap right side in a pill too */
-        .scrolled-state .navbar-right {
-          background: var(--nav-pill, rgba(255,255,255,0.85));
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          border-radius: 100px;
-          padding: 8px 20px;
-          box-shadow: var(--nav-pill-shadow, 0 4px 24px rgba(0,0,0,0.08));
-        }
+        /* condensed pill */
+        .scrolled-state .navbar-center {
+  background: var(--nav-pill, rgba(255,255,255,0.85));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 100px;
+  padding: 8px 20px;
+  box-shadow: var(--nav-pill-shadow, 0 4px 24px rgba(0,0,0,0.08));
+  position: static;
+  transform: none;
+}
 
         /* ── Logo ── */
         .navbar-logo {
@@ -169,11 +173,11 @@ const toggle = () => {
           overflow: hidden;
           max-width: 120px;
           opacity: 1;
+          margin-right: 16px;
           transition:
             opacity 0.3s ease,
             max-width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
             margin-right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-          margin-right: 16px;
         }
         .scrolled-state .navbar-logo {
           opacity: 0;
@@ -187,14 +191,16 @@ const toggle = () => {
           overflow: hidden;
           max-width: 160px;
           opacity: 1;
+          margin-left: 16px;
           transition:
             opacity 0.3s ease,
-            max-width 0.4s cubic-bezier(0.22,1,0.36,1);
-          margin-left: 16px;
+            max-width 0.4s cubic-bezier(0.22,1,0.36,1),
+            margin-left 0.4s cubic-bezier(0.22,1,0.36,1);
         }
         .scrolled-state .navbar-portfolio-wrap {
           opacity: 0;
           max-width: 0;
+          margin-left: 0;
           pointer-events: none;
         }
 
@@ -314,16 +320,16 @@ const toggle = () => {
 
       <div className={`navbar-outer ${scrolled ? 'scrolled-state' : ''}`}>
 
-        {/* ── LEFT: theme toggle pill ── */}
-        <div className="navbar-left-pill">
+        {/* ── LEFT: theme toggle ── */}
+        <div className="navbar-left">
           <button className="theme-toggle" onClick={toggle} aria-label="Toggle theme">
             {dark ? '☀️' : '🌙'}
           </button>
-          <span className="navbar-left-label">{dark ? 'day' : 'night'}</span>
+          
         </div>
 
-        {/* ── RIGHT: logo + nav + portfolio ── */}
-        <div className="navbar-right">
+        {/* ── CENTER/RIGHT: logo + nav + portfolio ── */}
+        <div className="navbar-center">
           <a className="navbar-logo" href="#home">vrinda</a>
 
           <GooeyNav

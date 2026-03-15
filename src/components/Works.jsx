@@ -80,7 +80,7 @@ export default function Works() {
         .works-title {
           font-family: 'Bebas Neue', sans-serif;
           font-size: clamp(2.4rem, 4vw, 3.2rem);
-          color: #1C1C1C;
+          color: var(--bg-text);
           letter-spacing: 2px;
           margin: 0;
           line-height: 1;
@@ -107,7 +107,7 @@ export default function Works() {
         }
 
         .work-card {
-          background: #1C1C1C;
+          background: var(--bg-card);
           border-radius: 5px;
           position: relative;
           overflow: hidden;
@@ -157,7 +157,7 @@ export default function Works() {
           transform: translateX(-50%);
           z-index: 3;
           background: #FDF9F5;
-          color: #1C1C1C;
+          color: var(--bg-text);
           font-family: 'DM Sans', sans-serif;
           font-size: 0.65rem;
           font-weight: 500;
@@ -182,7 +182,7 @@ export default function Works() {
           font-family: 'Bebas Neue', sans-serif;
           font-size: 1rem;
           letter-spacing: 1.5px;
-          color: #1C1C1C;
+          color: var(--pink);
           margin-bottom: 5px;
         }
         .work-below-desc {

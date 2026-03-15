@@ -102,7 +102,7 @@ export default function Skills() {
         .skills-title {
           font-family: 'Bebas Neue', sans-serif;
           font-size: clamp(2.4rem, 4vw, 3.2rem);
-          color: #1C1C1C;
+          color: var(--bg-text);
           letter-spacing: 2px;
           margin: 0;
           line-height: 1;
