@@ -2,15 +2,15 @@ import flowerImg from "../assets/emojis/flower.png";
 import smileyImg from "../assets/emojis/smiley.png";
 import cupImg from "../assets/emojis/cup.png";
 import heartImg from "../assets/emojis/heart.png";
-
-import React, { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 const cards = [
-  { id: "edu",  title: "Education",       icon: flowerImg, bg: "#E8184A", items: ["St. Gregorios school - 94%", "Maharaja Surajmal Institute of Technology - 9.34"] },
-  { id: "exp",  title: "Experience",      icon: smileyImg, bg: "#D4A8F0", items: ["Student body head & Coordinator intern at AICTE", "IOT Trainee/Intern at NSIC", "UI/UX Intern at Effred Technologies"] },
-  { id: "soft", title: "Software Skills", icon: cupImg,    bg: "#CCEE22", items: ["Full Stack: MERN stack (mongoDB, express.js, react, node.js)", "Tools: Figma, Adobe Illustrator, PowerBI, Excel, MySQL", "Languages: C, C++, Java, JavaScript, Python"] },
-  { id: "misc", title: "Misc. Activities",icon: heartImg,  bg: "#E86820", items: ["President of ASTITVA - The Dance Society of MSIT", "Graphic and UI/UX Designer at Google Developers Group on campus", "Debater"] },
+  { id: "edu",  title: "Education",        icon: flowerImg, bg: "#E8184A", items: ["St. Gregorios school - 94%", "Maharaja Surajmal Institute of Technology - 9.34"] },
+  { id: "exp",  title: "Experience",       icon: smileyImg, bg: "#D4A8F0", items: ["Student body head & Coordinator intern at AICTE", "IOT Trainee/Intern at NSIC", "UI/UX Intern at Effred Technologies"] },
+  { id: "soft", title: "Software Skills",  icon: cupImg,    bg: "#CCEE22", items: ["Full Stack: MERN stack (mongoDB, express.js, react, node.js)", "Tools: Figma, Adobe Illustrator, PowerBI, Excel, MySQL", "Languages: C, C++, Java, JavaScript, Python"] },
+  { id: "misc", title: "Misc. Activities", icon: heartImg,  bg: "#E86820", items: ["President of ASTITVA - The Dance Society of MSIT", "Graphic and UI/UX Designer at Google Developers Group on campus", "Debater"] },
 ];
 
 const baseTransforms = [
@@ -20,9 +20,7 @@ const baseTransforms = [
   "rotate(-1.38deg) translateX(80px)",
 ];
 
-const getNoRotationTransform = (t) =>
-  t.replace(/rotate\([\s\S]*?\)/, "rotate(0deg)");
-
+const getNoRotationTransform = (t) => t.replace(/rotate\([\s\S]*?\)/, "rotate(0deg)");
 const getPushedTransform = (t, offsetX) => {
   const match = t.match(/translateX\(([-0-9.]+)px\)/);
   if (match) {
@@ -34,14 +32,11 @@ const getPushedTransform = (t, offsetX) => {
 
 export default function Skills() {
   const containerRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".skill-card",
-        { scale: 0 },
-        { scale: 1, stagger: 0.06, ease: "elastic.out(1, 0.8)", delay: 0.4 }
-      );
+      gsap.fromTo(".skill-card", { scale: 0 }, { scale: 1, stagger: 0.06, ease: "elastic.out(1, 0.8)", delay: 0.4 });
     }, containerRef);
     return () => ctx.revert();
   }, []);
@@ -54,17 +49,10 @@ export default function Skills() {
       gsap.killTweensOf(target);
       const base = baseTransforms[i];
       if (i === hoveredIdx) {
-        gsap.to(target, {
-          transform: getNoRotationTransform(base) + " translateY(-10px)",
-          duration: 0.4, ease: "back.out(1.4)", overwrite: "auto", zIndex: 10,
-        });
+        gsap.to(target, { transform: getNoRotationTransform(base) + " translateY(-10px)", duration: 0.4, ease: "back.out(1.4)", overwrite: "auto", zIndex: 10 });
       } else {
         const offsetX = i < hoveredIdx ? -60 : 60;
-        gsap.to(target, {
-          transform: getPushedTransform(base, offsetX),
-          duration: 0.4, ease: "back.out(1.4)",
-          delay: Math.abs(hoveredIdx - i) * 0.05, overwrite: "auto",
-        });
+        gsap.to(target, { transform: getPushedTransform(base, offsetX), duration: 0.4, ease: "back.out(1.4)", delay: Math.abs(hoveredIdx - i) * 0.05, overwrite: "auto" });
       }
     });
   };
@@ -75,42 +63,38 @@ export default function Skills() {
     cards.forEach((_, i) => {
       const target = q(`.skill-card-${i}`);
       gsap.killTweensOf(target);
-      gsap.to(target, {
-        transform: baseTransforms[i],
-        duration: 0.4, ease: "back.out(1.4)", overwrite: "auto",
-      });
+      gsap.to(target, { transform: baseTransforms[i], duration: 0.4, ease: "back.out(1.4)", overwrite: "auto" });
     });
   };
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=Poppins:wght@800&family=DM+Sans:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=DM+Sans:wght@400;500&display=swap');
 
         .skills-section {
           background: var(--bg);
           padding: 40px 48px 48px;
           font-family: 'DM Sans', sans-serif;
+          transition: background 0.4s ease;
         }
 
-        .skills-title-row {
-          display: flex;
-          align-items: baseline;
-          gap: 14px;
-          margin-bottom: 20px;
-        }
+        .skills-title-row { display: flex; align-items: baseline; gap: 14px; margin-bottom: 20px; }
+
         .skills-title {
           font-family: 'Bebas Neue', sans-serif;
           font-size: clamp(2.4rem, 4vw, 3.2rem);
-          color: var(--bg-text);
+          color: var(--text);
           letter-spacing: 2px;
           margin: 0;
           line-height: 1;
+          transition: color 0.4s ease;
         }
+
         .skills-subtitle {
-        font-family: 'Italianno', cursive;
+          font-family: 'Italianno', cursive;
           font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-          color: #FF7EDF;
+          color: var(--pink);
           font-weight: 500;
           text-transform: lowercase;
         }
@@ -144,104 +128,55 @@ export default function Skills() {
           margin-bottom: 14px;
         }
 
-        .skill-card ul {
-          list-style: none;
-          display: flex;
-          flex-direction: column;
-          gap: 9px;
-          padding: 0;
-          margin: 0;
-        }
-
+        .skill-card ul { list-style: none; display: flex; flex-direction: column; gap: 9px; padding: 0; margin: 0; }
         .skill-card ul li {
           font-family: 'DM Sans', sans-serif;
-          font-size: 0.76rem;
-          font-weight: 500;
-          color: #1C1C1C;
-          line-height: 1.4;
-          padding-left: 14px;
-          position: relative;
+          font-size: 0.76rem; font-weight: 500;
+          color: #1C1C1C; line-height: 1.4;
+          padding-left: 14px; position: relative;
         }
+        .skill-card ul li::before { content: "•"; position: absolute; left: 2px; font-size: 0.9rem; }
 
-        .skill-card ul li::before {
-          content: "•";
-          position: absolute;
-          left: 2px;
-          font-size: 0.9rem;
-        }
-
-        .skills-footer {
-          display: flex;
-          justify-content: center;
-          margin-top: 36px;
-        }
+        .skills-footer { display: flex; justify-content: center; margin-top: 36px; }
 
         .skills-cta {
           font-family: 'DM Sans', sans-serif;
-          font-size: 0.75rem;
-          font-weight: 500;
-          letter-spacing: 0.5px;
-          color: #1C1C1C;
-          background: #FDF9F5;
-          padding: 7px 20px;
-          border-radius: 100px;
-          border: 1.5px solid #1C1C1C;
-          cursor: pointer;
+          font-size: 0.75rem; font-weight: 500; letter-spacing: 0.5px;
+          color: var(--text); background: var(--bg);
+          padding: 7px 20px; border-radius: 100px;
+          border: 1.5px solid var(--text); cursor: pointer;
+          transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
         }
+        .skills-cta:hover { background: var(--red); color: #FDF9F5; border-color: var(--red); }
       `}</style>
 
-      <section className="skills-section">
-
-        {/* header — same as Works */}
+      <section className="skills-section" id="skills">
         <div className="skills-title-row">
           <h2 className="skills-title">SKILLS</h2>
           <span className="skills-subtitle">what i bring to the table</span>
         </div>
 
-        {/* animated cards */}
         <div className="skills-cards-row" ref={containerRef}>
           {cards.map((card, idx) => (
             <div
               key={card.id}
               className={`skill-card skill-card-${idx}`}
-              style={{
-                background: card.bg,
-                transform: baseTransforms[idx],
-                marginLeft: idx === 0 ? "0" : "-28px",
-                zIndex: idx,
-              }}
+              style={{ background: card.bg, transform: baseTransforms[idx], marginLeft: idx === 0 ? "0" : "-28px", zIndex: idx }}
               onMouseEnter={() => pushSiblings(idx)}
               onMouseLeave={resetAll}
             >
-              <img
-                src={card.icon}
-                alt={card.title}
-                style={{
-                  position: "absolute",
-                  top: "-30px",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  width: "62px",
-                  height: "62px",
-                  objectFit: "contain",
-                  filter: "drop-shadow(0 3px 6px rgba(0,0,0,0.15))",
-                }}
-              />
+              <img src={card.icon} alt={card.title} style={{ position: "absolute", top: "-30px", left: "50%", transform: "translateX(-50%)", width: "62px", height: "62px", objectFit: "contain", filter: "drop-shadow(0 3px 6px rgba(0,0,0,0.15))" }} />
               <div className="skill-card-title">{card.title}</div>
-              <ul>
-                {card.items.map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
+              <ul>{card.items.map((item, i) => <li key={i}>{item}</li>)}</ul>
             </div>
           ))}
         </div>
 
-        {/* footer button */}
         <div className="skills-footer">
-          <button className="skills-cta">see more &gt;</button>
+          <button className="skills-cta" onClick={() => navigate('/skills')}>
+            see more &gt;
+          </button>
         </div>
-
       </section>
     </>
   );

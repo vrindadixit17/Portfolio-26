@@ -1,0 +1,386 @@
+import flowerImg from "../assets/emojis/flower.png";
+import smileyImg from "../assets/emojis/smiley.png";
+import cupImg from "../assets/emojis/cup.png";
+import heartImg from "../assets/emojis/heart.png";
+import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+
+const cards = [
+  {
+    id: "edu", title: "Education", icon: flowerImg, bg: "#E8184A",
+    items: ["St. Gregorios school - 94%", "Maharaja Surajmal Institute of Technology - 9.34 CGPA"],
+  },
+  {
+    id: "exp", title: "Experience", icon: smileyImg, bg: "#D4A8F0",
+    items: ["Student body head & Coordinator intern at AICTE", "IOT Trainee/Intern at NSIC", "UI/UX Intern at Effred Technologies"],
+  },
+  {
+    id: "soft", title: "Software Skills", icon: cupImg, bg: "#CCEE22",
+    items: ["Full Stack: MERN stack (mongoDB, express.js, react, node.js)", "Tools: Figma, Adobe Illustrator, PowerBI, Excel, MySQL", "Languages: C, C++, Java, JavaScript, Python"],
+  },
+  {
+    id: "misc", title: "Misc. Activities", icon: heartImg, bg: "#E86820",
+    items: ["President of ASTITVA - The Dance Society of MSIT", "Graphic and UI/UX Designer at Google Developers Group on campus", "Debater"],
+  },
+];
+
+const baseTransforms = [
+  "rotate(9.78deg)  translateX(-80px)",
+  "rotate(-4.38deg) translateX(-26px)",
+  "rotate(3.88deg)  translateX(26px)",
+  "rotate(-1.38deg) translateX(80px)",
+];
+
+const getNoRotationTransform = (t) => t.replace(/rotate\([\s\S]*?\)/, "rotate(0deg)");
+const getPushedTransform = (t, offsetX) => {
+  const match = t.match(/translateX\(([-0-9.]+)px\)/);
+  if (match) {
+    const newX = parseFloat(match[1]) + offsetX;
+    return t.replace(/translateX\(([-0-9.]+)px\)/, `translateX(${newX}px)`);
+  }
+  return `${t} translateX(${offsetX}px)`;
+};
+
+const toolRows = [
+  { label: "Design",      tools: ["Figma", "Adobe Illustrator", "Adobe Photoshop", "Framer"] },
+  { label: "Frontend",    tools: ["React", "HTML/CSS", "JavaScript", "TailwindCSS"] },
+  { label: "Backend",     tools: ["Node.js", "Express.js", "MongoDB", "MySQL"] },
+  { label: "Other",       tools: ["PowerBI", "Excel", "Git", "Python"] },
+];
+
+export default function SkillsPage() {
+  const navigate = useNavigate();
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+    document.documentElement.getAttribute('data-theme') || 
+      document.documentElement.setAttribute('data-theme', 'light');
+  }, []);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".skill-card",
+        { scale: 0 },
+        { scale: 1, stagger: 0.06, ease: "elastic.out(1, 0.8)", delay: 0.3 }
+      );
+      gsap.fromTo(".sp-tool-tag",
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, stagger: 0.04, ease: "power2.out", delay: 0.6 }
+      );
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
+
+  const pushSiblings = (hoveredIdx) => {
+    if (!containerRef.current) return;
+    const q = gsap.utils.selector(containerRef);
+    cards.forEach((_, i) => {
+      const target = q(`.skill-card-${i}`);
+      gsap.killTweensOf(target);
+      const base = baseTransforms[i];
+      if (i === hoveredIdx) {
+        gsap.to(target, { transform: getNoRotationTransform(base) + " translateY(-10px)", duration: 0.4, ease: "back.out(1.4)", overwrite: "auto", zIndex: 10 });
+      } else {
+        const offsetX = i < hoveredIdx ? -60 : 60;
+        gsap.to(target, { transform: getPushedTransform(base, offsetX), duration: 0.4, ease: "back.out(1.4)", delay: Math.abs(hoveredIdx - i) * 0.05, overwrite: "auto" });
+      }
+    });
+  };
+
+  const resetAll = () => {
+    if (!containerRef.current) return;
+    const q = gsap.utils.selector(containerRef);
+    cards.forEach((_, i) => {
+      const target = q(`.skill-card-${i}`);
+      gsap.killTweensOf(target);
+      gsap.to(target, { transform: baseTransforms[i], duration: 0.4, ease: "back.out(1.4)", overwrite: "auto" });
+    });
+  };
+
+  return (
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=DM+Sans:wght@400;500;600&display=swap');
+
+        .sp-wrap {
+          background: var(--bg);
+          min-height: 100vh;
+          font-family: 'DM Sans', sans-serif;
+          transition: background 0.4s ease;
+        }
+
+        /* ── HERO ── */
+        .sp-hero {
+          padding: 48px 48px 0;
+        }
+
+        .sp-back {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.68rem;
+          font-weight: 500;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          margin-bottom: 36px;
+          transition: color 0.2s ease;
+        }
+        .sp-back:hover { color: var(--red); }
+        .sp-back:hover svg { transform: translateX(-3px); }
+        .sp-back svg { transition: transform 0.2s ease; }
+
+        .sp-headline {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: clamp(4rem, 12vw, 10rem);
+          color: var(--text);
+          line-height: 0.88;
+          letter-spacing: 0.02em;
+          margin: 0;
+          animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
+        }
+
+        .sp-headline span { color: var(--pink); }
+
+        .sp-tagline {
+          font-size: 0.72rem;
+          font-weight: 500;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+          margin-top: 10px;
+          animation: fadeUp 0.7s 0.1s cubic-bezier(0.22,1,0.36,1) both;
+        }
+
+        /* ── DIVIDER ── */
+        .sp-divider {
+          height: 1px;
+          background: linear-gradient(90deg, transparent, var(--divider) 20%, var(--divider) 80%, transparent);
+          margin: 32px 48px;
+        }
+
+        /* ── CARDS ── */
+        .sp-cards-section {
+          padding: 0 48px;
+        }
+
+        .sp-section-label {
+          font-size: 0.6rem;
+          font-weight: 600;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: var(--orange);
+          margin-bottom: 8px;
+        }
+
+        .skills-cards-row {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          padding-top: 50px;
+          padding-bottom: 40px;
+          width: 100%;
+        }
+
+        .skill-card {
+          width: 222px;
+          min-height: 290px;
+          border-radius: 10px;
+          padding: 60px 20px 26px;
+          position: relative;
+          flex-shrink: 0;
+          cursor: default;
+        }
+
+        .skill-card-title {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 1.3rem;
+          letter-spacing: 1.5px;
+          color: #1C1C1C;
+          text-align: center;
+          margin-bottom: 14px;
+        }
+
+        .skill-card ul {
+          list-style: none;
+          display: flex;
+          flex-direction: column;
+          gap: 9px;
+          padding: 0;
+          margin: 0;
+        }
+
+        .skill-card ul li {
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.76rem;
+          font-weight: 500;
+          color: #1C1C1C;
+          line-height: 1.4;
+          padding-left: 14px;
+          position: relative;
+        }
+        .skill-card ul li::before {
+          content: "•";
+          position: absolute;
+          left: 2px;
+          font-size: 0.9rem;
+        }
+
+        /* ── TOOLS GRID ── */
+        .sp-tools-section {
+          padding: 0 48px 80px;
+        }
+
+        .sp-tools-row {
+          display: flex;
+          align-items: baseline;
+          gap: 20px;
+          margin-bottom: 20px;
+          padding-bottom: 20px;
+          border-bottom: 1px solid var(--divider);
+        }
+        .sp-tools-row:last-child { border-bottom: none; }
+
+        .sp-tools-row-label {
+          font-size: 0.6rem;
+          font-weight: 600;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+          width: 72px;
+          flex-shrink: 0;
+        }
+
+        .sp-tools-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .sp-tool-tag {
+          background: transparent;
+          border: 1.5px solid var(--divider);
+          border-radius: 100px;
+          padding: 6px 16px;
+          font-size: 0.75rem;
+          font-weight: 500;
+          color: var(--text);
+          transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+          cursor: default;
+        }
+        .sp-tool-tag:hover {
+          border-color: var(--pink);
+          color: var(--pink);
+          background: rgba(255,126,223,0.06);
+        }
+
+        /* ── FOOTER ── */
+        .sp-footer {
+          border-top: 1px solid var(--divider);
+          padding: 24px 48px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .sp-footer-logo {
+          font-family: 'Italianno', cursive;
+          font-size: 1.6rem;
+          color: var(--pink);
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        .sp-footer-copy {
+          font-size: 0.65rem;
+          color: var(--text-muted);
+          letter-spacing: 0.08em;
+        }
+
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+          .sp-hero, .sp-cards-section, .sp-tools-section, .sp-footer { padding-left: 24px; padding-right: 24px; }
+          .sp-divider { margin-left: 24px; margin-right: 24px; }
+          .sp-tools-row { flex-direction: column; gap: 10px; }
+        }
+      `}</style>
+
+      <div className="sp-wrap" ref={containerRef}>
+        <Navbar />
+
+        <div className="sp-hero">
+          <button className="sp-back" onClick={() => navigate(-1)}>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M9 2L4 7L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            back
+          </button>
+
+          <h1 className="sp-headline">what i <span>bring</span>.</h1>
+          <p className="sp-tagline">skills, tools & everything in between</p>
+        </div>
+
+        <div className="sp-divider" />
+
+        {/* ── CARDS ── */}
+        <div className="sp-cards-section">
+          <div className="sp-section-label">overview</div>
+          <div className="skills-cards-row">
+            {cards.map((card, idx) => (
+              <div
+                key={card.id}
+                className={`skill-card skill-card-${idx}`}
+                style={{ background: card.bg, transform: baseTransforms[idx], marginLeft: idx === 0 ? "0" : "-28px", zIndex: idx }}
+                onMouseEnter={() => pushSiblings(idx)}
+                onMouseLeave={resetAll}
+              >
+                <img
+                  src={card.icon}
+                  alt={card.title}
+                  style={{ position: "absolute", top: "-30px", left: "50%", transform: "translateX(-50%)", width: "62px", height: "62px", objectFit: "contain", filter: "drop-shadow(0 3px 6px rgba(0,0,0,0.15))" }}
+                />
+                <div className="skill-card-title">{card.title}</div>
+                <ul>{card.items.map((item, i) => <li key={i}>{item}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="sp-divider" />
+
+        {/* ── TOOLS GRID ── */}
+        <div className="sp-tools-section">
+          <div className="sp-section-label" style={{ marginBottom: '24px' }}>tools & technologies</div>
+          {toolRows.map((row) => (
+            <div className="sp-tools-row" key={row.label}>
+              <span className="sp-tools-row-label">{row.label}</span>
+              <div className="sp-tools-tags">
+                {row.tools.map((tool) => (
+                  <span className="sp-tool-tag" key={tool}>{tool}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── FOOTER ── */}
+        <div className="sp-footer">
+          <span className="sp-footer-logo" onClick={() => navigate('/')}>vrinda</span>
+          <span className="sp-footer-copy">© 2025 — all rights reserved</span>
+        </div>
+      </div>
+    </>
+  );
+}

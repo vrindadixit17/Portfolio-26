@@ -173,6 +173,7 @@ export default function Contact() {
           gap: 2px;
           padding: 14px 0;
           border-bottom: 1px solid var(--divider);
+          justify-content: center;
         }
         .c-info-item:first-child { padding-top: 0; }
         .c-info-item:last-child { border-bottom: none; }
