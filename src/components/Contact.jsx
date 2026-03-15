@@ -170,8 +170,8 @@ export default function Contact() {
         .c-info-item {
           display: flex;
           flex-direction: column;
-          gap: 4px;
-          padding: 24px 0;
+          gap: 2px;
+          padding: 14px 0;
           border-bottom: 1px solid var(--divider);
         }
         .c-info-item:first-child { padding-top: 0; }
