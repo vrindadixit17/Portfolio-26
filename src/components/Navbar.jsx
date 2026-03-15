@@ -4,9 +4,10 @@ import GooeyNav from './GooeyNav';
 const NAV_ITEMS = [
   { label: 'HOME',     href: '#home',      sectionId: 'home'      },
   { label: 'ABOUT',    href: '#about',     sectionId: 'about'     },
-  { label: 'WORKS',    href: '#works',     sectionId: 'works'     },
-  { label: 'SERVICES', href: '#services',  sectionId: 'services'  },
+  { label: 'SKILLS',    href: '#skills',     sectionId: 'skills'     },
   { label: 'WORKS',    href: '#portfolio', sectionId: 'portfolio' },
+  { label: 'PROJECTS', href: '#projects',  sectionId: 'projects'  },
+  { label: 'CONTACT', href: '#contact',  sectionId: 'contact'  },
 ];
 
 export default function Navbar() {
