@@ -178,7 +178,7 @@ export default function Contact() {
         .c-info-item:last-child { border-bottom: none; }
 
         .c-info-icon {
-          font-size: 1.1rem;
+          font-size: 0.95rem;
           margin-bottom: 4px;
         }
 
