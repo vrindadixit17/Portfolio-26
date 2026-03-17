@@ -1,19 +1,31 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import GooeyNav from './GooeyNav';
 
 const NAV_ITEMS = [
-  { label: 'HOME',     href: '#home',      sectionId: 'home'      },
-  { label: 'ABOUT',    href: '#about',     sectionId: 'about'     },
-  { label: 'SKILLS',    href: '#skills',     sectionId: 'skills'     },
-  { label: 'WORKS',    href: '#portfolio', sectionId: 'portfolio' },
-  { label: 'PROJECTS', href: '#projects',  sectionId: 'projects'  },
-  { label: 'CONTACT', href: '#contact',  sectionId: 'contact'  },
+  { label: 'HOME',    href: '/home',           sectionId: 'home'    },
+  { label: 'ABOUT',   href: '#about',          sectionId: 'about'   },
+  { label: 'SKILLS',  href: '/skills',         sectionId: 'skills'  },
+  { label: 'WORKS',   href: '/works-projects', sectionId: 'works'   },
+  { label: 'CONTACT', href: '/contact',        sectionId: 'contact' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ rightAlign = false }) {
   const [scrolled, setScrolled]       = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [dark, setDark]               = useState(false);
+  const location                      = useLocation();
+
+  
+  const getPathIndex = () => {
+  if (location.pathname.startsWith('/skills'))  return 2;
+  if (location.pathname.startsWith('/works'))   return 3;
+  if (location.pathname.startsWith('/contact')) return 4;
+  return -1;
+};
+
+  const pathIndex   = getPathIndex();
+  const displayIndex = pathIndex !== -1 ? pathIndex : activeIndex;
 
   const toggle = () => {
     setDark(d => {
@@ -25,12 +37,14 @@ export default function Navbar() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', 'light');
-    const hero = document.querySelector('#home') || document.querySelector('#hero');
+    const hero = document.querySelector('#home')
+               || document.querySelector('#hero');
+
     if (!hero) {
-      const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.8);
-      window.addEventListener('scroll', onScroll, { passive: true });
-      return () => window.removeEventListener('scroll', onScroll);
+      setScrolled(true);
+      return;
     }
+
     const obs = new IntersectionObserver(
       ([entry]) => setScrolled(!entry.isIntersecting),
       { threshold: 0.15 }
@@ -40,6 +54,7 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    if (pathIndex !== -1) return; // skip scroll detection on sub-pages
     const observers = [];
     const visible = new Map();
     NAV_ITEMS.forEach(({ sectionId }) => {
@@ -61,7 +76,7 @@ export default function Navbar() {
       observers.push(obs);
     });
     return () => observers.forEach(o => o.disconnect());
-  }, []);
+  }, [pathIndex]);
 
   return (
     <>
@@ -77,7 +92,6 @@ export default function Navbar() {
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* ── Outer bar ── */
         .navbar-outer {
           position: sticky;
           top: 0;
@@ -90,219 +104,147 @@ export default function Navbar() {
           padding: 12px 32px;
           pointer-events: none;
         }
-
         .navbar-outer > * { pointer-events: all; }
 
-        /* ── LEFT: theme toggle ── */
         .navbar-left {
           display: flex;
           align-items: center;
           gap: 8px;
           flex-shrink: 0;
-          transition: opacity 0.3s ease;
         }
 
         .theme-toggle {
           background: none;
           border: 1.5px solid var(--pink, #FF7EDF);
           cursor: pointer;
-          width: 34px;
-          height: 34px;
+          width: 34px; height: 34px;
           border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          display: flex; align-items: center; justify-content: center;
           font-size: 1rem;
-          color: var(--pink, #FF7EDF);
-          transition: transform 0.3s ease, background 0.2s ease, color 0.2s ease;
-          line-height: 1;
-          padding: 0;
+          transition: transform 0.3s ease, background 0.2s ease;
+          line-height: 1; padding: 0;
         }
         .theme-toggle:hover {
           background: var(--pink, #FF7EDF);
-          color: #FDF9F5;
           transform: rotate(20deg);
         }
 
-        .navbar-left-label {
-          font-family: 'Italianno', cursive;
-          font-size: 1.2rem;
-          color: var(--pink, #FF7EDF);
-          white-space: nowrap;
-          transition: color 0.4s ease, opacity 0.3s ease, max-width 0.4s ease;
-          overflow: hidden;
-          max-width: 80px;
-        }
-        .scrolled-state .navbar-left-label {
-          opacity: 0;
-          max-width: 0;
-        }
-
-        /* ── CENTER: logo + nav + portfolio ── */
         .navbar-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  transition: all 0.45s cubic-bezier(0.22,1,0.36,1);
-}
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          background: rgba(253, 249, 245, 0.4);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-radius: 100px;
+          padding: 8px 20px;
+          box-shadow: none;
+          transition: all 0.45s cubic-bezier(0.22,1,0.36,1);
+        }
 
-        /* condensed pill */
         .scrolled-state .navbar-center {
-  background: var(--nav-pill, rgba(255,255,255,0.85));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 100px;
-  padding: 8px 20px;
-  box-shadow: var(--nav-pill-shadow, 0 4px 24px rgba(0,0,0,0.08));
-  position: static;
-  transform: none;
-}
+          position: static;
+          transform: none;
+          margin-left: auto;
+          background: var(--nav-pill, rgba(253, 249, 245, 0.95));
+          box-shadow: var(--nav-pill-shadow, 0 4px 24px rgba(0,0,0,0.08));
+        }
 
-        /* ── Logo ── */
+        .right-align .navbar-center {
+          position: static;
+          transform: none;
+          margin-left: auto;
+          background: var(--nav-pill, rgba(253, 249, 245, 0.95));
+          box-shadow: var(--nav-pill-shadow, 0 4px 24px rgba(0,0,0,0.08));
+        }
+
         .navbar-logo {
           font-family: 'Italianno', cursive;
           font-size: 2rem;
           color: var(--pink, #FF7EDF);
-          font-weight: 400;
-          line-height: 1;
-          text-decoration: none;
-          white-space: nowrap;
-          flex-shrink: 0;
-          overflow: hidden;
-          max-width: 120px;
-          opacity: 1;
+          font-weight: 400; line-height: 1;
+          text-decoration: none; white-space: nowrap;
+          flex-shrink: 0; overflow: hidden;
+          max-width: 120px; opacity: 1;
           margin-right: 16px;
-          transition:
-            opacity 0.3s ease,
-            max-width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-            margin-right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+          transition: opacity 0.3s ease, max-width 0.4s cubic-bezier(0.22,1,0.36,1), margin-right 0.4s cubic-bezier(0.22,1,0.36,1);
         }
-        .scrolled-state .navbar-logo {
-          opacity: 0;
-          max-width: 0;
-          margin-right: 0;
-          pointer-events: none;
+        .scrolled-state .navbar-logo,
+        .right-align .navbar-logo {
+          opacity: 0; max-width: 0; margin-right: 0; pointer-events: none;
         }
 
-        /* ── Portfolio link ── */
         .navbar-portfolio-wrap {
-          overflow: hidden;
-          max-width: 160px;
-          opacity: 1;
-          margin-left: 16px;
-          transition:
-            opacity 0.3s ease,
-            max-width 0.4s cubic-bezier(0.22,1,0.36,1),
-            margin-left 0.4s cubic-bezier(0.22,1,0.36,1);
+          overflow: hidden; max-width: 160px; opacity: 1; margin-left: 16px;
+          transition: opacity 0.3s ease, max-width 0.4s cubic-bezier(0.22,1,0.36,1), margin-left 0.4s cubic-bezier(0.22,1,0.36,1);
         }
-        .scrolled-state .navbar-portfolio-wrap {
-          opacity: 0;
-          max-width: 0;
-          margin-left: 0;
-          pointer-events: none;
+        .scrolled-state .navbar-portfolio-wrap,
+        .right-align .navbar-portfolio-wrap {
+          opacity: 0; max-width: 0; margin-left: 0; pointer-events: none;
         }
 
         .navbar-portfolio {
           font-family: 'Italianno', cursive;
-          font-size: 2rem;
-          color: var(--pink, #FF7EDF);
-          font-weight: 400;
-          line-height: 1;
-          text-decoration: none;
-          white-space: nowrap;
+          font-size: 2rem; color: var(--pink, #FF7EDF);
+          font-weight: 400; line-height: 1;
+          text-decoration: none; white-space: nowrap;
         }
 
-        /* ── GooeyNav ── */
         .gooey-nav-container { position: relative; }
-        .gooey-nav-container nav {
-          display: flex;
-          position: relative;
-          transform: translate3d(0, 0, 0.01px);
-        }
+        .gooey-nav-container nav { display: flex; position: relative; transform: translate3d(0,0,0.01px); }
         .gooey-nav-container nav ul {
-          display: flex;
-          gap: 1.6em;
-          list-style: none;
-          padding: 0 0.5em;
-          margin: 0;
-          position: relative;
-          z-index: 3;
-          color: var(--text, #1C1C1C);
-          font-family: 'Poppins', sans-serif;
-          font-size: 0.82rem;
-          font-weight: 500;
+          display: flex; gap: 1.6em; list-style: none;
+          padding: 0 0.5em; margin: 0; position: relative; z-index: 3;
+          color: var(--text, #1C1C1C); font-family: 'Poppins', sans-serif;
+          font-size: 0.82rem; font-weight: 500;
           transition: gap 0.45s cubic-bezier(0.22,1,0.36,1);
         }
         .scrolled-state .gooey-nav-container nav ul { gap: 0.2em; }
 
         .gooey-nav-container nav ul li {
-          border-radius: 100vw;
-          position: relative;
-          cursor: pointer;
-          transition: color 0.3s ease;
-          color: var(--text, #1C1C1C);
+          border-radius: 100vw; position: relative; cursor: pointer;
+          transition: color 0.3s ease; color: var(--text, #1C1C1C);
         }
         .gooey-nav-container nav ul li a {
-          display: inline-block;
-          padding: 0.35em 0.9em;
-          text-decoration: none;
-          color: inherit;
+          display: inline-block; padding: 0.35em 0.9em;
+          text-decoration: none; color: inherit;
         }
         .gooey-nav-container nav ul li::after { content: none; }
 
         .gooey-nav-container .effect {
-          position: absolute;
-          left: 0; top: 0;
-          width: 0; height: 0;
-          opacity: 1;
-          pointer-events: none;
-          display: grid;
-          place-items: center;
-          z-index: 1;
+          position: absolute; left: 0; top: 0;
+          width: 0; height: 0; opacity: 1;
+          pointer-events: none; display: grid; place-items: center; z-index: 1;
         }
         .gooey-nav-container .effect.text {
-          color: transparent;
-          transition: color 0.3s ease;
-          font-family: 'Poppins', sans-serif;
-          font-size: 0.82rem;
-          font-weight: 500;
-          white-space: nowrap;
-          overflow: hidden;
+          color: transparent; transition: color 0.3s ease;
+          font-family: 'Poppins', sans-serif; font-size: 0.82rem;
+          font-weight: 500; white-space: nowrap; overflow: hidden;
         }
         .gooey-nav-container .effect.text.active { color: #1C1C1C; }
         .gooey-nav-container .effect.filter { filter: none; mix-blend-mode: normal; }
         .gooey-nav-container .effect.filter::before { content: none; }
         .gooey-nav-container .effect.filter::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: var(--pink, #FF7EDF);
-          transform: scale(0);
-          opacity: 0;
-          z-index: -1;
-          border-radius: 12px;
+          content: ''; position: absolute; inset: 0;
+          background: var(--pink, #FF7EDF); transform: scale(0);
+          opacity: 0; z-index: -1; border-radius: 12px;
         }
         .gooey-nav-container .effect.active::after { animation: pill 0.3s ease both; }
         @keyframes pill { to { transform: scale(1); opacity: 1; } }
 
         .particle, .point {
-          display: block; opacity: 0;
-          width: 20px; height: 20px;
+          display: block; opacity: 0; width: 20px; height: 20px;
           border-radius: 100%; transform-origin: center;
         }
         .particle {
-          --time: 5s;
-          position: absolute;
+          --time: 5s; position: absolute;
           top: calc(50% - 8px); left: calc(50% - 8px);
           animation: particle calc(var(--time)) ease 1 -350ms;
         }
-        .point {
-          background: var(--color); opacity: 1;
-          animation: point calc(var(--time)) ease 1 -350ms;
-        }
+        .point { background: var(--color); opacity: 1; animation: point calc(var(--time)) ease 1 -350ms; }
         @keyframes particle {
           0%   { transform: rotate(0deg) translate(var(--start-x), var(--start-y)); opacity: 1; animation-timing-function: cubic-bezier(0.55,0,1,0.45); }
           70%  { transform: rotate(calc(var(--rotate)*0.5)) translate(calc(var(--end-x)*1.2),calc(var(--end-y)*1.2)); opacity:1; animation-timing-function:ease; }
@@ -319,24 +261,20 @@ export default function Navbar() {
         }
       `}</style>
 
-      <div className={`navbar-outer ${scrolled ? 'scrolled-state' : ''}`}>
+      <div className={`navbar-outer ${scrolled ? 'scrolled-state' : ''} ${rightAlign ? 'right-align' : ''}`}>
 
-        {/* ── LEFT: theme toggle ── */}
         <div className="navbar-left">
           <button className="theme-toggle" onClick={toggle} aria-label="Toggle theme">
             {dark ? '☀️' : '🌙'}
           </button>
-          
         </div>
 
-        {/* ── CENTER/RIGHT: logo + nav + portfolio ── */}
         <div className="navbar-center">
           <a className="navbar-logo" href="#home">vrinda</a>
-
           <GooeyNav
             items={NAV_ITEMS}
-            initialActiveIndex={activeIndex}
-            activeIndex={activeIndex}
+            initialActiveIndex={displayIndex}
+            activeIndex={displayIndex}
             animationTime={600}
             particleCount={15}
             particleDistances={[90, 10]}
@@ -344,7 +282,6 @@ export default function Navbar() {
             timeVariance={300}
             colors={[1, 2, 3, 1, 2, 3, 1, 4]}
           />
-
           <div className="navbar-portfolio-wrap">
             <a className="navbar-portfolio" href="#portfolio">portfolio</a>
           </div>

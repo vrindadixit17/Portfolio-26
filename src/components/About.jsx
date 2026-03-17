@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import img1 from "../assets/about/about1.png";
 import img2 from "../assets/about/about2.png";
 import TextPressure from "../components/TextPressure";
@@ -29,9 +30,9 @@ const css = `
     box-sizing: border-box;
     overflow: hidden;
     font-family: 'DM Sans', sans-serif;
+    transition: background 0.4s ease;
   }
 
-  /* ── LEFT ── */
   .about-left {
     display: flex;
     flex-direction: column;
@@ -40,17 +41,8 @@ const css = `
     z-index: 2;
   }
 
-  .name-wrap {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .name-row {
-    width: 100%;
-    height: clamp(80px, 11vw, 145px);
-  }
+  .name-wrap { width: 100%; display: flex; flex-direction: column; gap: 0; }
+  .name-row { width: 100%; height: clamp(80px, 11vw, 145px); }
 
   .pills-wrap {
     display: flex;
@@ -61,7 +53,7 @@ const css = `
   }
 
   .pill {
-    background: #FF7EDF;
+    background: var(--pink);
     border-radius: 999px;
     padding: 11px 0;
     width: 100%;
@@ -77,7 +69,27 @@ const css = `
   }
   .pill:hover { filter: brightness(1.08); transform: scale(1.02); }
 
-  /* ── CENTER — just heading ── */
+  .about-see-more {
+    margin-top: 14px;
+    padding: 9px 24px;
+    border-radius: 100px;
+    border: 1.5px solid var(--pink);
+    background: transparent;
+    color: var(--pink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+    align-self: center;
+  }
+  .about-see-more:hover {
+    background: var(--pink);
+    color: #FDF9F5;
+  }
+
   .about-center {
     display: flex;
     flex-direction: column;
@@ -90,19 +102,17 @@ const css = `
   .about-heading {
     font-family: 'Italianno', cursive;
     font-size: clamp(2.4rem, 3.6vw, 3.4rem);
-    color: #5862E9;
+    color: var(--blue);
     margin: 0;
     line-height: 1;
   }
 
-  /* ── RIGHT ── */
   .about-right {
     position: relative;
     height: 100vh;
     overflow: hidden;
   }
 
-  /* para top-left of right col, beside/above the photos */
   .about-intro {
     position: absolute;
     left: 0;
@@ -111,17 +121,13 @@ const css = `
     font-family: 'DM Sans', sans-serif;
     font-size: 11px;
     line-height: 1.75;
-    color: #555;
+    color: var(--text-sub);
     margin: 0 0 10px 0;
     text-align: left;
     z-index: 4;
+    transition: color 0.4s ease;
   }
-  .about-intro.second {
-    top: auto;
-    bottom: 8%;
-    left: 0;
-    width: 38%;
-  }
+  .about-intro.second { top: auto; bottom: 8%; left: 0; width: 38%; }
 
   .card-green {
     background: transparent !important;
@@ -134,8 +140,7 @@ const css = `
     transition: transform 0.3s;
     overflow: hidden;
     position: absolute;
-    top: 5%;
-    right: 2%;
+    top: 5%; right: 2%;
     z-index: 2;
   }
   .card-green:hover { transform: rotate(4deg) scale(1.02); }
@@ -152,26 +157,15 @@ const css = `
     transition: transform 0.3s;
     overflow: hidden;
     position: absolute;
-    top: 38%;
-    left: 0%;
+    top: 38%; left: 0%;
     z-index: 3;
   }
   .card-red:hover { transform: rotate(-6deg) scale(1.03); }
   .card-red img { width: 100%; display: block; object-fit: cover; aspect-ratio: 3/4; }
 
-  .between-card {
-    position: absolute;
-    top: 42%;
-    right: 2%;
-    z-index: 5;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
   .between-tag {
-    background: #5862E9;
-    color: #FDF9F5;
+    background: var(--blue);
+    color: var(--bg);
     font-family: 'DM Sans', sans-serif;
     font-size: 0.65rem;
     font-weight: 500;
@@ -181,12 +175,14 @@ const css = `
     border-radius: 999px;
     white-space: nowrap;
   }
-  .between-tag.lime { background: #DCFA40; color: #1C1C1C; }
-  .between-tag.pink { background: #FF7EDF; color: #1C1C1C; }
+  .between-tag.lime { background: var(--yellow); color: #1C1C1C; }
+  .between-tag.pink { background: var(--pink); color: #1C1C1C; }
 `;
 
 export default function About() {
   const injected = useRef(false);
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (injected.current) return;
     injected.current = true;
@@ -205,7 +201,7 @@ export default function About() {
   return (
     <section className="about-section">
 
-      {/* LEFT — name + pills */}
+      {/* LEFT — name + pills + see more */}
       <div className="about-left">
         <div className="name-wrap">
           <div className="name-row">
@@ -213,7 +209,7 @@ export default function About() {
               text="VRINDA"
               flex={true} alpha={false} stroke={true}
               scale={true} width={true} weight={true} italic={false}
-              textColor="#5862E9" strokeColor="#5862E9" minFontSize={60}
+              textColor="var(--blue)" strokeColor="var(--blue)" minFontSize={60}
             />
           </div>
           <div className="name-row">
@@ -221,7 +217,7 @@ export default function About() {
               text="DIXIT"
               flex={true} alpha={false} stroke={true}
               scale={true} width={true} weight={true} italic={false}
-              textColor="#5862E9" strokeColor="#5862E9" minFontSize={60}
+              textColor="var(--blue)" strokeColor="var(--blue)" minFontSize={60}
             />
           </div>
         </div>
@@ -231,22 +227,24 @@ export default function About() {
               {text}
             </div>
           ))}
+          <button className="about-see-more" onClick={() => navigate('/skills')}>
+            see more →
+          </button>
         </div>
       </div>
 
-      {/* CENTER — just heading */}
+      {/* CENTER — heading */}
       <div className="about-center">
         <h2 className="about-heading">about me</h2>
       </div>
 
-      {/* RIGHT — photos + paras filling the empty sides */}
+      {/* RIGHT — photos + paras */}
       <div className="about-right">
         <p className="about-intro">
           I'm Vrinda Dixit — a UI/UX Designer and Full Stack Developer who believes great design isn't just seen, it's <em>felt</em>. Based in Delhi, I craft experiences that balance visual personality with purposeful structure.
         </p>
         <div className="card-green"><img src={img1} alt="Vrinda" /></div>
         <div className="card-red"><img src={img2} alt="Vrinda" /></div>
-        
         <p className="about-intro second">
           From pixel-perfect Figma prototypes to production-ready MERN stack builds, I bridge the gap between how things look and how they work — because the best products are both.
         </p>

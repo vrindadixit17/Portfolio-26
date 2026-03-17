@@ -156,7 +156,7 @@ export default function Contact() {
           text-align: center;
         }
         .c-sent-mark { font-size: 2.4rem; color: var(--pink); }
-        .c-sent-title { font-family: 'Italianno', cursive; font-size: 2.8rem; color: #FDF9F5; }
+        .c-sent-title { font-family: 'Italianno', cursive; font-size: 1.6rem; color: #FDF9F5; }
         .c-sent-sub { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(253,249,245,0.55); }
 
         /* ── RIGHT INFO PANEL ── */
@@ -217,7 +217,7 @@ export default function Contact() {
 
         .c-footer-logo {
           font-family: 'Italianno', cursive;
-          font-size: 1.8rem;
+          font-size: 1.6rem;
           color: var(--pink);
           text-decoration: none;
         }

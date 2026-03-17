@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import ProjectPage from "./pages/ProjectPage";
-
+import SkillsPage from "./pages/SkillsPage";
+import WorksPage from "./pages/WorksPage";
+import ContactPage from "./pages/ContactPage";
 
 function App() {
   return (
@@ -10,6 +12,10 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/works/:slug" element={<ProjectPage />} />
         <Route path="/skills" element={<SkillsPage />} />
+        <Route path="/works-projects" element={<WorksPage />} />
+        
+<Route path="/contact" element={<ContactPage />} />
+
       </Routes>
     </BrowserRouter>
   );

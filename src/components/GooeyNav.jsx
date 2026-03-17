@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const GooeyNav = ({
   items,
@@ -9,14 +10,14 @@ const GooeyNav = ({
   timeVariance = 300,
   colors = [1, 2, 3, 1, 2, 3, 1, 4],
   initialActiveIndex = 0,
-  activeIndex: controlledActiveIndex, // ← new controlled prop
+  activeIndex: controlledActiveIndex,
 }) => {
   const containerRef = useRef(null);
   const navRef       = useRef(null);
   const filterRef    = useRef(null);
   const textRef      = useRef(null);
+  const navigate     = useNavigate();
 
-  // Use controlled index if provided, else internal state
   const [internalIndex, setInternalIndex] = useState(initialActiveIndex);
   const activeIndex = controlledActiveIndex !== undefined ? controlledActiveIndex : internalIndex;
 
@@ -84,24 +85,18 @@ const GooeyNav = ({
 
   const handleClick = (e, index) => {
     const liEl = e.currentTarget;
-    // Always update even if same index (allows re-click animation)
     if (controlledActiveIndex === undefined) setInternalIndex(index);
-
     updateEffectPosition(liEl);
-
     filterRef.current?.querySelectorAll('.particle')
       .forEach(p => filterRef.current.removeChild(p));
-
     if (textRef.current) {
       textRef.current.classList.remove('active');
       void textRef.current.offsetWidth;
       textRef.current.classList.add('active');
     }
-
     if (filterRef.current) makeParticles(filterRef.current);
   };
 
-  // Re-position pill whenever activeIndex changes (including from scroll)
   useEffect(() => {
     if (!navRef.current) return;
     const activeLi = navRef.current.querySelectorAll('li')[activeIndex];
@@ -119,7 +114,6 @@ const GooeyNav = ({
     }
   }, [activeIndex]);
 
-  // Reposition on resize
   useEffect(() => {
     if (!containerRef.current) return;
     const ro = new ResizeObserver(() => {
@@ -138,7 +132,13 @@ const GooeyNav = ({
             <li key={index} className={activeIndex === index ? 'active' : ''}>
               <a
                 href={item.href}
-                onClick={e => handleClick(e, index)}
+                onClick={e => {
+                  if (!item.href.startsWith('#')) {
+                    e.preventDefault();
+                    navigate(item.href);
+                  }
+                  handleClick({ currentTarget: e.currentTarget.parentElement }, index);
+                }}
                 onKeyDown={e => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();

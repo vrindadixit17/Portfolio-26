@@ -6,6 +6,7 @@ import w3 from "../assets/works/FeastMonster.png";
 import w4 from "../assets/works/Zine.png";
 import w5 from "../assets/works/WellnessCo.png";
 import noire from "../assets/works2/noire.png";
+import feast_monster from "../assets/works2/feast_monster.jpg";
 
 
 export const works = [
@@ -16,7 +17,7 @@ export const works = [
     tag: "UI/UX Design",
     desc: "Brand identity & mobile app design for a luxury beauty studio. End-to-end design system.",
     img: w1,
-    images: [noire],  // import and add noire images here
+    images: [noire],  
   },
   {
     num: "2",
@@ -34,7 +35,7 @@ export const works = [
     tag: "Branding",
     desc: "Playful food brand identity — logo, packaging, and social media design kit.",
     img: w3,
-    images: [],  // import and add feast monster images here
+    images: [feast_monster],  
   },
   {
     num: "4",

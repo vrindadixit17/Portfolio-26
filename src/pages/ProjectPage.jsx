@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { works } from "../components/Works";
+import Navbar from "../components/Navbar";
 
 export default function ProjectPage() {
   const { slug } = useParams();
@@ -13,7 +14,7 @@ export default function ProjectPage() {
 
   if (!project) {
     return (
-      <div style={{ background: "#FDF9F5", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "sans-serif" }}>
+      <div style={{ background: "var(--bg)", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "sans-serif" }}>
         Project not found. <button onClick={() => navigate(-1)}>Go back</button>
       </div>
     );
@@ -25,12 +26,12 @@ export default function ProjectPage() {
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=DM+Sans:wght@400;500&display=swap');
 
         .pp-wrap {
-          background: #FDF9F5;
+          background: var(--bg);
           min-height: 100vh;
           font-family: 'DM Sans', sans-serif;
+          transition: background 0.4s ease;
         }
 
-        /* ── HERO ── */
         .pp-hero {
           padding: 48px 48px 0;
         }
@@ -43,7 +44,7 @@ export default function ProjectPage() {
           font-weight: 500;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: #999;
+          color: var(--text-muted);
           background: none;
           border: none;
           cursor: pointer;
@@ -51,7 +52,7 @@ export default function ProjectPage() {
           margin-bottom: 36px;
           transition: color 0.2s ease;
         }
-        .pp-back:hover { color: #CC1F3A; }
+        .pp-back:hover { color: var(--red); }
         .pp-back:hover svg { transform: translateX(-3px); }
         .pp-back svg { transition: transform 0.2s ease; }
 
@@ -68,38 +69,32 @@ export default function ProjectPage() {
           font-weight: 500;
           letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: #ED6951;
+          color: var(--orange);
           margin-bottom: 8px;
         }
 
         .pp-title {
           font-family: 'Bebas Neue', sans-serif;
           font-size: clamp(3.5rem, 10vw, 8rem);
-          color: #1C1C1C;
+          color: var(--text);
           line-height: 0.9;
           letter-spacing: 0.02em;
           margin: 0;
+          transition: color 0.4s ease;
         }
 
         .pp-desc {
           max-width: 320px;
           font-size: 0.82rem;
-          color: #666;
+          color: var(--text-sub);
           line-height: 1.7;
           text-align: right;
           padding-bottom: 8px;
         }
 
-        /* ── DIVIDER ── */
-        .pp-divider {
-          height: 1px;
-          background: linear-gradient(90deg, transparent, #e0dbd5 20%, #e0dbd5 80%, transparent);
-          margin: 32px 48px;
-        }
-
         /* ── GALLERY ── */
         .pp-gallery {
-          padding: 0 48px 80px;
+          padding: 48px 48px 80px;
           columns: 2;
           column-gap: 12px;
         }
@@ -109,7 +104,7 @@ export default function ProjectPage() {
           margin-bottom: 12px;
           border-radius: 12px;
           overflow: hidden;
-          background: #1C1C1C;
+          background: var(--bg-card);
           animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both;
         }
         .pp-gallery-item:nth-child(1) { animation-delay: 0s; }
@@ -130,20 +125,19 @@ export default function ProjectPage() {
           object-fit: cover;
         }
 
-        /* empty state */
         .pp-empty {
           column-span: all;
           text-align: center;
           padding: 80px 0;
           font-size: 0.8rem;
-          color: #bbb;
+          color: var(--text-muted);
           letter-spacing: 0.1em;
           text-transform: uppercase;
         }
 
         /* ── FOOTER ── */
         .pp-footer {
-          border-top: 1px solid #e8e3dc;
+          border-top: 1px solid var(--divider);
           padding: 28px 48px;
           display: flex;
           justify-content: space-between;
@@ -153,7 +147,7 @@ export default function ProjectPage() {
         .pp-footer-logo {
           font-family: 'Italianno', cursive;
           font-size: 1.6rem;
-          color: #FF7EDF;
+          color: var(--pink);
           text-decoration: none;
           cursor: pointer;
         }
@@ -162,7 +156,7 @@ export default function ProjectPage() {
           font-family: 'Bebas Neue', sans-serif;
           font-size: 1rem;
           letter-spacing: 0.1em;
-          color: #ddd;
+          color: var(--text-muted);
         }
 
         @keyframes fadeUp {
@@ -172,8 +166,7 @@ export default function ProjectPage() {
 
         @media (max-width: 600px) {
           .pp-hero { padding: 32px 24px 0; }
-          .pp-divider { margin: 24px 24px; }
-          .pp-gallery { padding: 0 24px 60px; columns: 1; }
+          .pp-gallery { padding: 32px 24px 60px; columns: 1; }
           .pp-footer { padding: 24px; }
           .pp-meta { flex-direction: column; align-items: flex-start; }
           .pp-desc { text-align: left; }
@@ -181,6 +174,8 @@ export default function ProjectPage() {
       `}</style>
 
       <div className="pp-wrap">
+        <Navbar rightAlign />
+
         <div className="pp-hero">
           <button className="pp-back" onClick={() => navigate(-1)}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -198,8 +193,6 @@ export default function ProjectPage() {
           </div>
         </div>
 
-        <div className="pp-divider" />
-
         <div className="pp-gallery">
           {project.images && project.images.length > 0 ? (
             project.images.map((src, i) => (
@@ -213,7 +206,7 @@ export default function ProjectPage() {
         </div>
 
         <div className="pp-footer">
-          <span className="pp-footer-logo" onClick={() => navigate("/")}>vrinda</span>
+          <span className="pp-footer-logo" onClick={() => navigate("/home")}>vrinda</span>
           <span className="pp-footer-num">0{project.num} / 05</span>
         </div>
       </div>
