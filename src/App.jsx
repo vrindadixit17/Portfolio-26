@@ -13,8 +13,7 @@ function App() {
         <Route path="/works/:slug" element={<ProjectPage />} />
         <Route path="/skills" element={<SkillsPage />} />
         <Route path="/works-projects" element={<WorksPage />} />
-        
-<Route path="/contact" element={<ContactPage />} />
+        <Route path="/contact" element={<ContactPage />} />
 
       </Routes>
     </BrowserRouter>
