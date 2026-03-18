@@ -4,7 +4,6 @@ import GooeyNav from './GooeyNav';
 
 const NAV_ITEMS = [
   { label: 'HOME',    href: '/home',           sectionId: 'home'    },
-  { label: 'ABOUT',   href: '#about',          sectionId: 'about'   },
   { label: 'SKILLS',  href: '/skills',         sectionId: 'skills'  },
   { label: 'WORKS',   href: '/works-projects', sectionId: 'works'   },
   { label: 'CONTACT', href: '/contact',        sectionId: 'contact' },
@@ -18,14 +17,16 @@ export default function Navbar({ rightAlign = false }) {
 
   
   const getPathIndex = () => {
-  if (location.pathname.startsWith('/skills'))  return 2;
-  if (location.pathname.startsWith('/works'))   return 3;
-  if (location.pathname.startsWith('/contact')) return 4;
-  return -1;
+     if (location.pathname.startsWith('/home'))    return 0;
+  if (location.pathname.startsWith('/skills'))  return 1;
+  if (location.pathname.startsWith('/works'))   return 2;
+  if (location.pathname.startsWith('/contact')) return 3;
+  return 0;
 };
 
-  const pathIndex   = getPathIndex();
-  const displayIndex = pathIndex !== -1 ? pathIndex : activeIndex;
+  const activeNavIndex = getPathIndex() !== 0 || location.pathname.startsWith('/home')
+  ? getPathIndex()
+  : activeIndex;
 
   const toggle = () => {
     setDark(d => {
