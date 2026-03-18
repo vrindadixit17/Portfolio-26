@@ -15,18 +15,18 @@ export default function Navbar({ rightAlign = false }) {
   const [dark, setDark]               = useState(false);
   const location                      = useLocation();
 
-  
   const getPathIndex = () => {
-     if (location.pathname.startsWith('/home'))    return 0;
-  if (location.pathname.startsWith('/skills'))  return 1;
-  if (location.pathname.startsWith('/works'))   return 2;
-  if (location.pathname.startsWith('/contact')) return 3;
-  return 0;
-};
+    if (location.pathname.startsWith('/home'))    return 0;
+    if (location.pathname.startsWith('/skills'))  return 1;
+    if (location.pathname.startsWith('/works'))   return 2;
+    if (location.pathname.startsWith('/contact')) return 3;
+    return -1; // -1 means we're on a page with scroll-spy (e.g. single-page home)
+  };
 
-  const activeNavIndex = getPathIndex() !== 0 || location.pathname.startsWith('/home')
-  ? getPathIndex()
-  : activeIndex;
+  const pathIndex = getPathIndex();
+
+  // ✅ Use path-based index when on a named route, otherwise use scroll-spy index
+  const activeNavIndex = pathIndex !== -1 ? pathIndex : activeIndex;
 
   const toggle = () => {
     setDark(d => {
@@ -54,8 +54,9 @@ export default function Navbar({ rightAlign = false }) {
     return () => obs.disconnect();
   }, []);
 
+  // ✅ Fixed: uses pathIndex (not the deleted pathIndex variable reference)
   useEffect(() => {
-    if (pathIndex !== -1) return; // skip scroll detection on sub-pages
+    if (pathIndex !== -1) return; // skip scroll detection on named route pages
     const observers = [];
     const visible = new Map();
     NAV_ITEMS.forEach(({ sectionId }) => {
@@ -274,8 +275,8 @@ export default function Navbar({ rightAlign = false }) {
           <a className="navbar-logo" href="#home">vrinda</a>
           <GooeyNav
             items={NAV_ITEMS}
-            initialActiveIndex={displayIndex}
-            activeIndex={displayIndex}
+            initialActiveIndex={activeNavIndex}
+            activeIndex={activeNavIndex}
             animationTime={600}
             particleCount={15}
             particleDistances={[90, 10]}
