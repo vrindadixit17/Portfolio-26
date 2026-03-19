@@ -1,12 +1,21 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import img1 from "../assets/about/about1.png";
-import img2 from "../assets/about/about2.png";
 import TextPressure from "../components/TextPressure";
 import CircularText from "../components/CircularText";
 
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+  :root {
+    --orange: #ED6951;
+    --pink:   #FF7EDF;
+    --bg:     #FDF9F5;
+    --blue:   #5862E9;
+    --yellow: #DCFA40;
+    --text:   #1C1C1C;
+    --rose:   #E11D48;
+  }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
@@ -17,20 +26,20 @@ const css = `
     to   { opacity: 1; }
   }
   @keyframes tiltIn1 {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: rotate(3deg) translateY(20px); }
+    to   { opacity: 1; transform: rotate(3deg) translateY(0); }
   }
-  @keyframes tiltIn2 {
-    from { opacity: 0; transform: rotate(-4deg) translateY(20px); }
-    to   { opacity: 1; transform: rotate(-4deg) translateY(0); }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
   }
 
   .about2-section {
-    background: var(--bg, #FDF9F5);
+    background: var(--bg);
     min-height: 100vh;
     padding: 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 0.7fr 1fr;
     box-sizing: border-box;
     overflow: hidden;
     font-family: 'DM Sans', sans-serif;
@@ -40,10 +49,9 @@ const css = `
 
   .about2-star-deco {
     position: absolute;
-    color: var(--pink, #FF7EDF);
     user-select: none;
     pointer-events: none;
-    opacity: 0.5;
+    opacity: 1;
   }
 
   /* ═══════════════════════════════
@@ -53,10 +61,10 @@ const css = `
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 48px 48px 40px 56px;
+    padding: 40px 36px 36px 44px;
     position: relative;
     z-index: 2;
-    border-right: 1px solid rgba(28,28,28,0.08);
+    border-right: 1px solid rgba(28,28,28,0.1);
   }
 
   .about2-top-row {
@@ -66,7 +74,6 @@ const css = `
     animation: fadeIn 0.6s 0.1s both;
   }
 
-  /* Scale down the 200×200 CircularText to 110×110 */
   .about2-circular-wrap {
     width: 110px;
     height: 110px;
@@ -76,7 +83,7 @@ const css = `
   .about2-circular-wrap .circular-text {
     width: 110px !important;
     height: 110px !important;
-    color: var(--blue, #2B2D8E) !important;
+    color: #E11D48 !important;
   }
   .about2-circular-wrap .circular-text span {
     font-size: 10px !important;
@@ -91,7 +98,7 @@ const css = `
     align-items: center;
     justify-content: center;
     font-size: 1.3rem;
-    color: var(--pink, #FF7EDF);
+    color: #ED6951;
     pointer-events: none;
     z-index: 10;
   }
@@ -100,18 +107,18 @@ const css = `
   .about2-intro-label span {
     display: block;
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(28,28,28,0.35);
+    color: #1C1C1C;
     line-height: 1.8;
   }
   .about2-intro-label strong {
     display: block;
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
-    color: var(--blue, #2B2D8E);
+    font-size: 1.4rem;
+    color: var(--blue);
     letter-spacing: 0.06em;
     line-height: 1;
     margin-top: 4px;
@@ -122,59 +129,26 @@ const css = `
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 24px 0;
+    padding: 4px 0 16px 0;
     animation: fadeUp 0.7s 0.2s both;
   }
   .about2-my-name-is {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(28,28,28,0.4);
-    margin-bottom: 4px;
-  }
-  .about2-name-italianno {
     font-family: 'Italianno', cursive;
-    font-size: clamp(3.2rem, 5.5vw, 5rem);
-    color: var(--blue, #2B2D8E);
-    line-height: 0.9;
-    margin: 0 0 6px 0;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: #1C1C1C;
+    margin-bottom: 2px;
   }
-  .about2-name-bebas {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3.5rem, 6vw, 5.5rem);
-    color: var(--pink, #FF7EDF);
-    letter-spacing: 0.04em;
-    line-height: 1;
-    margin: 0;
-  }
-  .about2-role-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 16px;
-    background: var(--blue, #2B2D8E);
-    color: var(--bg, #FDF9F5);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding: 7px 16px;
-    border-radius: 100px;
-    width: fit-content;
-  }
-  .about2-role-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--pink, #FF7EDF);
+  .about2-name-row {
+    width: 100%;
+    height: clamp(70px, 9vw, 120px);
   }
 
   .about2-contact-row {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 9px;
     animation: fadeUp 0.7s 0.4s both;
   }
   .about2-contact-item {
@@ -184,27 +158,27 @@ const css = `
   }
   .about2-contact-key {
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.55rem;
+    font-size: 0.52rem;
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(28,28,28,0.35);
-    min-width: 54px;
+    color: #1C1C1C;
+    min-width: 52px;
   }
   .about2-contact-val {
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 400;
-    color: var(--text, #1C1C1C);
+    color: #1C1C1C;
     text-decoration: none;
     transition: color 0.2s;
   }
-  a.about2-contact-val:hover { color: var(--pink, #FF7EDF); }
+  a.about2-contact-val:hover { color: var(--pink); }
 
   .about2-divider {
     height: 1px;
-    background: rgba(28,28,28,0.1);
-    margin: 6px 0;
+    background: rgba(28,28,28,0.15);
+    margin: 4px 0;
   }
 
   .about2-cta {
@@ -212,14 +186,14 @@ const css = `
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: var(--pink, #FF7EDF);
-    color: #1C1C1C;
+    background: var(--red);
+    color: #FDF9F5;
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    padding: 11px 24px;
+    padding: 10px 22px;
     border-radius: 100px;
     border: none;
     cursor: pointer;
@@ -227,8 +201,8 @@ const css = `
     width: fit-content;
   }
   .about2-cta:hover {
-    background: var(--blue, #2B2D8E);
-    color: #FDF9F5;
+    background: var(--blue);
+    color: var(--bg);
     transform: translateY(-2px);
   }
 
@@ -239,218 +213,329 @@ const css = `
     display: grid;
     grid-template-rows: 1fr 1fr;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .about2-right-top {
     display: flex;
     align-items: stretch;
-    border-bottom: 1px solid rgba(28,28,28,0.08);
+    border-bottom: 1px solid rgba(28,28,28,0.1);
     position: relative;
+    overflow: visible;
   }
 
   .about2-bio-col {
     flex: 1;
-    padding: 48px 32px 32px 40px;
+    padding: 40px 28px 28px 36px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     animation: fadeUp 0.7s 0.3s both;
+    overflow: visible;
   }
 
   .about2-section-eyebrow {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.55rem;
-    font-weight: 600;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(28,28,28,0.3);
-    margin-bottom: 14px;
+    font-family: 'Italianno', cursive;
+    font-size: 1.4rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: #1C1C1C;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
   .about2-section-eyebrow::before {
     content: '';
     display: inline-block;
     width: 20px;
     height: 1px;
-    background: var(--pink, #FF7EDF);
+    background: var(--pink);
+    flex-shrink: 0;
   }
 
   .about2-bio-heading {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(1.6rem, 2.8vw, 2.6rem);
-    color: var(--blue, #2B2D8E);
+    font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+    color: var(--blue);
     letter-spacing: 0.04em;
     line-height: 1;
-    margin: 0 0 14px 0;
+    margin: 0 0 12px 0;
   }
   .about2-bio-text {
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     line-height: 1.8;
-    color: rgba(28,28,28,0.6);
+    color: #1C1C1C;
     margin: 0;
     font-weight: 300;
     font-style: italic;
   }
 
+  /* ══════════════════════════
+     TICKET STUB
+  ══════════════════════════ */
+  .ticket {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 28px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    border-radius: 4px;
+    white-space: nowrap;
+    position: relative;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+    animation: fadeUp 0.6s both;
+    overflow: visible;
+  }
+  .ticket::before,
+  .ticket::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--bg);
+    z-index: 2;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .ticket::before { left: -6px; }
+  .ticket::after  { right: -6px; }
+  .ticket.shape-left::after   { display: none; }
+  .ticket.shape-right::before { display: none; }
+  .ticket.shape-none::before,
+  .ticket.shape-none::after   { display: none; }
+  .ticket.shape-wave { border-radius: 50px 8px 50px 8px; }
+  .ticket.shape-wave::before,
+  .ticket.shape-wave::after { display: none; }
+  .ticket.shape-tag { border-radius: 4px 20px 20px 4px; }
+  .ticket.shape-tag::before { display: none; }
+  .ticket.shape-slash {
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    border-radius: 0;
+    padding: 7px 34px;
+  }
+  .ticket.shape-slash::before,
+  .ticket.shape-slash::after { display: none; }
+
   .about2-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 18px;
+    gap: 8px 22px;
+    margin-top: 12px;
+    padding: 4px 10px;
+    overflow: visible;
   }
-  .about2-tag {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 5px 14px;
-    border-radius: 100px;
-    border: 1.5px solid;
-    transition: background 0.2s, color 0.2s;
+  .about2-tags .ticket {
     cursor: default;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  .about2-tag.blue { border-color: var(--blue, #2B2D8E); color: var(--blue, #2B2D8E); }
-  .about2-tag.blue:hover { background: var(--blue, #2B2D8E); color: #FDF9F5; }
-  .about2-tag.pink { border-color: var(--pink, #FF7EDF); color: var(--pink, #FF7EDF); }
-  .about2-tag.pink:hover { background: var(--pink, #FF7EDF); color: #1C1C1C; }
-  .about2-tag.yellow { border-color: var(--yellow, #DCFA40); color: #1C1C1C; background: var(--yellow, #DCFA40); }
+  .about2-tags .ticket:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+  .about2-tags .ticket:nth-child(1) { transform: rotate(-2deg);   animation-delay: 0.50s; }
+  .about2-tags .ticket:nth-child(2) { transform: rotate(1.5deg);  animation-delay: 0.58s; }
+  .about2-tags .ticket:nth-child(3) { transform: rotate(-1deg);   animation-delay: 0.66s; }
+  .about2-tags .ticket:nth-child(4) { transform: rotate(2deg);    animation-delay: 0.74s; }
+  .about2-tags .ticket:nth-child(5) { transform: rotate(-2.5deg); animation-delay: 0.82s; }
+  .about2-tags .ticket:nth-child(6) { transform: rotate(1deg);    animation-delay: 0.90s; }
+  .about2-tags .ticket:nth-child(7) { transform: rotate(-1.5deg); animation-delay: 0.98s; }
+  .about2-tags .ticket:nth-child(1):hover { transform: rotate(-1deg)   scale(1.04); }
+  .about2-tags .ticket:nth-child(2):hover { transform: rotate(0.5deg)  scale(1.04); }
+  .about2-tags .ticket:nth-child(3):hover { transform: rotate(0deg)    scale(1.04); }
+  .about2-tags .ticket:nth-child(4):hover { transform: rotate(1deg)    scale(1.04); }
+  .about2-tags .ticket:nth-child(5):hover { transform: rotate(-1deg)   scale(1.04); }
+  .about2-tags .ticket:nth-child(6):hover { transform: rotate(0.5deg)  scale(1.04); }
+  .about2-tags .ticket:nth-child(7):hover { transform: rotate(0deg)    scale(1.04); }
 
   .about2-img-col {
-    width: 42%;
+    width: 34%;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 16px 20px 0;
   }
   .about2-img-main {
-    position: absolute;
-    inset: 0;
     width: 100%;
-    height: 100%;
+    height: 85%;
     object-fit: cover;
     object-position: top center;
+    border-radius: 14px;
+    transform: rotate(3deg);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.14);
     animation: tiltIn1 0.8s 0.5s cubic-bezier(.22,1,.36,1) both;
+    transition: transform 0.3s ease;
+    position: relative;
   }
-  .about2-img-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent 60%, rgba(253,249,245,0.15) 100%);
-    pointer-events: none;
-  }
+  .about2-img-main:hover { transform: rotate(1.5deg) scale(1.02); }
 
+  /* bottom half */
   .about2-right-bottom {
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
 
   .about2-avail-col {
-    padding: 32px 32px 32px 40px;
-    border-right: 1px solid rgba(28,28,28,0.08);
+    padding: 28px 28px 28px 36px;
+    border-right: 1px solid rgba(28,28,28,0.1);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     animation: fadeUp 0.7s 0.5s both;
     position: relative;
+    overflow: hidden;
   }
   .about2-avail-heading {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(1.4rem, 2.2vw, 2rem);
-    color: var(--blue, #2B2D8E);
+    font-size: clamp(1.3rem, 2vw, 1.9rem);
+    color: var(--blue);
     letter-spacing: 0.04em;
     line-height: 1;
     margin: 0 0 10px 0;
   }
   .about2-avail-text {
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
+    font-size: 0.73rem;
     font-weight: 300;
     font-style: italic;
     line-height: 1.7;
-    color: rgba(28,28,28,0.55);
-    margin: 0 0 18px 0;
-  }
-  .about2-status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(220,250,64,0.25);
-    border: 1.5px solid var(--yellow, #DCFA40);
-    border-radius: 100px;
-    padding: 6px 14px;
-    width: fit-content;
-  }
-  .about2-status-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: #7abf00;
-  }
-  .about2-status-text {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #4a7a00;
+    color: #1C1C1C;
+    margin: 0 0 12px 0;
   }
 
-  .about2-img2-wrap {
-    position: absolute;
-    bottom: 16px;
-    right: 12px;
-    width: 80px;
-    height: 100px;
-    border-radius: 10px;
+  /* marquee */
+  .about2-marquee-wrap {
     overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-    transform: rotate(-4deg);
-    animation: tiltIn2 0.8s 0.7s cubic-bezier(.22,1,.36,1) both;
-    transition: transform 0.3s;
-    z-index: 5;
+    border-top: 1px solid rgba(28,28,28,0.1);
+    border-bottom: 1px solid rgba(28,28,28,0.1);
+    padding: 9px 0;
   }
-  .about2-img2-wrap:hover { transform: rotate(-2deg) scale(1.04); }
-  .about2-img2-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .about2-marquee {
+    display: flex;
+    animation: marquee 14s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+  .about2-marquee span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    color: #1C1C1C;
+    padding: 0 14px;
+  }
+  .about2-marquee span.accent { color: #ED6951; padding: 0 6px; }
 
-  .about2-quote-col {
-    padding: 32px 40px 32px 32px;
+  /* stats */
+  .about2-stats {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 8px;
+  }
+  .about2-stat-item {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .about2-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--blue);
+    line-height: 1;
+  }
+  .about2-stat-num.pink   { color: var(--pink); }
+  .about2-stat-num.orange { color: var(--orange); }
+  .about2-stat-num.rose   { color: var(--rose); }
+  .about2-stat-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 300;
+    font-style: italic;
+    color: #1C1C1C;
+  }
+
+  /* research paper card */
+  .about2-paper {
+    border: 1.5px solid rgba(28,28,28,0.12);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .about2-paper:hover { border-color: var(--orange); }
+  .about2-paper::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(to bottom, var(--orange), var(--rose));
+  }
+  .about2-paper-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--orange);
+  }
+  .about2-paper-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #1C1C1C;
+    line-height: 1.5;
+  }
+  .about2-paper-date {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--rose);
+  }
+
+  .about2-quote-col {
+    padding: 24px 32px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 14px;
     animation: fadeUp 0.7s 0.6s both;
   }
   .about2-quote {
     font-family: 'Italianno', cursive;
-    font-size: clamp(1.6rem, 2.4vw, 2.2rem);
-    color: var(--blue, #2B2D8E);
+    font-size: clamp(1.4rem, 2vw, 1.8rem);
+    color: #E11D48;
     line-height: 1.2;
-    margin: 0 0 16px 0;
+    margin: 0;
   }
-  .about2-quote em { color: var(--pink, #FF7EDF); font-style: normal; }
+  .about2-quote em { color: #ED6951; font-style: normal; }
 
-  .about2-based { display: flex; flex-direction: column; gap: 4px; }
+  .about2-based { display: flex; flex-direction: column; gap: 2px; }
   .about2-based-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.55rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(28,28,28,0.3);
+    font-family: 'Italianno', cursive;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #1C1C1C;
   }
   .about2-based-val {
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 500;
-    color: var(--text, #1C1C1C);
+    color: #1C1C1C;
   }
 
   .about2-accent-line {
     position: absolute;
     left: 0; bottom: 0;
     width: 100%; height: 3px;
-    background: linear-gradient(to right, var(--pink, #FF7EDF), var(--yellow, #DCFA40), transparent);
+    background: linear-gradient(to right, #FF7EDF, #ED6951, #DCFA40, #5862E9, #E11D48, transparent);
     pointer-events: none;
   }
 `;
@@ -467,27 +552,38 @@ export default function About() {
     document.head.appendChild(style);
   }, []);
 
+  const marqueeItems = [
+    "UI/UX Design", "MERN Stack", "Electronics", "Figma",
+    "React", "Branding", "Node.js", "Antenna Research", "Python", "Full Stack Dev"
+  ];
+
   return (
     <section className="about2-section">
 
-      <span className="about2-star-deco" style={{ top: "18%", left: "47%", fontSize: "0.8rem" }}>✦</span>
-      <span className="about2-star-deco" style={{ top: "72%", left: "49%", fontSize: "0.5rem" }}>✦</span>
-      <span className="about2-star-deco" style={{ bottom: "12%", left: "52%", fontSize: "1rem" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "6%",  left: "44%",  fontSize: "0.7rem", color: "#ED6951" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "14%", left: "68%",  fontSize: "1.1rem", color: "#ED6951" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "28%", left: "52%",  fontSize: "0.5rem", color: "#ED6951" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "38%", left: "88%",  fontSize: "0.9rem", color: "#ED6951" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "52%", left: "47%",  fontSize: "0.6rem", color: "#ED6951" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "61%", left: "74%",  fontSize: "1.2rem", color: "#ED6951" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "72%", left: "58%",  fontSize: "0.5rem", color: "#ED6951" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "82%", left: "34%",  fontSize: "0.8rem", color: "#ED6951" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "90%", left: "80%",  fontSize: "1rem",   color: "#ED6951" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "45%", left: "22%",  fontSize: "0.6rem", color: "#ED6951" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "78%", left: "12%",  fontSize: "0.9rem", color: "#ED6951" }}>✦</span>
 
       {/* ══ LEFT PANEL ══ */}
       <div className="about2-left">
 
         <div className="about2-top-row">
-          {/* Real react-bits CircularText with "VRINDA DIXIT" text */}
           <div className="about2-circular-wrap">
             <CircularText
-              text="VRINDA DIXIT ✦ PORTFOLIO 2025 ✦ "
+              text="VRINDA DIXIT ✦ PORTFOLIO 2026 ✦ "
               spinDuration={18}
               onHover="speedUp"
             />
             <div className="about2-circular-center">✦</div>
           </div>
-
           <div className="about2-intro-label">
             <span>ui/ux designer</span>
             <span>full stack dev</span>
@@ -496,13 +592,24 @@ export default function About() {
         </div>
 
         <div className="about2-name-block">
-          <p className="about2-my-name-is">My name is</p>
-          <h1 className="about2-name-italianno">Vrinda</h1>
-          <h1 className="about2-name-bebas">Dixit</h1>
-          <div className="about2-role-tag">
-            <span className="about2-role-dot" />
-            UI/UX Designer · Full Stack Developer
+          <p className="about2-my-name-is">my name is</p>
+          <div className="about2-name-row">
+            <TextPressure
+              text="vrinda"
+              flex={true} alpha={false} stroke={true}
+              scale={true} width={true} weight={true} italic={false}
+              textColor="var(--blue)" strokeColor="var(--blue)" minFontSize={50}
+            />
           </div>
+          <div className="about2-name-row">
+            <TextPressure
+              text="dixit"
+              flex={true} alpha={false} stroke={true}
+              scale={true} width={true} weight={true} italic={false}
+              textColor="var(--pink)" strokeColor="var(--pink)" minFontSize={50}
+            />
+          </div>
+          
         </div>
 
         <div className="about2-contact-row">
@@ -513,9 +620,10 @@ export default function About() {
               dixitvrinda1704@gmail.com
             </a>
           </div>
+          
           <div className="about2-contact-item">
             <span className="about2-contact-key">Stack</span>
-            <span className="about2-contact-val">React · Node · Figma · MongoDB</span>
+            <span className="about2-contact-val">React · Node · Figma · Python · MongoDB</span>
           </div>
           <div className="about2-contact-item">
             <span className="about2-contact-key">Open to</span>
@@ -535,25 +643,25 @@ export default function About() {
         <div className="about2-right-top">
           <div className="about2-bio-col">
             <div>
-              <p className="about2-section-eyebrow">About me</p>
-              <h2 className="about2-bio-heading">Design that's felt,<br />not just seen.</h2>
+              <p className="about2-section-eyebrow">about me</p>
+              <h2 className="about2-bio-heading">design that's felt,<br />not just seen.</h2>
               <p className="about2-bio-text">
-                I'm a UI/UX Designer and Full Stack Developer who believes great design isn't just seen — it's <em>felt</em>. From pixel-perfect Figma prototypes to production-ready MERN stack builds, I bridge the gap between how things look and how they work.
+                b.tech ece student at msit · ui/ux designer · full stack developer · published researcher. i build pixel-perfect figma prototypes, production-ready mern stack apps, and have published work on antenna engineering for bluetooth applications.
               </p>
             </div>
+
             <div className="about2-tags">
-              <span className="about2-tag blue">UI/UX Design</span>
-              <span className="about2-tag pink">Full Stack</span>
-              <span className="about2-tag blue">Figma</span>
-              <span className="about2-tag yellow">MERN Stack</span>
-              <span className="about2-tag pink">Branding</span>
-              <span className="about2-tag blue">React</span>
+              <span className="ticket shape-both"  style={{ background: '#5862E9', color: '#FDF9F5' }}>UI/UX Design</span>
+              <span className="ticket shape-left"  style={{ background: '#FF7EDF', color: '#1C1C1C' }}>Full Stack</span>
+              <span className="ticket shape-slash" style={{ background: '#DCFA40', color: '#1C1C1C' }}>Figma</span>
+              <span className="ticket shape-right" style={{ background: '#ED6951', color: '#1C1C1C', outline: '1.5px solid #1C1C1C' }}>React</span>
+              <span className="ticket shape-wave"  style={{ background: '#E11D48', color: '#FDF9F5' }}>Branding</span>
+              <span className="ticket shape-both"  style={{ background: '#1C1C1C', color: '#DCFA40' }}>Electronics</span>
             </div>
           </div>
 
           <div className="about2-img-col">
             <img className="about2-img-main" src={img1} alt="Vrinda Dixit" />
-            <div className="about2-img-overlay" />
           </div>
         </div>
 
@@ -561,29 +669,65 @@ export default function About() {
 
           <div className="about2-avail-col">
             <div>
-              <p className="about2-section-eyebrow">Availability</p>
-              <h3 className="about2-avail-heading">Open to<br />Opportunities</h3>
+              <p className="about2-section-eyebrow">availability</p>
+              <h3 className="about2-avail-heading">open to<br />opportunities</h3>
               <p className="about2-avail-text">
-                Currently based in Delhi, India — available for freelance projects and full-time roles worldwide.
+                b.tech ece @ msit · 9.34 cgpa · currently based in delhi — available for freelance, full-time & research collaborations.
               </p>
             </div>
-            <div className="about2-status-pill">
-              <span className="about2-status-dot" />
-              <span className="about2-status-text">Available now</span>
-            </div>
-            <div className="about2-img2-wrap">
-              <img src={img2} alt="Vrinda" />
+
+            <div className="about2-marquee-wrap">
+              <div className="about2-marquee">
+                {[...Array(2)].map((_, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center' }}>
+                    {marqueeItems.map((item, j) => (
+                      <span key={`${i}-${j}`}>
+                        {item === marqueeItems[j] && j > 0
+                          ? <><span className="accent">✦</span>{item}</>
+                          : item
+                        }
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
           <div className="about2-quote-col">
             <p className="about2-quote">
-              "The best products are both beautiful <em>and</em> purposeful."
+              "the best products are both beautiful <em>and</em> purposeful."
             </p>
-            <div className="about2-based">
-              <span className="about2-based-label">Based in</span>
-              <span className="about2-based-val">New Delhi, India</span>
+
+            {/* research paper */}
+            <div className="about2-paper">
+              <span className="about2-paper-label">✦ published research</span>
+              <span className="about2-paper-title">
+                Performance Analysis of a Cotton-Substrate Patch Antenna for Bluetooth Applications Under Bending & On-Body Conditions
+              </span>
+              <span className="about2-paper-date">Nov 2025</span>
             </div>
+
+            {/* stats */}
+            <div className="about2-stats">
+              <div className="about2-stat-item">
+                <span className="about2-stat-num">4+</span>
+                <span className="about2-stat-label">internships completed</span>
+              </div>
+              <div className="about2-stat-item">
+                <span className="about2-stat-num pink">9.34</span>
+                <span className="about2-stat-label">cgpa · b.tech ece</span>
+              </div>
+              <div className="about2-stat-item">
+                <span className="about2-stat-num orange">1</span>
+                <span className="about2-stat-label">published research paper</span>
+              </div>
+              <div className="about2-stat-item">
+                <span className="about2-stat-num rose">∞</span>
+                <span className="about2-stat-label">curiosity & drive</span>
+              </div>
+            </div>
+
           </div>
 
         </div>

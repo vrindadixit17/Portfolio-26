@@ -2,23 +2,83 @@ import flowerImg from "../assets/emojis/flower.png";
 import smileyImg from "../assets/emojis/smiley.png";
 import cupImg from "../assets/emojis/cup.png";
 import heartImg from "../assets/emojis/heart.png";
+import starImg from "../assets/emojis/star.png";
 import Navbar from "../components/Navbar";
+import TextType from "../components/TextType";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 const cards = [
-  { id: "edu",  title: "Education",        icon: flowerImg, bg: "#E8184A", items: ["St. Gregorios school - 94%", "Maharaja Surajmal Institute of Technology - 9.34 CGPA"] },
-  { id: "exp",  title: "Experience",       icon: smileyImg, bg: "#D4A8F0", items: ["Student body head & Coordinator intern at AICTE", "IOT Trainee/Intern at NSIC", "UI/UX Intern at Effred Technologies"] },
-  { id: "soft", title: "Software Skills",  icon: cupImg,    bg: "#CCEE22", items: ["Full Stack: MERN stack (mongoDB, express.js, react, node.js)", "Tools: Figma, Adobe Illustrator, PowerBI, Excel, MySQL", "Languages: C, C++, Java, JavaScript, Python"] },
-  { id: "misc", title: "Misc. Activities", icon: heartImg,  bg: "#E86820", items: ["President of ASTITVA - The Dance Society of MSIT", "Graphic and UI/UX Designer at Google Developers Group on campus", "Debater"] },
+  {
+    id: "edu",
+    title: "Education",
+    icon: flowerImg,
+    bg: "#E8184A",
+    textColor: "#FDF9F5",
+    items: [
+      "St. Gregorios School — Class XII · 92%",
+      "MSIT — B.Tech ECE · 9.34 CGPA",
+    ],
+  },
+  {
+    id: "exp",
+    title: "Experience",
+    icon: smileyImg,
+    bg: "#D4A8F0",
+    textColor: "#1C1C1C",
+    items: [
+      "AICTE — Student Head & Coordinator",
+      "Pledge A Smile Foundation — UI/UX Intern",
+      "OpenLake IIT Bhilai — Design Trainee",
+      "Effred Technologies — UI/UX Developer",
+    ],
+  },
+  {
+    id: "soft",
+    title: "Software Skills",
+    icon: cupImg,
+    bg: "#DCFA40",
+    textColor: "#1C1C1C",
+    items: [
+      "Full Stack: MERN (MongoDB, Express, React, Node)",
+      "Languages: Python, Java, C/C++, SQL",
+      "Tools: Figma, Adobe, PowerBI, Excel, MySQL",
+    ],
+  },
+  {
+    id: "misc",
+    title: "Activities",
+    icon: heartImg,
+    bg: "#ED6951",
+    textColor: "#FDF9F5",
+    items: [
+      "President — Astitva Dance Society, MSIT",
+      "Head — Google Developers Group, MSIT",
+      "Debate Equity Officer — Cerebrate",
+      "CBS Codefest Design Apocalypse — Won",
+    ],
+  },
+  {
+    id: "research",
+    title: "Research",
+    icon: starImg,
+    bg: "#5862E9",
+    textColor: "#FDF9F5",
+    items: [
+      "Published: Cotton-Substrate Patch Antenna for Bluetooth — Nov 2025",
+      "Wearable antenna for body-centric communication",
+      "Stable performance under bending & on-body conditions",
+    ],
+  },
 ];
 
 const baseTransforms = [
-  "rotate(9.78deg)  translateX(-80px)",
-  "rotate(-4.38deg) translateX(-26px)",
-  "rotate(3.88deg)  translateX(26px)",
-  "rotate(-1.38deg) translateX(80px)",
+  "rotate(9.78deg)  translateX(-100px)",
+  "rotate(-4.38deg) translateX(-50px)",
+  "rotate(3.88deg)  translateX(0px)",
+  "rotate(-1.38deg) translateX(50px)",
+  "rotate(5.2deg)   translateX(100px)",
 ];
 
 const getNoRotationTransform = (t) => t.replace(/rotate\([\s\S]*?\)/, "rotate(0deg)");
@@ -32,10 +92,11 @@ const getPushedTransform = (t, offsetX) => {
 };
 
 const toolRows = [
-  { label: "Design",   tools: ["Figma", "Adobe Illustrator", "Adobe Photoshop", "Framer"] },
-  { label: "Frontend", tools: ["React", "HTML/CSS", "JavaScript", "TailwindCSS"] },
-  { label: "Backend",  tools: ["Node.js", "Express.js", "MongoDB", "MySQL"] },
-  { label: "Other",    tools: ["PowerBI", "Excel", "Git", "Python"] },
+  { label: "Design",    tools: ["Figma", "Adobe Illustrator", "Adobe Photoshop", "Framer", "PowerBI"] },
+  { label: "Frontend",  tools: ["React", "HTML/CSS", "JavaScript", "TailwindCSS"] },
+  { label: "Backend",   tools: ["Node.js", "Express.js", "MongoDB", "MySQL"] },
+  { label: "Languages", tools: ["Python", "Java", "C", "C++", "SQL"] },
+  { label: "Other",     tools: ["Git", "Excel", "PowerPoint", "Figma Prototyping"] },
 ];
 
 export default function SkillsPage() {
@@ -91,7 +152,7 @@ export default function SkillsPage() {
           background: var(--bg);
           min-height: 100vh;
           font-family: 'DM Sans', sans-serif;
-          transition: background 0.4s ease;
+          transition: background 0.4s ease, color 0.4s ease;
         }
 
         .sp-hero { padding: 48px 48px 0; }
@@ -116,13 +177,24 @@ export default function SkillsPage() {
           letter-spacing: 0.02em; margin: 0;
           animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
         }
-        .sp-headline span { color: var(--pink); }
+
+        /* TextType inherits headline styles and renders in pink */
+        .sp-headline .sp-typewriter {
+          color: var(--pink);
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: inherit;
+          line-height: inherit;
+          letter-spacing: inherit;
+        }
+        .sp-headline .sp-typewriter .text-type__cursor {
+          color: var(--pink);
+          margin-left: 0.05em;
+        }
 
         .sp-tagline {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.75rem; font-weight: 500;
-          letter-spacing: 0.16em; text-transform: uppercase;
-          color: var(--text-muted); margin-top: 12px;
+          font-family: 'italianno';
+          font-size: 1.5rem; font-weight: 500;
+          color: var(--red); margin-top: 12px;
           animation: fadeUp 0.7s 0.1s cubic-bezier(0.22,1,0.36,1) both;
         }
 
@@ -150,17 +222,20 @@ export default function SkillsPage() {
         }
 
         .skill-card {
-          width: 222px; min-height: 290px; border-radius: 10px;
+          width: 210px; min-height: 290px; border-radius: 10px;
           padding: 60px 20px 26px; position: relative; flex-shrink: 0; cursor: default;
         }
         .skill-card-title {
           font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem;
-          letter-spacing: 1.5px; color: #1C1C1C; text-align: center; margin-bottom: 14px;
+          letter-spacing: 1.5px; text-align: center; margin-bottom: 14px;
         }
-        .skill-card ul { list-style: none; display: flex; flex-direction: column; gap: 9px; padding: 0; margin: 0; }
+        .skill-card ul {
+          list-style: none; display: flex; flex-direction: column;
+          gap: 9px; padding: 0; margin: 0;
+        }
         .skill-card ul li {
-          font-family: 'DM Sans', sans-serif; font-size: 0.76rem; font-weight: 500;
-          color: #1C1C1C; line-height: 1.4; padding-left: 14px; position: relative;
+          font-family: 'DM Sans', sans-serif; font-size: 0.74rem; font-weight: 500;
+          line-height: 1.4; padding-left: 14px; position: relative;
         }
         .skill-card ul li::before { content: "•"; position: absolute; left: 2px; font-size: 0.9rem; }
 
@@ -170,7 +245,9 @@ export default function SkillsPage() {
         .sp-tools-row {
           display: flex; align-items: baseline; gap: 20px;
           margin-bottom: 20px; padding-bottom: 20px;
+          border-bottom: 1px solid var(--divider);
         }
+        .sp-tools-row:last-child { border-bottom: none; }
         .sp-tools-row-label {
           font-size: 0.6rem; font-weight: 600;
           letter-spacing: 0.18em; text-transform: uppercase;
@@ -195,7 +272,9 @@ export default function SkillsPage() {
           font-family: 'Italianno', cursive; font-size: 1.6rem;
           color: var(--pink); cursor: pointer;
         }
-        .sp-footer-copy { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.08em; }
+        .sp-footer-copy {
+          font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.08em;
+        }
 
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(24px); }
@@ -218,28 +297,58 @@ export default function SkillsPage() {
             </svg>
             back
           </button>
-          <h1 className="sp-headline">what i <span>bring</span>.</h1>
+
+          <h1 className="sp-headline">
+            what i{" "}
+            <TextType
+              className="sp-typewriter"
+              texts={["bring.", "know.", "build.", "design."]}
+              typingSpeed={75}
+              deletingSpeed={50}
+              pauseDuration={1500}
+              showCursor
+              cursorCharacter="_"
+              cursorBlinkDuration={0.5}
+            />
+          </h1>
+
           <p className="sp-tagline">skills, tools & everything in between</p>
         </div>
 
         {/* CARDS */}
         <div className="sp-cards-section">
-          <div className="sp-section-header">
-            <h2 className="sp-section-title">Skills</h2>
-            <span className="sp-section-sub">overview</span>
-          </div>
+          
           <div className="skills-cards-row">
             {cards.map((card, idx) => (
               <div
                 key={card.id}
                 className={`skill-card skill-card-${idx}`}
-                style={{ background: card.bg, transform: baseTransforms[idx], marginLeft: idx === 0 ? "0" : "-28px", zIndex: idx }}
+                style={{
+                  background: card.bg,
+                  transform: baseTransforms[idx],
+                  marginLeft: idx === 0 ? "0" : "-28px",
+                  zIndex: idx,
+                }}
                 onMouseEnter={() => pushSiblings(idx)}
                 onMouseLeave={resetAll}
               >
-                <img src={card.icon} alt={card.title} style={{ position: "absolute", top: "-30px", left: "50%", transform: "translateX(-50%)", width: "62px", height: "62px", objectFit: "contain", filter: "drop-shadow(0 3px 6px rgba(0,0,0,0.15))" }} />
-                <div className="skill-card-title">{card.title}</div>
-                <ul>{card.items.map((item, i) => <li key={i}>{item}</li>)}</ul>
+                <img
+                  src={card.icon}
+                  alt={card.title}
+                  style={{
+                    position: "absolute", top: "-30px", left: "50%",
+                    transform: "translateX(-50%)", width: "62px", height: "62px",
+                    objectFit: "contain", filter: "drop-shadow(0 3px 6px rgba(0,0,0,0.15))",
+                  }}
+                />
+                <div className="skill-card-title" style={{ color: card.textColor }}>
+                  {card.title}
+                </div>
+                <ul>
+                  {card.items.map((item, i) => (
+                    <li key={i} style={{ color: card.textColor }}>{item}</li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
@@ -249,7 +358,6 @@ export default function SkillsPage() {
         <div className="sp-tools-section">
           <div className="sp-section-header">
             <h2 className="sp-section-title">Tools</h2>
-            <span className="sp-section-sub">technologies</span>
           </div>
           {toolRows.map((row) => (
             <div className="sp-tools-row" key={row.label}>
@@ -266,7 +374,7 @@ export default function SkillsPage() {
         {/* FOOTER */}
         <div className="sp-footer">
           <span className="sp-footer-logo" onClick={() => navigate('/home')}>vrinda</span>
-          <span className="sp-footer-copy">© 2025 — all rights reserved</span>
+          <span className="sp-footer-copy">© 2026 — all rights reserved</span>
         </div>
       </div>
     </>
