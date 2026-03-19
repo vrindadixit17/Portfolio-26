@@ -68,11 +68,12 @@ const css = `
   }
 
   .about2-top-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    animation: fadeIn 0.6s 0.1s both;
-  }
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  animation: fadeIn 0.6s 0.1s both;
+  margin-bottom: -8px;
+}
 
   .about2-circular-wrap {
     width: 110px;
@@ -125,13 +126,13 @@ const css = `
   }
 
   .about2-name-block {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 4px 0 16px 0;
-    animation: fadeUp 0.7s 0.2s both;
-  }
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 0 8px 0;
+  animation: fadeUp 0.7s 0.2s both;
+}
   .about2-my-name-is {
     font-family: 'Italianno', cursive;
     font-size: 1.5rem;
@@ -141,9 +142,9 @@ const css = `
     margin-bottom: 2px;
   }
   .about2-name-row {
-    width: 100%;
-    height: clamp(70px, 9vw, 120px);
-  }
+  width: 100%;
+  height: clamp(100px, 13vw, 168px);
+}
 
   .about2-contact-row {
     display: flex;

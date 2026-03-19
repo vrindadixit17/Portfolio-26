@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { works } from '../components/Works';
+import Antigravity from '../components/Antigravity';
 import { gsap } from 'gsap';
 
 const GLOW_COLOR = '88, 98, 233';
@@ -75,7 +76,13 @@ const ParticleCard = ({ children, className = '', onClick }) => {
     el.addEventListener('mouseenter', onEnter);
     el.addEventListener('mouseleave', onLeave);
     el.addEventListener('mousemove', onMove);
-    return () => { hoveredRef.current = false; el.removeEventListener('mouseenter', onEnter); el.removeEventListener('mouseleave', onLeave); el.removeEventListener('mousemove', onMove); clear(); };
+    return () => {
+      hoveredRef.current = false;
+      el.removeEventListener('mouseenter', onEnter);
+      el.removeEventListener('mouseleave', onLeave);
+      el.removeEventListener('mousemove', onMove);
+      clear();
+    };
   }, [spawn, clear]);
 
   return (
@@ -119,7 +126,11 @@ const GlobalSpotlight = ({ gridRef }) => {
     const onLeave = () => { spotlight.style.opacity = '0'; };
     document.addEventListener('mousemove', onMove);
     document.addEventListener('mouseleave', onLeave);
-    return () => { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseleave', onLeave); spotlight.parentNode?.removeChild(spotlight); };
+    return () => {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseleave', onLeave);
+      spotlight.parentNode?.removeChild(spotlight);
+    };
   }, [gridRef]);
   return null;
 };
@@ -136,14 +147,32 @@ export default function WorksPage() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=Poppins:wght@800&family=DM+Sans:wght@400;500&display=swap');
 
+        /* ── FULL-PAGE ANTIGRAVITY BACKGROUND ── */
+        .wp-bg {
+          position: fixed;
+          inset: 0;
+          width: 100vw;
+          height: 100vh;
+          z-index: 0;
+          pointer-events: none;
+        }
+        .wp-bg canvas {
+          width: 100% !important;
+          height: 100% !important;
+        }
+
+        /* all page content sits above the canvas */
         .wp-wrap {
-          background: var(--bg);
+          position: relative;
+          z-index: 1;
           min-height: 100vh;
           font-family: 'DM Sans', sans-serif;
           transition: background 0.4s ease;
+          /* semi-transparent bg so particles show through */
+          background: transparent;
         }
 
-        .wp-hero { padding: 48px 48px 0; }
+        .wp-hero { padding: 16px 48px 0; }
 
         .wp-back {
           display: inline-flex; align-items: center; gap: 6px;
@@ -152,7 +181,7 @@ export default function WorksPage() {
           letter-spacing: 0.14em; text-transform: uppercase;
           color: var(--text-muted);
           background: none; border: none; cursor: pointer; padding: 0;
-          margin-bottom: 32px; transition: color 0.2s ease;
+          margin-bottom: 12px; transition: color 0.2s ease;
         }
         .wp-back:hover { color: var(--red); }
         .wp-back:hover svg { transform: translateX(-3px); }
@@ -168,14 +197,12 @@ export default function WorksPage() {
         .wp-headline span { color: var(--pink); }
 
         .wp-tagline {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.75rem; font-weight: 500;
-          letter-spacing: 0.16em; text-transform: uppercase;
+          font-family: 'italianno';
+          font-size: 1.5rem; font-weight: 500;
           color: var(--text-muted); margin-top: 12px;
           animation: fadeUp 0.7s 0.1s cubic-bezier(0.22,1,0.36,1) both;
         }
 
-        /* ── SECTION HEADER (shared) ── */
         .wp-section-header {
           display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px;
         }
@@ -184,12 +211,6 @@ export default function WorksPage() {
           font-size: clamp(2.4rem, 4vw, 3.2rem);
           color: var(--pink); letter-spacing: 2px; margin: 0; line-height: 1;
           transition: color 0.4s ease;
-        }
-        .wp-section-sub {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.72rem; font-weight: 500;
-          letter-spacing: 0.12em; text-transform: uppercase;
-          color: var(--text-muted);
         }
 
         /* ══ WORKS ══ */
@@ -331,11 +352,34 @@ export default function WorksPage() {
         }
       `}</style>
 
+      {/* ── FIXED FULL-PAGE BACKGROUND ── */}
+      <div className="wp-bg">
+        <Antigravity
+          interactive={false}
+          count={300}
+          magnetRadius={6}
+          ringRadius={7}
+          waveSpeed={0.4}
+          waveAmplitude={1}
+          particleSize={1.5}
+          lerpSpeed={0.05}
+          color="#5862E9"
+          autoAnimate
+          particleVariance={1}
+          rotationSpeed={0}
+          depthFactor={1}
+          pulseSpeed={3}
+          particleShape="capsule"
+          fieldStrength={10}
+        />
+      </div>
+
+      {/* ── PAGE CONTENT ── */}
       <div className="wp-wrap">
         <Navbar rightAlign />
 
         {/* HERO */}
-        <div className="wp-hero" >
+        <div className="wp-hero">
           <button className="wp-back" onClick={() => navigate(-1)}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M9 2L4 7L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -350,7 +394,6 @@ export default function WorksPage() {
         <div className="wp-works">
           <div className="wp-section-header">
             <h2 className="wp-section-title">Works</h2>
-            <span className="wp-section-sub">selected projects</span>
           </div>
           <div className="works-cards">
             {works.map((w, i) => (
@@ -381,10 +424,7 @@ export default function WorksPage() {
 
         {/* I BUILD THINGS */}
         <div className="wp-build-head">
-          <div className="wp-section-header" style={{ width: '100%', padding: '0 8px' }}>
-            <h2 className="wp-section-title">Projects</h2>
-            <span className="wp-section-sub">dev & code</span>
-          </div>
+          
           <svg className="wp-build-svg" viewBox="0 0 900 120" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <clipPath id="textClip">

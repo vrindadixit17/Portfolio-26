@@ -1,26 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useEffect } from 'react';
 import * as THREE from 'three';
-
-const antigravityCSS = `
-  .antigravity-container {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .antigravity-container canvas {
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
-  }
-  .antigravity-interactive {
-    pointer-events: auto;
-  }
-`;
 
 const AntigravityInner = ({
   count = 300,
@@ -40,39 +21,37 @@ const AntigravityInner = ({
   fieldStrength = 10,
 }) => {
   const meshRef = useRef(null);
-  const { viewport } = useThree();
+  const { viewport, size } = useThree();
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
-  const lastMousePos = useRef({ x: 0, y: 0 });
+  // We track mouse ourselves via window events so pointer-events:none doesn't matter
+  const rawMouse = useRef({ x: 0, y: 0 });
   const lastMouseMoveTime = useRef(0);
   const virtualMouse = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const onMove = (e) => {
+      // Convert screen coords → normalised -1..1 (same as R3F pointer)
+      rawMouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      rawMouse.current.y = -((e.clientY / window.innerHeight) * 2 - 1);
+      lastMouseMoveTime.current = Date.now();
+    };
+    window.addEventListener('mousemove', onMove);
+    return () => window.removeEventListener('mousemove', onMove);
+  }, []);
 
   const particles = useMemo(() => {
     const temp = [];
     const width = viewport.width || 100;
     const height = viewport.height || 100;
-
     for (let i = 0; i < count; i++) {
       const t = Math.random() * 100;
-      const factor = 20 + Math.random() * 100;
       const speed = 0.01 + Math.random() / 200;
-      const xFactor = -50 + Math.random() * 100;
-      const yFactor = -50 + Math.random() * 100;
-      const zFactor = -50 + Math.random() * 100;
-
       const x = (Math.random() - 0.5) * width;
       const y = (Math.random() - 0.5) * height;
       const z = (Math.random() - 0.5) * 20;
-
       const randomRadiusOffset = (Math.random() - 0.5) * 2;
-
-      temp.push({
-        t, factor, speed, xFactor, yFactor, zFactor,
-        mx: x, my: y, mz: z,
-        cx: x, cy: y, cz: z,
-        vx: 0, vy: 0, vz: 0,
-        randomRadiusOffset,
-      });
+      temp.push({ t, speed, mx: x, my: y, mz: z, cx: x, cy: y, cz: z, randomRadiusOffset });
     }
     return temp;
   }, [count, viewport.width, viewport.height]);
@@ -81,20 +60,11 @@ const AntigravityInner = ({
     const mesh = meshRef.current;
     if (!mesh) return;
 
-    const { viewport: v, pointer: m } = state;
+    const { viewport: v } = state;
 
-    const mouseDist = Math.sqrt(
-      Math.pow(m.x - lastMousePos.current.x, 2) +
-      Math.pow(m.y - lastMousePos.current.y, 2)
-    );
-
-    if (mouseDist > 0.001) {
-      lastMouseMoveTime.current = Date.now();
-      lastMousePos.current = { x: m.x, y: m.y };
-    }
-
-    let destX = (m.x * v.width) / 2;
-    let destY = (m.y * v.height) / 2;
+    // Map normalised mouse → world space (same units as particle positions)
+    let destX = rawMouse.current.x * (v.width / 2);
+    let destY = rawMouse.current.y * (v.height / 2);
 
     if (autoAnimate && Date.now() - lastMouseMoveTime.current > 2000) {
       const time = state.clock.getElapsedTime();
@@ -102,18 +72,15 @@ const AntigravityInner = ({
       destY = Math.cos(time * 0.5 * 2) * (v.height / 4);
     }
 
-    const smoothFactor = 0.05;
-    virtualMouse.current.x += (destX - virtualMouse.current.x) * smoothFactor;
-    virtualMouse.current.y += (destY - virtualMouse.current.y) * smoothFactor;
+    virtualMouse.current.x += (destX - virtualMouse.current.x) * 0.05;
+    virtualMouse.current.y += (destY - virtualMouse.current.y) * 0.05;
 
     const targetX = virtualMouse.current.x;
     const targetY = virtualMouse.current.y;
-
     const globalRotation = state.clock.getElapsedTime() * rotationSpeed;
 
     particles.forEach((particle, i) => {
       let { t, speed, mx, my, mz, cz, randomRadiusOffset } = particle;
-
       t = particle.t += speed / 2;
 
       const projectionFactor = 1 - cz / 50;
@@ -131,7 +98,6 @@ const AntigravityInner = ({
         const wave = Math.sin(t * waveSpeed + angle) * (0.5 * waveAmplitude);
         const deviation = randomRadiusOffset * (5 / (fieldStrength + 0.1));
         const currentRingRadius = ringRadius + wave + deviation;
-
         targetPos.x = projectedTargetX + currentRingRadius * Math.cos(angle);
         targetPos.y = projectedTargetY + currentRingRadius * Math.sin(angle);
         targetPos.z = mz * depthFactor + Math.sin(t) * (1 * waveAmplitude * depthFactor);
@@ -149,15 +115,9 @@ const AntigravityInner = ({
         Math.pow(particle.cx - projectedTargetX, 2) +
         Math.pow(particle.cy - projectedTargetY, 2)
       );
-
       const distFromRing = Math.abs(currentDistToMouse - ringRadius);
-      let scaleFactor = 1 - distFromRing / 10;
-      scaleFactor = Math.max(0, Math.min(1, scaleFactor));
-
-      const finalScale =
-        scaleFactor *
-        (0.8 + Math.sin(t * pulseSpeed) * 0.2 * particleVariance) *
-        particleSize;
+      const scaleFactor = Math.max(0, Math.min(1, 1 - distFromRing / 10));
+      const finalScale = scaleFactor * (0.8 + Math.sin(t * pulseSpeed) * 0.2 * particleVariance) * particleSize;
       dummy.scale.set(finalScale, finalScale, finalScale);
       dummy.updateMatrix();
       mesh.setMatrixAt(i, dummy.matrix);
@@ -179,16 +139,31 @@ const AntigravityInner = ({
 
 let cssInjected = false;
 
-const Antigravity = ({ interactive = false, ...props }) => {
-  if (!cssInjected) {
+const Antigravity = (props) => {
+  useEffect(() => {
+    if (cssInjected) return;
     cssInjected = true;
     const style = document.createElement('style');
-    style.textContent = antigravityCSS;
+    style.textContent = `
+      .antigravity-root {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      .antigravity-root > div,
+      .antigravity-root canvas {
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+      }
+    `;
     document.head.appendChild(style);
-  }
+  }, []);
 
   return (
-    <div className={`antigravity-container${interactive ? ' antigravity-interactive' : ''}`}>
+    <div className="antigravity-root">
       <Canvas camera={{ position: [0, 0, 50], fov: 35 }}>
         <AntigravityInner {...props} />
       </Canvas>

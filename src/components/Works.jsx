@@ -7,6 +7,7 @@ import w4 from "../assets/works/Zine.png";
 import w5 from "../assets/works/WellnessCo.png";
 import noire from "../assets/works2/noire.png";
 import feast_monster from "../assets/works2/feast_monster.jpg";
+import WellnessCo from "../assets/works2/WellnessCo.png";
 
 
 export const works = [
@@ -53,7 +54,7 @@ export const works = [
     tag: "App Design",
     desc: "Health & wellness mobile experience. Clean UI with habit tracking and journaling.",
     img: w5,
-    images: [],  // import and add wellness images here
+    images: [WellnessCo],  // import and add wellness images here
   },
 ];
 

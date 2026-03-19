@@ -8,6 +8,7 @@ import TextType from "../components/TextType";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import Antigravity from "../components/Antigravity";
 
 const cards = [
   {
@@ -91,13 +92,6 @@ const getPushedTransform = (t, offsetX) => {
   return `${t} translateX(${offsetX}px)`;
 };
 
-const toolRows = [
-  { label: "Design",    tools: ["Figma", "Adobe Illustrator", "Adobe Photoshop", "Framer", "PowerBI"] },
-  { label: "Frontend",  tools: ["React", "HTML/CSS", "JavaScript", "TailwindCSS"] },
-  { label: "Backend",   tools: ["Node.js", "Express.js", "MongoDB", "MySQL"] },
-  { label: "Languages", tools: ["Python", "Java", "C", "C++", "SQL"] },
-  { label: "Other",     tools: ["Git", "Excel", "PowerPoint", "Figma Prototyping"] },
-];
 
 export default function SkillsPage() {
   const navigate = useNavigate();
@@ -144,18 +138,45 @@ export default function SkillsPage() {
   };
 
   return (
+    
     <>
+    {/* ── FIXED FULL-PAGE BACKGROUND ── */}
+<div style={{
+  position: 'fixed', inset: 0,
+  width: '100vw', height: '100vh',
+  zIndex: 0, pointerEvents: 'none'
+}}>
+  <Antigravity
+    count={300}
+    magnetRadius={6}
+    ringRadius={7}
+    waveSpeed={0.4}
+    waveAmplitude={1}
+    particleSize={1.5}
+    lerpSpeed={0.05}
+    color="#5862E9"
+    autoAnimate
+    particleVariance={1}
+    rotationSpeed={0}
+    depthFactor={1}
+    pulseSpeed={3}
+    particleShape="capsule"
+    fieldStrength={10}
+  />
+</div>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=DM+Sans:wght@400;500;600&display=swap');
 
         .sp-wrap {
-          background: var(--bg);
-          min-height: 100vh;
-          font-family: 'DM Sans', sans-serif;
-          transition: background 0.4s ease, color 0.4s ease;
-        }
+  background: transparent;
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.4s ease, color 0.4s ease;
+  position: relative;
+  z-index: 1;
+}
 
-        .sp-hero { padding: 48px 48px 0; }
+        .sp-hero { padding: 16px 48px 0; }
 
         .sp-back {
           display: inline-flex; align-items: center; gap: 6px;
@@ -164,7 +185,7 @@ export default function SkillsPage() {
           letter-spacing: 0.14em; text-transform: uppercase;
           color: var(--text-muted);
           background: none; border: none; cursor: pointer; padding: 0;
-          margin-bottom: 32px; transition: color 0.2s ease;
+          margin-bottom: 12px; transition: color 0.2s ease;
         }
         .sp-back:hover { color: var(--red); }
         .sp-back:hover svg { transform: translateX(-3px); }
@@ -194,12 +215,12 @@ export default function SkillsPage() {
         .sp-tagline {
           font-family: 'italianno';
           font-size: 1.5rem; font-weight: 500;
-          color: var(--red); margin-top: 12px;
+          color: var(--text-muted); margin-top: 12px;
           animation: fadeUp 0.7s 0.1s cubic-bezier(0.22,1,0.36,1) both;
         }
 
         /* ── CARDS ── */
-        .sp-cards-section { padding: 48px 48px 0; }
+        .sp-cards-section { padding: 16px 48px 0; }
 
         .sp-section-header {
           display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px;
@@ -239,42 +260,18 @@ export default function SkillsPage() {
         }
         .skill-card ul li::before { content: "•"; position: absolute; left: 2px; font-size: 0.9rem; }
 
-        /* ── TOOLS ── */
-        .sp-tools-section { padding: 48px 48px 80px; }
-
-        .sp-tools-row {
-          display: flex; align-items: baseline; gap: 20px;
-          margin-bottom: 20px; padding-bottom: 20px;
-          border-bottom: 1px solid var(--divider);
-        }
-        .sp-tools-row:last-child { border-bottom: none; }
-        .sp-tools-row-label {
-          font-size: 0.6rem; font-weight: 600;
-          letter-spacing: 0.18em; text-transform: uppercase;
-          color: var(--text-muted); width: 72px; flex-shrink: 0;
-        }
-        .sp-tools-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-        .sp-tool-tag {
-          background: transparent; border: 1.5px solid var(--divider);
-          border-radius: 100px; padding: 6px 16px;
-          font-size: 0.75rem; font-weight: 500; color: var(--text);
-          transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
-          cursor: default;
-        }
-        .sp-tool-tag:hover { border-color: var(--pink); color: var(--pink); background: rgba(255,126,223,0.06); }
-
         /* ── FOOTER ── */
         .sp-footer {
           border-top: 1px solid var(--divider); padding: 24px 48px;
-          display: flex; justify-content: space-between; align-items: center;
+          display: flex; justify-content: space-between; align-items: center; 
         }
         .sp-footer-logo {
           font-family: 'Italianno', cursive; font-size: 1.6rem;
-          color: var(--pink); cursor: pointer;
+          color: var(--blue); cursor: pointer;
         }
         .sp-footer-copy {
-          font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.08em;
-        }
+  font-size: 0.65rem; color: var(--blue);  letter-spacing: 0.08em;
+}
 
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(24px); }
@@ -352,23 +349,6 @@ export default function SkillsPage() {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* TOOLS */}
-        <div className="sp-tools-section">
-          <div className="sp-section-header">
-            <h2 className="sp-section-title">Tools</h2>
-          </div>
-          {toolRows.map((row) => (
-            <div className="sp-tools-row" key={row.label}>
-              <span className="sp-tools-row-label">{row.label}</span>
-              <div className="sp-tools-tags">
-                {row.tools.map((tool) => (
-                  <span className="sp-tool-tag" key={tool}>{tool}</span>
-                ))}
-              </div>
-            </div>
-          ))}
         </div>
 
         {/* FOOTER */}
