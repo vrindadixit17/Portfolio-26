@@ -221,7 +221,7 @@ export default function SkillsPage() {
         }
 
         /* ── CARDS ── */
-        .sp-cards-section { padding: 16px 48px 0; overflow: hidden; }
+        .sp-cards-section { padding: 16px 0 0; overflow: hidden; }
         .sp-section-header {
           display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px;
         }
