@@ -4,6 +4,8 @@ import ProjectPage from "./pages/ProjectPage";
 import SkillsPage from "./pages/SkillsPage";
 import WorksPage from "./pages/WorksPage";
 import ContactPage from "./pages/ContactPage";
+import { Navigate } from "react-router-dom";
+
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
         <Route path="/skills" element={<SkillsPage />} />
         <Route path="/works-projects" element={<WorksPage />} />
         <Route path="/contact" element={<ContactPage />} />
+<Route path="/" element={<Navigate to="/home" replace />} />
 
       </Routes>
     </BrowserRouter>
