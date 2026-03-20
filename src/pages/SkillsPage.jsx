@@ -174,6 +174,7 @@ export default function SkillsPage() {
   transition: background 0.4s ease, color 0.4s ease;
   position: relative;
   z-index: 1;
+  overflow-x: hidden;
 }
 
         .sp-hero { padding: 16px 48px 0; }
@@ -220,8 +221,7 @@ export default function SkillsPage() {
         }
 
         /* ── CARDS ── */
-        .sp-cards-section { padding: 16px 48px 0; }
-
+        .sp-cards-section { padding: 16px 48px 0; overflow: hidden; }
         .sp-section-header {
           display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px;
         }
@@ -238,9 +238,10 @@ export default function SkillsPage() {
         }
 
         .skills-cards-row {
-          display: flex; align-items: center; justify-content: center;
-          position: relative; padding-top: 50px; padding-bottom: 40px; width: 100%;
-        }
+  display: flex; align-items: center; justify-content: center;
+  position: relative; padding-top: 50px; padding-bottom: 40px; width: 100%;
+  overflow: hidden;
+}
 
         .skill-card {
           width: 210px; min-height: 290px; border-radius: 10px;
