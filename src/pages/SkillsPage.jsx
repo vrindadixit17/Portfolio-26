@@ -324,7 +324,7 @@ export default function SkillsPage() {
                 style={{
                   background: card.bg,
                   transform: baseTransforms[idx],
-                  marginLeft: idx === 0 ? "0" : "-28px",
+                  marginLeft: idx === 0 ? "0" : "-60px",
                   zIndex: idx,
                 }}
                 onMouseEnter={() => pushSiblings(idx)}
