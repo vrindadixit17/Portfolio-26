@@ -274,16 +274,17 @@ export default function Navbar({ rightAlign = false }) {
         <div className="navbar-center">
           <a className="navbar-logo" href="#home">vrinda</a>
           <GooeyNav
-            items={NAV_ITEMS}
-            initialActiveIndex={activeNavIndex}
-            activeIndex={activeNavIndex}
-            animationTime={600}
-            particleCount={15}
-            particleDistances={[90, 10]}
-            particleR={100}
-            timeVariance={300}
-            colors={[1, 2, 3, 1, 2, 3, 1, 4]}
-          />
+  key={activeNavIndex}
+  items={NAV_ITEMS}
+  initialActiveIndex={activeNavIndex}
+  activeIndex={activeNavIndex}
+  animationTime={600}
+  particleCount={15}
+  particleDistances={[90, 10]}
+  particleR={100}
+  timeVariance={300}
+  colors={[1, 2, 3, 1, 2, 3, 1, 4]}
+/>
           <div className="navbar-portfolio-wrap">
             <a className="navbar-portfolio" href="#portfolio">portfolio</a>
           </div>
