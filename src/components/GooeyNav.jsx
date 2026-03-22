@@ -99,27 +99,28 @@ const GooeyNav = ({
 
   // ✅ FIX: Delay updateEffectPosition so DOM has painted after route change
   useEffect(() => {
-    if (!navRef.current) return;
+  if (!navRef.current) return;
 
-    const timer = setTimeout(() => {
-      const activeLi = navRef.current?.querySelectorAll('li')[activeIndex];
-      if (!activeLi) return;
-      updateEffectPosition(activeLi);
-      if (textRef.current) {
-        textRef.current.classList.remove('active');
-        void textRef.current.offsetWidth;
-        textRef.current.classList.add('active');
-      }
-      if (filterRef.current) {
-        filterRef.current.classList.remove('active');
-        void filterRef.current.offsetWidth;
-        filterRef.current.classList.add('active');
-      }
-    }, 50);
+  const timer = setTimeout(() => {
+    const activeLi = navRef.current?.querySelectorAll('li')[activeIndex];
+    if (!activeLi) return;
+    updateEffectPosition(activeLi);
+    if (textRef.current) {
+      textRef.current.classList.remove('active');
+      void textRef.current.offsetWidth;
+      textRef.current.classList.add('active');
+    }
+    if (filterRef.current) {
+      filterRef.current.classList.remove('active');
+      void filterRef.current.offsetWidth;
+      filterRef.current.classList.add('active');
+      // force the ::after pill to animate in
+      makeParticles(filterRef.current);
+    }
+  }, 100);
 
-    return () => clearTimeout(timer);
-  }, [activeIndex]);
-
+  return () => clearTimeout(timer);
+}, [activeIndex]);
   useEffect(() => {
     if (!containerRef.current) return;
     const ro = new ResizeObserver(() => {
