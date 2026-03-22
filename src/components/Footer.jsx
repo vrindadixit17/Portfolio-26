@@ -309,16 +309,14 @@ export default function Footer() {
           <div>
             <span className="footer-col-label">Find me</span>
             <div className="footer-socials">
-              <a className="footer-social-link" href="#" target="_blank" rel="noreferrer">
-                <span className="footer-social-arrow">↗</span> Instagram
-              </a>
-              <a className="footer-social-link" href="#" target="_blank" rel="noreferrer">
+              
+              <a className="footer-social-link" href="https://www.linkedin.com/in/vrinda-dixit-30a591307/" target="_blank" rel="noreferrer">
                 <span className="footer-social-arrow">↗</span> LinkedIn
               </a>
-              <a className="footer-social-link" href="#" target="_blank" rel="noreferrer">
+              <a className="footer-social-link" href="https://www.behance.net/vrindadixit" target="_blank" rel="noreferrer">
                 <span className="footer-social-arrow">↗</span> Behance
               </a>
-              <a className="footer-social-link" href="#" target="_blank" rel="noreferrer">
+              <a className="footer-social-link" href="https://github.com/vrindadixit17" target="_blank" rel="noreferrer">
                 <span className="footer-social-arrow">↗</span> GitHub
               </a>
             </div>
