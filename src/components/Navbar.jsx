@@ -37,9 +37,9 @@ export default function Navbar({ rightAlign = false }) {
   };
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', 'light');
-    const hero = document.querySelector('#home')
-               || document.querySelector('#hero');
+    const saved = localStorage.getItem('theme') || 'light';
+  setDark(saved === 'dark');
+  document.documentElement.setAttribute('data-theme', saved);
 
     if (!hero) {
       setScrolled(true);
