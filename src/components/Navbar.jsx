@@ -25,16 +25,17 @@ export default function Navbar({ rightAlign = false }) {
 
   const pathIndex = getPathIndex();
 
-  // ✅ Use path-based index when on a named route, otherwise use scroll-spy index
   const activeNavIndex = pathIndex !== -1 ? pathIndex : activeIndex;
 
   const toggle = () => {
-    setDark(d => {
-      const next = !d;
-      document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
-      return next;
-    });
-  };
+  setDark(d => {
+    const next = !d;
+    const theme = next ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    return next;
+  });
+};
 
   useEffect(() => {
     const saved = localStorage.getItem('theme') || 'light';
