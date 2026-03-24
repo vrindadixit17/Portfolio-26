@@ -7,16 +7,6 @@ import CircularText from "../components/CircularText";
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
 
-  :root {
-    --orange: #ED6951;
-    --pink:   #FF7EDF;
-    --bg:     #FDF9F5;
-    --blue:   #5862E9;
-    --yellow: #DCFA40;
-    --text:   #1C1C1C;
-    --rose:   #E11D48;
-  }
-
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -64,16 +54,16 @@ const css = `
     padding: 40px 36px 36px 44px;
     position: relative;
     z-index: 2;
-    border-right: 1px solid rgba(28,28,28,0.1);
+    border-right: 1px solid var(--divider);
   }
 
   .about2-top-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  animation: fadeIn 0.6s 0.1s both;
-  margin-bottom: -8px;
-}
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    animation: fadeIn 0.6s 0.1s both;
+    margin-bottom: -8px;
+  }
 
   .about2-circular-wrap {
     width: 110px;
@@ -112,7 +102,7 @@ const css = `
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #1C1C1C;
+    color: var(--text);
     line-height: 1.8;
   }
   .about2-intro-label strong {
@@ -126,25 +116,25 @@ const css = `
   }
 
   .about2-name-block {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 0 0 8px 0;
-  animation: fadeUp 0.7s 0.2s both;
-}
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 0 8px 0;
+    animation: fadeUp 0.7s 0.2s both;
+  }
   .about2-my-name-is {
     font-family: 'Italianno', cursive;
     font-size: 1.5rem;
     font-weight: 400;
     letter-spacing: 0.02em;
-    color: #1C1C1C;
+    color: var(--text);
     margin-bottom: 2px;
   }
   .about2-name-row {
-  width: 100%;
-  height: clamp(100px, 13vw, 168px);
-}
+    width: 100%;
+    height: clamp(100px, 13vw, 168px);
+  }
 
   .about2-contact-row {
     display: flex;
@@ -163,14 +153,14 @@ const css = `
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #1C1C1C;
+    color: var(--text);
     min-width: 52px;
   }
   .about2-contact-val {
     font-family: 'DM Sans', sans-serif;
     font-size: 0.78rem;
     font-weight: 400;
-    color: #1C1C1C;
+    color: var(--text);
     text-decoration: none;
     transition: color 0.2s;
   }
@@ -178,7 +168,7 @@ const css = `
 
   .about2-divider {
     height: 1px;
-    background: rgba(28,28,28,0.15);
+    background: var(--divider);
     margin: 4px 0;
   }
 
@@ -187,7 +177,7 @@ const css = `
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: var(--red);
+    background: var(--rose);
     color: #FDF9F5;
     font-family: 'DM Sans', sans-serif;
     font-size: 0.68rem;
@@ -220,7 +210,7 @@ const css = `
   .about2-right-top {
     display: flex;
     align-items: stretch;
-    border-bottom: 1px solid rgba(28,28,28,0.1);
+    border-bottom: 1px solid var(--divider);
     position: relative;
     overflow: visible;
   }
@@ -240,7 +230,7 @@ const css = `
     font-size: 1.4rem;
     font-weight: 400;
     letter-spacing: 0.02em;
-    color: #1C1C1C;
+    color: var(--text);
     margin-bottom: 10px;
     display: flex;
     align-items: center;
@@ -267,7 +257,7 @@ const css = `
     font-family: 'DM Sans', sans-serif;
     font-size: 0.78rem;
     line-height: 1.8;
-    color: #1C1C1C;
+    color: var(--text);
     margin: 0;
     font-weight: 300;
     font-style: italic;
@@ -383,7 +373,7 @@ const css = `
 
   .about2-avail-col {
     padding: 28px 28px 28px 36px;
-    border-right: 1px solid rgba(28,28,28,0.1);
+    border-right: 1px solid var(--divider);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -405,15 +395,15 @@ const css = `
     font-weight: 300;
     font-style: italic;
     line-height: 1.7;
-    color: #1C1C1C;
+    color: var(--text);
     margin: 0 0 12px 0;
   }
 
   /* marquee */
   .about2-marquee-wrap {
     overflow: hidden;
-    border-top: 1px solid rgba(28,28,28,0.1);
-    border-bottom: 1px solid rgba(28,28,28,0.1);
+    border-top: 1px solid var(--divider);
+    border-bottom: 1px solid var(--divider);
     padding: 9px 0;
   }
   .about2-marquee {
@@ -426,7 +416,7 @@ const css = `
     font-family: 'Bebas Neue', sans-serif;
     font-size: 0.82rem;
     letter-spacing: 0.14em;
-    color: #1C1C1C;
+    color: var(--text);
     padding: 0 14px;
   }
   .about2-marquee span.accent { color: #ED6951; padding: 0 6px; }
@@ -456,12 +446,12 @@ const css = `
     font-size: 0.7rem;
     font-weight: 300;
     font-style: italic;
-    color: #1C1C1C;
+    color: var(--text);
   }
 
   /* research paper card */
   .about2-paper {
-    border: 1.5px solid rgba(28,28,28,0.12);
+    border: 1.5px solid var(--divider);
     border-radius: 10px;
     padding: 12px 14px;
     display: flex;
@@ -491,7 +481,7 @@ const css = `
     font-family: 'DM Sans', sans-serif;
     font-size: 0.7rem;
     font-weight: 500;
-    color: #1C1C1C;
+    color: var(--text);
     line-height: 1.5;
   }
   .about2-paper-date {
@@ -523,13 +513,13 @@ const css = `
     font-family: 'Italianno', cursive;
     font-size: 1.3rem;
     font-weight: 400;
-    color: #1C1C1C;
+    color: var(--text);
   }
   .about2-based-val {
     font-family: 'DM Sans', sans-serif;
     font-size: 0.8rem;
     font-weight: 500;
-    color: #1C1C1C;
+    color: var(--text);
   }
 
   .about2-accent-line {
@@ -610,7 +600,6 @@ export default function About() {
               textColor="var(--pink)" strokeColor="var(--pink)" minFontSize={50}
             />
           </div>
-          
         </div>
 
         <div className="about2-contact-row">
@@ -621,7 +610,6 @@ export default function About() {
               dixitvrinda1704@gmail.com
             </a>
           </div>
-          
           <div className="about2-contact-item">
             <span className="about2-contact-key">Stack</span>
             <span className="about2-contact-val">React · Node · Figma · Python · MongoDB</span>
@@ -655,7 +643,7 @@ export default function About() {
               <span className="ticket shape-both"  style={{ background: '#5862E9', color: '#FDF9F5' }}>UI/UX Design</span>
               <span className="ticket shape-left"  style={{ background: '#FF7EDF', color: '#1C1C1C' }}>Full Stack</span>
               <span className="ticket shape-slash" style={{ background: '#DCFA40', color: '#1C1C1C' }}>Figma</span>
-              <span className="ticket shape-right" style={{ background: '#ED6951', color: '#1C1C1C', outline: '1.5px solid #1C1C1C' }}>React</span>
+              <span className="ticket shape-right" style={{ background: '#ED6951', color: '#FDF9F5' }}>React</span>
               <span className="ticket shape-wave"  style={{ background: '#E11D48', color: '#FDF9F5' }}>Branding</span>
               <span className="ticket shape-both"  style={{ background: '#1C1C1C', color: '#DCFA40' }}>Electronics</span>
             </div>
@@ -700,7 +688,6 @@ export default function About() {
               "the best products are both beautiful <em>and</em> purposeful."
             </p>
 
-            {/* research paper */}
             <div className="about2-paper">
               <span className="about2-paper-label">✦ published research</span>
               <span className="about2-paper-title">
@@ -709,7 +696,6 @@ export default function About() {
               <span className="about2-paper-date">Nov 2025</span>
             </div>
 
-            {/* stats */}
             <div className="about2-stats">
               <div className="about2-stat-item">
                 <span className="about2-stat-num">4+</span>
