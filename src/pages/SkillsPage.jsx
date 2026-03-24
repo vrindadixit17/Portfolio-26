@@ -92,21 +92,17 @@ const getPushedTransform = (t, offsetX) => {
   return `${t} translateX(${offsetX}px)`;
 };
 
-
 export default function SkillsPage() {
   const navigate = useNavigate();
   const containerRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
-    document.documentElement.getAttribute('data-theme') ||
-      document.documentElement.setAttribute('data-theme', 'light');
   }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(".skill-card", { scale: 0 }, { scale: 1, stagger: 0.06, ease: "elastic.out(1, 0.8)", delay: 0.3 });
-      gsap.fromTo(".sp-tool-tag", { opacity: 0, y: 12 }, { opacity: 1, y: 0, stagger: 0.04, ease: "power2.out", delay: 0.6 });
     }, containerRef);
     return () => ctx.revert();
   }, []);
@@ -138,44 +134,44 @@ export default function SkillsPage() {
   };
 
   return (
-    
     <>
-    {/* ── FIXED FULL-PAGE BACKGROUND ── */}
-<div style={{
-  position: 'fixed', inset: 0,
-  width: '100vw', height: '100vh',
-  zIndex: 0, pointerEvents: 'none'
-}}>
-  <Antigravity
-    count={300}
-    magnetRadius={6}
-    ringRadius={7}
-    waveSpeed={0.4}
-    waveAmplitude={1}
-    particleSize={1.5}
-    lerpSpeed={0.05}
-    color="#5862E9"
-    autoAnimate
-    particleVariance={1}
-    rotationSpeed={0}
-    depthFactor={1}
-    pulseSpeed={3}
-    particleShape="capsule"
-    fieldStrength={10}
-  />
-</div>
+      {/* ── FIXED FULL-PAGE BACKGROUND ── */}
+      <div style={{
+        position: 'fixed', inset: 0,
+        width: '100vw', height: '100vh',
+        zIndex: 0, pointerEvents: 'none'
+      }}>
+        <Antigravity
+          count={300}
+          magnetRadius={6}
+          ringRadius={7}
+          waveSpeed={0.4}
+          waveAmplitude={1}
+          particleSize={1.5}
+          lerpSpeed={0.05}
+          color="#5862E9"
+          autoAnimate
+          particleVariance={1}
+          rotationSpeed={0}
+          depthFactor={1}
+          pulseSpeed={3}
+          particleShape="capsule"
+          fieldStrength={10}
+        />
+      </div>
+
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=DM+Sans:wght@400;500;600&display=swap');
 
         .sp-wrap {
-  background: transparent;
-  min-height: 100vh;
-  font-family: 'DM Sans', sans-serif;
-  transition: background 0.4s ease, color 0.4s ease;
-  position: relative;
-  z-index: 1;
-  overflow-x: hidden;
-}
+          background: transparent;
+          min-height: 100vh;
+          font-family: 'DM Sans', sans-serif;
+          transition: color 0.4s ease;
+          position: relative;
+          z-index: 1;
+          overflow-x: hidden;
+        }
 
         .sp-hero { padding: 16px 48px 0; }
 
@@ -200,7 +196,6 @@ export default function SkillsPage() {
           animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
         }
 
-        /* TextType inherits headline styles and renders in pink */
         .sp-headline .sp-typewriter {
           color: var(--pink);
           font-family: 'Bebas Neue', sans-serif;
@@ -214,34 +209,19 @@ export default function SkillsPage() {
         }
 
         .sp-tagline {
-          font-family: 'italianno';
-          font-size: 1.5rem; font-weight: 500;
+          font-family: 'Italianno', cursive;
+          font-size: 1.5rem;
           color: var(--text-muted); margin-top: 12px;
           animation: fadeUp 0.7s 0.1s cubic-bezier(0.22,1,0.36,1) both;
         }
 
-        /* ── CARDS ── */
         .sp-cards-section { padding: 16px 0 0; overflow: hidden; }
-        .sp-section-header {
-          display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px;
-        }
-        .sp-section-title {
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(2.4rem, 4vw, 3.2rem);
-          color: var(--pink); letter-spacing: 2px; margin: 0; line-height: 1;
-        }
-        .sp-section-sub {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.72rem; font-weight: 500;
-          letter-spacing: 0.12em; text-transform: uppercase;
-          color: var(--text-muted);
-        }
 
         .skills-cards-row {
-  display: flex; align-items: center; justify-content: center;
-  position: relative; padding-top: 50px; padding-bottom: 40px; width: 100%;
-  overflow: hidden;
-}
+          display: flex; align-items: center; justify-content: center;
+          position: relative; padding-top: 50px; padding-bottom: 40px; width: 100%;
+          overflow: hidden;
+        }
 
         .skill-card {
           width: 210px; min-height: 290px; border-radius: 10px;
@@ -261,18 +241,17 @@ export default function SkillsPage() {
         }
         .skill-card ul li::before { content: "•"; position: absolute; left: 2px; font-size: 0.9rem; }
 
-        /* ── FOOTER ── */
         .sp-footer {
           border-top: 1px solid var(--divider); padding: 24px 48px;
-          display: flex; justify-content: space-between; align-items: center; 
+          display: flex; justify-content: space-between; align-items: center;
         }
         .sp-footer-logo {
           font-family: 'Italianno', cursive; font-size: 1.6rem;
           color: var(--blue); cursor: pointer;
         }
         .sp-footer-copy {
-  font-size: 0.65rem; color: var(--blue);  letter-spacing: 0.08em;
-}
+          font-size: 0.65rem; color: var(--blue); letter-spacing: 0.08em;
+        }
 
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(24px); }
@@ -280,8 +259,7 @@ export default function SkillsPage() {
         }
 
         @media (max-width: 600px) {
-          .sp-hero, .sp-cards-section, .sp-tools-section, .sp-footer { padding-left: 24px; padding-right: 24px; }
-          .sp-tools-row { flex-direction: column; gap: 10px; }
+          .sp-hero, .sp-footer { padding-left: 24px; padding-right: 24px; }
         }
       `}</style>
 
@@ -315,7 +293,6 @@ export default function SkillsPage() {
 
         {/* CARDS */}
         <div className="sp-cards-section">
-          
           <div className="skills-cards-row">
             {cards.map((card, idx) => (
               <div
