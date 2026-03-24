@@ -20,27 +20,29 @@ export default function Navbar({ rightAlign = false }) {
     if (location.pathname.startsWith('/skills'))  return 1;
     if (location.pathname.startsWith('/works'))   return 2;
     if (location.pathname.startsWith('/contact')) return 3;
-    return -1; // -1 means we're on a page with scroll-spy (e.g. single-page home)
+    return -1;
   };
 
   const pathIndex = getPathIndex();
-
   const activeNavIndex = pathIndex !== -1 ? pathIndex : activeIndex;
 
   const toggle = () => {
-  setDark(d => {
-    const next = !d;
-    const theme = next ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-    return next;
-  });
-};
+    setDark(d => {
+      const next = !d;
+      const theme = next ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      return next;
+    });
+  };
 
+  // Load saved theme + setup scroll observer
   useEffect(() => {
     const saved = localStorage.getItem('theme') || 'light';
-  setDark(saved === 'dark');
-  document.documentElement.setAttribute('data-theme', saved);
+    setDark(saved === 'dark');
+    document.documentElement.setAttribute('data-theme', saved);
+
+    const hero = document.querySelector('#home') || document.querySelector('#hero');
 
     if (!hero) {
       setScrolled(true);
@@ -55,9 +57,9 @@ export default function Navbar({ rightAlign = false }) {
     return () => obs.disconnect();
   }, []);
 
-  // ✅ Fixed: uses pathIndex (not the deleted pathIndex variable reference)
+  // Scroll-spy for single-page home
   useEffect(() => {
-    if (pathIndex !== -1) return; // skip scroll detection on named route pages
+    if (pathIndex !== -1) return;
     const observers = [];
     const visible = new Map();
     NAV_ITEMS.forEach(({ sectionId }) => {
@@ -275,17 +277,17 @@ export default function Navbar({ rightAlign = false }) {
         <div className="navbar-center">
           <a className="navbar-logo" href="#home">vrinda</a>
           <GooeyNav
-  key={activeNavIndex}
-  items={NAV_ITEMS}
-  initialActiveIndex={activeNavIndex}
-  activeIndex={activeNavIndex}
-  animationTime={600}
-  particleCount={15}
-  particleDistances={[90, 10]}
-  particleR={100}
-  timeVariance={300}
-  colors={[1, 2, 3, 1, 2, 3, 1, 4]}
-/>
+            key={activeNavIndex}
+            items={NAV_ITEMS}
+            initialActiveIndex={activeNavIndex}
+            activeIndex={activeNavIndex}
+            animationTime={600}
+            particleCount={15}
+            particleDistances={[90, 10]}
+            particleR={100}
+            timeVariance={300}
+            colors={[1, 2, 3, 1, 2, 3, 1, 4]}
+          />
           <div className="navbar-portfolio-wrap">
             <a className="navbar-portfolio" href="#portfolio">portfolio</a>
           </div>
