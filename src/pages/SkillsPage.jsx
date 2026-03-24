@@ -111,7 +111,8 @@ export default function SkillsPage() {
     if (!containerRef.current) return;
     const q = gsap.utils.selector(containerRef);
     cards.forEach((_, i) => {
-      const target = q(`.skill-card-${i}`);
+      const target = q(`.skill-card-${i}`)[0];
+if (!target) return;
       gsap.killTweensOf(target);
       const base = baseTransforms[i];
       if (i === hoveredIdx) {
