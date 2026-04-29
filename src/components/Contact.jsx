@@ -18,9 +18,29 @@ export default function Contact() {
     cardRef.current.style.transform = 'rotate(-6deg)';
   };
 
-  const handleSubmit = () => {
-    if (form.name && form.email && form.message) setSent(true);
-  };
+  const handleSubmit = async () => {
+  if (!form.name || !form.email || !form.message) return;
+
+  try {
+    const res = await fetch("https://formspree.io/f/meenjkjk", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: form.name,
+        email: form.email,
+        message: form.message,
+      }),
+    });
+
+    if (res.ok) {
+      setSent(true);
+    } else {
+      alert("Something went wrong. Please try again.");
+    }
+  } catch (err) {
+    alert("Network error. Please try again.");
+  }
+};
 
   return (
     <>
@@ -333,7 +353,7 @@ export default function Contact() {
 
         <footer className="c-footer">
           <a className="c-footer-logo" href="#home">vrinda</a>
-          <span className="c-footer-copy">© 2025 — all rights reserved</span>
+          <span className="c-footer-copy">© 2026 — all rights reserved</span>
           <nav className="c-footer-links">
             <a className="c-footer-link" href="#">instagram</a>
             <a className="c-footer-link" href="#">linkedin</a>

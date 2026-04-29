@@ -478,7 +478,7 @@ export default function WorksPage() {
         {/* FOOTER */}
         <div className="wp-footer">
           <span className="wp-footer-logo" onClick={() => navigate('/home')}>vrinda</span>
-          <span className="wp-footer-copy">© 2025 — all rights reserved</span>
+          <span className="wp-footer-copy">© 2026 — all rights reserved</span>
         </div>
       </div>
     </>
