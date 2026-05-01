@@ -426,29 +426,46 @@ export default function WorksPage() {
         <div className="wp-build-head">
           
           <svg className="wp-build-svg" viewBox="0 0 900 120" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <clipPath id="textClip">
-                <text x="50%" y="105" textAnchor="middle" fontFamily="'Poppins', sans-serif" fontWeight="800" fontSize="120" letterSpacing="-2">i build things</text>
-              </clipPath>
-            </defs>
-            <text x="50%" y="105" textAnchor="middle" fontFamily="'Poppins', sans-serif" fontSize="120" fontWeight="800" letterSpacing="-2" fill="currentColor">i build things</text>
-            <g clipPath="url(#textClip)">
-              <circle cx="28"  cy="45"  r="22"  fill="#ED6951" /><circle cx="18"  cy="85"  r="30"  fill="#FF7EDF" />
-              <circle cx="105" cy="30"  r="45"  fill="#5862E9" /><circle cx="80"  cy="80"  r="38"  fill="#E11D48" />
-              <circle cx="125" cy="95"  r="30"  fill="#DCFA40" /><circle cx="195" cy="95"  r="42"  fill="#FF7EDF" />
-              <circle cx="265" cy="30"  r="25"  fill="#DCFA40" /><circle cx="258" cy="75"  r="28"  fill="#ED6951" />
-              <circle cx="300" cy="50"  r="38"  fill="#FF7EDF" /><circle cx="308" cy="100" r="28"  fill="#5862E9" />
-              <circle cx="375" cy="28"  r="42"  fill="#E11D48" /><circle cx="355" cy="90"  r="25"  fill="#DCFA40" />
-              <circle cx="460" cy="20"  r="30"  fill="#ED6951" /><circle cx="450" cy="70"  r="45"  fill="#FF7EDF" />
-              <circle cx="475" cy="100" r="28"  fill="#5862E9" /><circle cx="540" cy="40"  r="40"  fill="#DCFA40" />
-              <circle cx="555" cy="95"  r="35"  fill="#E11D48" /><circle cx="598" cy="30"  r="22"  fill="#FF7EDF" />
-              <circle cx="592" cy="80"  r="28"  fill="#ED6951" /><circle cx="650" cy="50"  r="42"  fill="#5862E9" />
-              <circle cx="680" cy="90"  r="35"  fill="#FF7EDF" /><circle cx="665" cy="20"  r="28"  fill="#DCFA40" />
-              <circle cx="740" cy="30"  r="45"  fill="#E11D48" /><circle cx="720" cy="90"  r="28"  fill="#ED6951" />
-              <circle cx="820" cy="30"  r="38"  fill="#FF7EDF" /><circle cx="808" cy="80"  r="35"  fill="#DCFA40" />
-              <circle cx="840" cy="95"  r="30"  fill="#5862E9" />
-            </g>
-          </svg>
+  <defs>
+    <clipPath id="textClip">
+      <text x="50%" y="105" textAnchor="middle" fontFamily="'Poppins', sans-serif" fontWeight="800" fontSize="120" letterSpacing="-2">i build things</text>
+    </clipPath>
+  </defs>
+
+  {/* base layer — outline only, no fill so it doesn't overlap the circles */}
+  <text
+    x="50%"
+    y="105"
+    textAnchor="middle"
+    fontFamily="'Poppins', sans-serif"
+    fontSize="120"
+    fontWeight="800"
+    letterSpacing="-2"
+    fill="none"
+    stroke="var(--divider)"
+    strokeWidth="1"
+  >
+    i build things
+  </text>
+
+  {/* coloured circles clipped to the text shape */}
+  <g clipPath="url(#textClip)">
+    <circle cx="28"  cy="45"  r="22"  fill="#ED6951" /><circle cx="18"  cy="85"  r="30"  fill="#FF7EDF" />
+    <circle cx="105" cy="30"  r="45"  fill="#5862E9" /><circle cx="80"  cy="80"  r="38"  fill="#E11D48" />
+    <circle cx="125" cy="95"  r="30"  fill="#DCFA40" /><circle cx="195" cy="95"  r="42"  fill="#FF7EDF" />
+    <circle cx="265" cy="30"  r="25"  fill="#DCFA40" /><circle cx="258" cy="75"  r="28"  fill="#ED6951" />
+    <circle cx="300" cy="50"  r="38"  fill="#FF7EDF" /><circle cx="308" cy="100" r="28"  fill="#5862E9" />
+    <circle cx="375" cy="28"  r="42"  fill="#E11D48" /><circle cx="355" cy="90"  r="25"  fill="#DCFA40" />
+    <circle cx="460" cy="20"  r="30"  fill="#ED6951" /><circle cx="450" cy="70"  r="45"  fill="#FF7EDF" />
+    <circle cx="475" cy="100" r="28"  fill="#5862E9" /><circle cx="540" cy="40"  r="40"  fill="#DCFA40" />
+    <circle cx="555" cy="95"  r="35"  fill="#E11D48" /><circle cx="598" cy="30"  r="22"  fill="#FF7EDF" />
+    <circle cx="592" cy="80"  r="28"  fill="#ED6951" /><circle cx="650" cy="50"  r="42"  fill="#5862E9" />
+    <circle cx="680" cy="90"  r="35"  fill="#FF7EDF" /><circle cx="665" cy="20"  r="28"  fill="#DCFA40" />
+    <circle cx="740" cy="30"  r="45"  fill="#E11D48" /><circle cx="720" cy="90"  r="28"  fill="#ED6951" />
+    <circle cx="820" cy="30"  r="38"  fill="#FF7EDF" /><circle cx="808" cy="80"  r="35"  fill="#DCFA40" />
+    <circle cx="840" cy="95"  r="30"  fill="#5862E9" />
+  </g>
+</svg>
           <span className="wp-build-sometimes">sometimes</span>
         </div>
 
