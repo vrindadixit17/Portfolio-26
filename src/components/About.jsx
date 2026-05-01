@@ -664,24 +664,24 @@ export default function About() {
         </div>
 
         <div className="about2-name-block">
-          <p className="about2-my-name-is">my name is</p>
-          <div className="about2-name-row">
-            <TextPressure
-              text="vrinda"
-              flex={true} alpha={false} stroke={true}
-              scale={true} width={true} weight={true} italic={false}
-              textColor="var(--blue)" strokeColor="var(--blue)" minFontSize={50}
-            />
-          </div>
-          <div className="about2-name-row">
-            <TextPressure
-              text="dixit"
-              flex={true} alpha={false} stroke={true}
-              scale={true} width={true} weight={true} italic={false}
-              textColor="var(--pink)" strokeColor="var(--pink)" minFontSize={50}
-            />
-          </div>
-        </div>
+  <p className="about2-my-name-is">my name is</p>
+  <div className="about2-name-row">
+    <TextPressure
+      text="vrinda"
+      flex={true} alpha={false} stroke={true}
+      scale={true} width={true} weight={true} italic={false}
+      textColor="var(--blue)" strokeColor="var(--blue)" minFontSize={50}
+    />
+  </div>
+  <div className="about2-name-row">
+    <TextPressure
+      text="dixit"
+      flex={true} alpha={false} stroke={true}
+      scale={true} width={true} weight={true} italic={false}
+      textColor="var(--pink)" strokeColor="var(--pink)" minFontSize={50}
+    />
+  </div>
+</div>
 
         <div className="about2-contact-row">
           <div className="about2-divider" />
