@@ -1,7 +1,7 @@
 import guava from "../assets/emojis/guava.png";
 import orange from "../assets/emojis/orange.png";
 import tomato from "../assets/emojis/tomato.png";
-import chilli from "../assets/emojis/chilli.png";
+import lemon from "../assets/emojis/lemon.png";
 import strawberry from "../assets/emojis/strawberry.png";
 import Navbar from "../components/Navbar";
 import TextType from "../components/TextType";
@@ -50,7 +50,7 @@ const cards = [
   {
     id: "misc",
     title: "Activities",
-    icon: chilli,
+    icon: lemon,
     bg: "#ED6951",
     textColor: "#FDF9F5",
     items: [
