@@ -371,6 +371,34 @@ const css = `
   }
   .about2-img-main:hover { transform: rotate(1.5deg) scale(1.02); }
 
+  /* ── fruit stickers ── */
+.about2-fruit {
+  position: absolute;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.18));
+  animation: fruitPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  z-index: 10;
+}
+
+@keyframes fruitPop {
+  from { opacity: 0; transform: scale(0.4) rotate(var(--r, 0deg)); }
+  to   { opacity: 1; transform: scale(1)   rotate(var(--r, 0deg)); }
+}
+
+.about2-fruit:hover {
+  animation: fruitWiggle 0.4s ease both;
+  cursor: default;
+}
+
+@keyframes fruitWiggle {
+  0%   { transform: scale(1)    rotate(0deg); }
+  25%  { transform: scale(1.15) rotate(-8deg); }
+  50%  { transform: scale(1.15) rotate(8deg); }
+  75%  { transform: scale(1.1)  rotate(-4deg); }
+  100% { transform: scale(1)    rotate(0deg); }
+}
   /* bottom half */
   .about2-right-bottom {
     display: grid;
