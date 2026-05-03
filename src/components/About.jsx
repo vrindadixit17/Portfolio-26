@@ -4,6 +4,12 @@ import img1 from "../assets/about/about1.png";
 import TextPressure from "../components/TextPressure";
 import CircularText from "../components/CircularText";
 
+import guava from "../assets/emojis/guava.png";
+import orange from "../assets/emojis/orange.png";
+import tomato from "../assets/emojis/tomato.png";
+import lemon from "../assets/emojis/lemon.png";
+import strawberry from "../assets/emojis/strawberry.png";
+
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
 
@@ -650,8 +656,25 @@ export default function About() {
           </div>
 
           <div className="about2-img-col">
-            <img className="about2-img-main" src={img1} alt="Vrinda Dixit" />
-          </div>
+  {/* floating fruit stickers */}
+  <img src={strawberry} alt="" aria-hidden="true" className="about2-fruit" style={{
+    width: '58px', top: '-18px', left: '-18px', transform: 'rotate(-15deg)', animationDelay: '0s'
+  }} />
+  <img src={orange} alt="" aria-hidden="true" className="about2-fruit" style={{
+    width: '52px', top: '12%', right: '-20px', transform: 'rotate(12deg)', animationDelay: '0.15s'
+  }} />
+  <img src={lemon} alt="" aria-hidden="true" className="about2-fruit" style={{
+    width: '46px', top: '42%', left: '-22px', transform: 'rotate(-8deg)', animationDelay: '0.3s'
+  }} />
+  <img src={tomato} alt="" aria-hidden="true" className="about2-fruit" style={{
+    width: '54px', bottom: '18%', right: '-18px', transform: 'rotate(20deg)', animationDelay: '0.45s'
+  }} />
+  <img src={guava} alt="" aria-hidden="true" className="about2-fruit" style={{
+    width: '50px', bottom: '-16px', left: '18%', transform: 'rotate(-5deg)', animationDelay: '0.6s'
+  }} />
+
+  <img className="about2-img-main" src={img1} alt="Vrinda Dixit" />
+</div>
         </div>
 
         <div className="about2-right-bottom">
