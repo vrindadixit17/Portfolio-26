@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import img1 from "../assets/about/about1.png";
 import TextPressure from "../components/TextPressure";
 import CircularText from "../components/CircularText";
-
 import guava from "../assets/emojis/guava.png";
 import orange from "../assets/emojis/orange.png";
 import tomato from "../assets/emojis/tomato.png";
@@ -28,6 +27,14 @@ const css = `
   @keyframes marquee {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
+  }
+  @keyframes fruitPop {
+    from { opacity: 0; transform: scale(0.3); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes fruitFloat {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-6px); }
   }
 
   .about2-section {
@@ -347,6 +354,9 @@ const css = `
   .about2-tags .ticket:nth-child(6):hover { transform: rotate(0.5deg)  scale(1.04); }
   .about2-tags .ticket:nth-child(7):hover { transform: rotate(0deg)    scale(1.04); }
 
+  /* ══════════════════════════
+     IMAGE + FRUIT STICKERS
+  ══════════════════════════ */
   .about2-img-col {
     width: 34%;
     position: relative;
@@ -368,37 +378,56 @@ const css = `
     animation: tiltIn1 0.8s 0.5s cubic-bezier(.22,1,.36,1) both;
     transition: transform 0.3s ease;
     position: relative;
+    z-index: 1;
   }
   .about2-img-main:hover { transform: rotate(1.5deg) scale(1.02); }
 
-  /* ── fruit stickers ── */
-.about2-fruit {
-  position: absolute;
-  object-fit: contain;
-  pointer-events: none;
-  user-select: none;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.18));
-  animation: fruitPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  z-index: 10;
-}
+  .about2-fruit {
+    position: absolute;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
+    animation: fruitPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    z-index: 10;
+  }
 
-@keyframes fruitPop {
-  from { opacity: 0; transform: scale(0.4) rotate(var(--r, 0deg)); }
-  to   { opacity: 1; transform: scale(1)   rotate(var(--r, 0deg)); }
-}
+  .about2-fruit-1 {
+    width: 56px; top: -20px; left: -10px;
+    transform: rotate(-20deg);
+    animation-delay: 0.55s;
+    animation: fruitPop 0.5s 0.55s cubic-bezier(0.34,1.56,0.64,1) both,
+               fruitFloat 3.2s 1.1s ease-in-out infinite;
+  }
+  .about2-fruit-2 {
+    width: 50px; top: 8%; right: -22px;
+    transform: rotate(14deg);
+    animation-delay: 0.7s;
+    animation: fruitPop 0.5s 0.7s cubic-bezier(0.34,1.56,0.64,1) both,
+               fruitFloat 2.8s 1.2s ease-in-out infinite;
+  }
+  .about2-fruit-3 {
+    width: 44px; bottom: 22%; left: -20px;
+    transform: rotate(-10deg);
+    animation-delay: 0.85s;
+    animation: fruitPop 0.5s 0.85s cubic-bezier(0.34,1.56,0.64,1) both,
+               fruitFloat 3.6s 1.3s ease-in-out infinite;
+  }
+  .about2-fruit-4 {
+    width: 52px; bottom: -16px; right: 10%;
+    transform: rotate(18deg);
+    animation-delay: 1s;
+    animation: fruitPop 0.5s 1s cubic-bezier(0.34,1.56,0.64,1) both,
+               fruitFloat 3s 1.4s ease-in-out infinite;
+  }
+  .about2-fruit-5 {
+    width: 48px; bottom: -14px; left: 14%;
+    transform: rotate(-6deg);
+    animation-delay: 1.15s;
+    animation: fruitPop 0.5s 1.15s cubic-bezier(0.34,1.56,0.64,1) both,
+               fruitFloat 3.4s 1.5s ease-in-out infinite;
+  }
 
-.about2-fruit:hover {
-  animation: fruitWiggle 0.4s ease both;
-  cursor: default;
-}
-
-@keyframes fruitWiggle {
-  0%   { transform: scale(1)    rotate(0deg); }
-  25%  { transform: scale(1.15) rotate(-8deg); }
-  50%  { transform: scale(1.15) rotate(8deg); }
-  75%  { transform: scale(1.1)  rotate(-4deg); }
-  100% { transform: scale(1)    rotate(0deg); }
-}
   /* bottom half */
   .about2-right-bottom {
     display: grid;
@@ -563,6 +592,76 @@ const css = `
     background: linear-gradient(to right, #FF7EDF, #ED6951, #DCFA40, #5862E9, #E11D48, transparent);
     pointer-events: none;
   }
+
+  /* ═══════════════════════════════
+     MOBILE
+  ═══════════════════════════════ */
+  @media (max-width: 768px) {
+    .about2-section {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .about2-left {
+      border-right: none;
+      border-bottom: 1px solid var(--divider);
+      padding: 32px 24px 28px;
+    }
+    .about2-name-row {
+      height: clamp(70px, 18vw, 110px);
+    }
+    .about2-right {
+      grid-template-rows: auto auto;
+    }
+    .about2-right-top {
+      flex-direction: column-reverse;
+      border-bottom: 1px solid var(--divider);
+    }
+    .about2-img-col {
+      width: 100%;
+      padding: 24px 24px 0;
+      height: 260px;
+      justify-content: center;
+    }
+    .about2-img-main {
+      width: 160px;
+      height: 100%;
+      transform: rotate(3deg);
+    }
+    .about2-bio-col {
+      padding: 24px 24px 28px;
+    }
+    .about2-right-bottom {
+      grid-template-columns: 1fr;
+    }
+    .about2-avail-col {
+      border-right: none;
+      border-bottom: 1px solid var(--divider);
+      padding: 24px;
+    }
+    .about2-quote-col {
+      padding: 24px;
+    }
+    .about2-tags {
+      gap: 8px 14px;
+    }
+    .about2-stat-num {
+      font-size: 1.6rem;
+    }
+    .about2-circular-wrap {
+      width: 90px;
+      height: 90px;
+    }
+    .about2-circular-wrap .circular-text {
+      width: 90px !important;
+      height: 90px !important;
+    }
+    .about2-star-deco {
+      display: none;
+    }
+    .about2-fruit {
+      display: none;
+    }
+  }
 `;
 
 export default function About() {
@@ -585,17 +684,17 @@ export default function About() {
   return (
     <section className="about2-section">
 
-      <span className="about2-star-deco" style={{ top: "6%",  left: "44%",  fontSize: "0.7rem", color: "#ED6951" }}>✦</span>
-      <span className="about2-star-deco" style={{ top: "14%", left: "68%",  fontSize: "1.1rem", color: "#ED6951" }}>✦</span>
-      <span className="about2-star-deco" style={{ top: "28%", left: "52%",  fontSize: "0.5rem", color: "#ED6951" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "6%",  left: "44%",  fontSize: "0.7rem", color: "#FF7EDF" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "14%", left: "68%",  fontSize: "1.1rem", color: "#DCFA40" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "28%", left: "52%",  fontSize: "0.5rem", color: "#5862E9" }}>✦</span>
       <span className="about2-star-deco" style={{ top: "38%", left: "88%",  fontSize: "0.9rem", color: "#ED6951" }}>✦</span>
-      <span className="about2-star-deco" style={{ top: "52%", left: "47%",  fontSize: "0.6rem", color: "#ED6951" }}>✦</span>
-      <span className="about2-star-deco" style={{ top: "61%", left: "74%",  fontSize: "1.2rem", color: "#ED6951" }}>✦</span>
-      <span className="about2-star-deco" style={{ top: "72%", left: "58%",  fontSize: "0.5rem", color: "#ED6951" }}>✦</span>
-      <span className="about2-star-deco" style={{ top: "82%", left: "34%",  fontSize: "0.8rem", color: "#ED6951" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "52%", left: "47%",  fontSize: "0.6rem", color: "#FF7EDF" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "61%", left: "74%",  fontSize: "1.2rem", color: "#DCFA40" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "72%", left: "58%",  fontSize: "0.5rem", color: "#E11D48" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "82%", left: "34%",  fontSize: "0.8rem", color: "#5862E9" }}>✦</span>
       <span className="about2-star-deco" style={{ top: "90%", left: "80%",  fontSize: "1rem",   color: "#ED6951" }}>✦</span>
-      <span className="about2-star-deco" style={{ top: "45%", left: "22%",  fontSize: "0.6rem", color: "#ED6951" }}>✦</span>
-      <span className="about2-star-deco" style={{ top: "78%", left: "12%",  fontSize: "0.9rem", color: "#ED6951" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "45%", left: "22%",  fontSize: "0.6rem", color: "#FF7EDF" }}>✦</span>
+      <span className="about2-star-deco" style={{ top: "78%", left: "12%",  fontSize: "0.9rem", color: "#DCFA40" }}>✦</span>
 
       {/* ══ LEFT PANEL ══ */}
       <div className="about2-left">
@@ -683,26 +782,26 @@ export default function About() {
             </div>
           </div>
 
+          {/* ══ PHOTO + FRUIT STICKERS ══ */}
           <div className="about2-img-col">
-  {/* floating fruit stickers */}
-  <img src={strawberry} alt="" aria-hidden="true" className="about2-fruit" style={{
-    width: '58px', top: '-18px', left: '-18px', transform: 'rotate(-15deg)', animationDelay: '0s'
-  }} />
-  <img src={orange} alt="" aria-hidden="true" className="about2-fruit" style={{
-    width: '52px', top: '12%', right: '-20px', transform: 'rotate(12deg)', animationDelay: '0.15s'
-  }} />
-  <img src={lemon} alt="" aria-hidden="true" className="about2-fruit" style={{
-    width: '46px', top: '42%', left: '-22px', transform: 'rotate(-8deg)', animationDelay: '0.3s'
-  }} />
-  <img src={tomato} alt="" aria-hidden="true" className="about2-fruit" style={{
-    width: '54px', bottom: '18%', right: '-18px', transform: 'rotate(20deg)', animationDelay: '0.45s'
-  }} />
-  <img src={guava} alt="" aria-hidden="true" className="about2-fruit" style={{
-    width: '50px', bottom: '-16px', left: '18%', transform: 'rotate(-5deg)', animationDelay: '0.6s'
-  }} />
 
-  <img className="about2-img-main" src={img1} alt="Vrinda Dixit" />
-</div>
+            <img src={strawberry} alt="" aria-hidden="true"
+              className="about2-fruit about2-fruit-1" />
+
+            <img src={orange} alt="" aria-hidden="true"
+              className="about2-fruit about2-fruit-2" />
+
+            <img src={lemon} alt="" aria-hidden="true"
+              className="about2-fruit about2-fruit-3" />
+
+            <img src={tomato} alt="" aria-hidden="true"
+              className="about2-fruit about2-fruit-4" />
+
+            <img src={guava} alt="" aria-hidden="true"
+              className="about2-fruit about2-fruit-5" />
+
+            <img className="about2-img-main" src={img1} alt="Vrinda Dixit" />
+          </div>
         </div>
 
         <div className="about2-right-bottom">
