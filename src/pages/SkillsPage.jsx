@@ -1,8 +1,8 @@
-import flowerImg from "../assets/emojis/flower.png";
-import smileyImg from "../assets/emojis/smiley.png";
-import cupImg from "../assets/emojis/cup.png";
-import heartImg from "../assets/emojis/heart.png";
-import starImg from "../assets/emojis/star.png";
+import guava from "../assets/emojis/guava.png";
+import orange from "../assets/emojis/orange.png";
+import tomato from "../assets/emojis/tomato.png";
+import chilli from "../assets/emojis/chilli.png";
+import strawberry from "../assets/emojis/strawberry.png";
 import Navbar from "../components/Navbar";
 import TextType from "../components/TextType";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ const cards = [
   {
     id: "edu",
     title: "Education",
-    icon: flowerImg,
+    icon: guava,
     bg: "#E8184A",
     textColor: "#FDF9F5",
     items: [
@@ -25,7 +25,7 @@ const cards = [
   {
     id: "exp",
     title: "Experience",
-    icon: smileyImg,
+    icon: orange,
     bg: "#D4A8F0",
     textColor: "#1C1C1C",
     items: [
@@ -38,7 +38,7 @@ const cards = [
   {
     id: "soft",
     title: "Software Skills",
-    icon: cupImg,
+    icon: tomato,
     bg: "#DCFA40",
     textColor: "#1C1C1C",
     items: [
@@ -50,7 +50,7 @@ const cards = [
   {
     id: "misc",
     title: "Activities",
-    icon: heartImg,
+    icon: chilli,
     bg: "#ED6951",
     textColor: "#FDF9F5",
     items: [
@@ -63,7 +63,7 @@ const cards = [
   {
     id: "research",
     title: "Research",
-    icon: starImg,
+    icon: strawberry,
     bg: "#5862E9",
     textColor: "#FDF9F5",
     items: [

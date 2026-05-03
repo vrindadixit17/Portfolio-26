@@ -529,87 +529,6 @@ const css = `
     background: linear-gradient(to right, #FF7EDF, #ED6951, #DCFA40, #5862E9, #E11D48, transparent);
     pointer-events: none;
   }
-
-  /* ═══════════════════════════════
-     MOBILE
-  ═══════════════════════════════ */
-  @media (max-width: 768px) {
-    .about2-section {
-      grid-template-columns: 1fr;
-      min-height: auto;
-    }
-
-    .about2-left {
-      border-right: none;
-      border-bottom: 1px solid var(--divider);
-      padding: 32px 24px 28px;
-    }
-
-    .about2-name-row {
-      height: clamp(70px, 18vw, 110px);
-    }
-
-    .about2-right {
-      grid-template-rows: auto auto;
-    }
-
-    .about2-right-top {
-      flex-direction: column-reverse;
-      border-bottom: 1px solid var(--divider);
-    }
-
-    .about2-img-col {
-      width: 100%;
-      padding: 24px 24px 0;
-      height: 260px;
-      justify-content: center;
-    }
-
-    .about2-img-main {
-      width: 160px;
-      height: 100%;
-      transform: rotate(3deg);
-    }
-
-    .about2-bio-col {
-      padding: 24px 24px 28px;
-    }
-
-    .about2-right-bottom {
-      grid-template-columns: 1fr;
-    }
-
-    .about2-avail-col {
-      border-right: none;
-      border-bottom: 1px solid var(--divider);
-      padding: 24px;
-    }
-
-    .about2-quote-col {
-      padding: 24px;
-    }
-
-    .about2-tags {
-      gap: 8px 14px;
-    }
-
-    .about2-stat-num {
-      font-size: 1.6rem;
-    }
-
-    .about2-circular-wrap {
-      width: 90px;
-      height: 90px;
-    }
-    .about2-circular-wrap .circular-text {
-      width: 90px !important;
-      height: 90px !important;
-    }
-
-    .about2-star-deco {
-      display: none;
-    }
-  }
 `;
 
 export default function About() {
@@ -664,24 +583,24 @@ export default function About() {
         </div>
 
         <div className="about2-name-block">
-  <p className="about2-my-name-is">my name is</p>
-  <div className="about2-name-row">
-    <TextPressure
-      text="vrinda"
-      flex={true} alpha={false} stroke={true}
-      scale={true} width={true} weight={true} italic={false}
-      textColor="var(--blue)" strokeColor="var(--blue)" minFontSize={50}
-    />
-  </div>
-  <div className="about2-name-row">
-    <TextPressure
-      text="dixit"
-      flex={true} alpha={false} stroke={true}
-      scale={true} width={true} weight={true} italic={false}
-      textColor="var(--pink)" strokeColor="var(--pink)" minFontSize={50}
-    />
-  </div>
-</div>
+          <p className="about2-my-name-is">my name is</p>
+          <div className="about2-name-row">
+            <TextPressure
+              text="vrinda"
+              flex={true} alpha={false} stroke={true}
+              scale={true} width={true} weight={true} italic={false}
+              textColor="var(--blue)" strokeColor="var(--blue)" minFontSize={50}
+            />
+          </div>
+          <div className="about2-name-row">
+            <TextPressure
+              text="dixit"
+              flex={true} alpha={false} stroke={true}
+              scale={true} width={true} weight={true} italic={false}
+              textColor="var(--pink)" strokeColor="var(--pink)" minFontSize={50}
+            />
+          </div>
+        </div>
 
         <div className="about2-contact-row">
           <div className="about2-divider" />
