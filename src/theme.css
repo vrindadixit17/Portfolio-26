@@ -10,6 +10,8 @@
   --red:             #CC1F3A;
   --orange:          #ED6951;
   --yellow:          #DCFA40;
+  --rose:            #E11D48;
+  --card-text:       #FDF9F5;
   --divider:         #e0dbd5;
   --nav-pill:        rgba(255, 255, 255, 0.85);
   --nav-pill-shadow: 0 4px 24px rgba(0,0,0,0.08);
@@ -19,15 +21,17 @@
 /* ── DARK overrides on html element ── */
 html[data-theme="dark"] {
   --bg:              #1C1C1C;
-  --bg-card:         #000;  
+  --bg-card:         #000;
   --text:            #FDF9F5;
-  --text-muted:      #FDF9F5;
+  --text-muted:      #8a8a8a;
   --text-sub:        #888;
   --pink:            #FF7EDF;
   --blue:            #7B84F0;
   --red:             #E8394F;
   --orange:          #ED6951;
   --yellow:          #DCFA40;
+  --rose:            #FF4D6D;
+  --card-text:       #FDF9F5;
   --divider:         #222;
   --nav-pill:        rgba(18, 18, 18, 0.9);
   --nav-pill-shadow: 0 4px 24px rgba(0,0,0,0.4);

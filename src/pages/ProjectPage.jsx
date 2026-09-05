@@ -32,9 +32,7 @@ export default function ProjectPage() {
           transition: background 0.4s ease;
         }
 
-        .pp-hero {
-          padding: 48px 48px 0;
-        }
+        .pp-hero { padding: 48px 48px 0; }
 
         .pp-back {
           display: inline-flex;
@@ -92,7 +90,6 @@ export default function ProjectPage() {
           padding-bottom: 8px;
         }
 
-        /* ── GALLERY ── */
         .pp-gallery {
           padding: 48px 48px 80px;
           columns: 2;
@@ -135,7 +132,6 @@ export default function ProjectPage() {
           text-transform: uppercase;
         }
 
-        /* ── FOOTER ── */
         .pp-footer {
           border-top: 1px solid var(--divider);
           padding: 28px 48px;
@@ -207,7 +203,7 @@ export default function ProjectPage() {
 
         <div className="pp-footer">
           <span className="pp-footer-logo" onClick={() => navigate("/home")}>vrinda</span>
-          <span className="pp-footer-num">0{project.num} / 05</span>
+          <span className="pp-footer-num">0{project.num} / 0{works.length}</span>
         </div>
       </div>
     </>
