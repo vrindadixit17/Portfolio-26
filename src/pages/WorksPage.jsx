@@ -15,7 +15,6 @@ const cardData = [
   { title: 'Feast Monster', tag: 'Branding',       desc: 'Playful food brand — logo, packaging, social media design system.',   slug: 'feast-monster', img: null },
   { title: 'The Way',       tag: 'Editorial',      desc: 'Typography-first layout design for an independent fashion zine.',     slug: 'the-way',       img: null },
   { title: 'Wellness Co.',  tag: 'App Design',     desc: 'Habit tracking & journaling mobile experience. Clean, minimal UI.',   slug: 'wellness-co',   img: null },
-  { title: 'Codeflow',      tag: 'Dev',            desc: 'Full-stack productivity tool built with the MERN stack.',             slug: null,            img: null },
 ];
 
 const makeParticle = (x, y) => {
@@ -147,7 +146,6 @@ export default function WorksPage() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&family=Poppins:wght@800&family=DM+Sans:wght@400;500&display=swap');
 
-        /* ── FULL-PAGE ANTIGRAVITY BACKGROUND ── */
         .wp-bg {
           position: fixed;
           inset: 0;
@@ -161,14 +159,12 @@ export default function WorksPage() {
           height: 100% !important;
         }
 
-        /* all page content sits above the canvas */
         .wp-wrap {
           position: relative;
           z-index: 1;
           min-height: 100vh;
           font-family: 'DM Sans', sans-serif;
           transition: background 0.4s ease;
-          /* semi-transparent bg so particles show through */
           background: transparent;
         }
 
@@ -213,7 +209,6 @@ export default function WorksPage() {
           transition: color 0.4s ease;
         }
 
-        /* ══ WORKS ══ */
         .wp-works { padding: 48px 48px; }
 
         .works-cards { display: flex; gap: 12px; align-items: flex-start; }
@@ -264,7 +259,6 @@ export default function WorksPage() {
         }
         .work-below-desc { font-size: 0.72rem; color: var(--blue); line-height: 1.55; }
 
-        /* ══ I BUILD THINGS ══ */
         .wp-build-head {
           display: flex; flex-direction: column; align-items: center;
           padding: 48px 40px 32px;
@@ -275,7 +269,6 @@ export default function WorksPage() {
           color: var(--text-muted); margin-top: -10px; text-align: center;
         }
 
-        /* ══ PROJECTS ══ */
         .wp-projects { padding: 0 40px 64px; display: flex; flex-direction: column; align-items: center; }
         .proj-bento-wrapper { width: 100%; max-width: 1100px; }
 
@@ -290,7 +283,6 @@ export default function WorksPage() {
         .proj-bento-card:nth-child(3) { grid-column: 4;     grid-row: 1 / 3; }
         .proj-bento-card:nth-child(4) { grid-column: 1;     grid-row: 2; }
         .proj-bento-card:nth-child(5) { grid-column: 2 / 4; grid-row: 2; }
-        .proj-bento-card:nth-child(6) { display: none; }
 
         .proj-bento-card {
           background: var(--bg-card); border-radius: 10px;
@@ -333,7 +325,6 @@ export default function WorksPage() {
           border: none; padding: 5px 12px; border-radius: 999px; cursor: pointer;
         }
 
-        /* ── FOOTER ── */
         .wp-footer {
           border-top: 1px solid var(--divider); padding: 24px 48px;
           display: flex; justify-content: space-between; align-items: center;
@@ -346,13 +337,36 @@ export default function WorksPage() {
           to   { opacity: 1; transform: translateY(0); }
         }
 
+        /* ── MOBILE ── */
+        @media (max-width: 900px) {
+          .works-cards { flex-wrap: wrap; }
+          .work-col { flex: 1 1 45%; min-width: 130px; }
+          .proj-bento-section {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto;
+          }
+          .proj-bento-card:nth-child(1) { grid-column: 1 / 3; grid-row: auto; }
+          .proj-bento-card:nth-child(2) { grid-column: 1; grid-row: auto; }
+          .proj-bento-card:nth-child(3) { grid-column: 2; grid-row: auto; }
+          .proj-bento-card:nth-child(4) { grid-column: 1; grid-row: auto; }
+          .proj-bento-card:nth-child(5) { grid-column: 2; grid-row: auto; }
+          .proj-bento-card { min-height: 220px; }
+        }
+
         @media (max-width: 600px) {
           .wp-hero, .wp-works, .wp-projects, .wp-footer { padding-left: 24px; padding-right: 24px; }
           .wp-build-head { padding-left: 24px; padding-right: 24px; }
+          .works-cards { flex-direction: column; }
+          .work-col { flex: 1 1 auto; width: 100%; }
+          .proj-bento-section { grid-template-columns: 1fr; }
+          .proj-bento-card:nth-child(1),
+          .proj-bento-card:nth-child(2),
+          .proj-bento-card:nth-child(3),
+          .proj-bento-card:nth-child(4),
+          .proj-bento-card:nth-child(5) { grid-column: 1; }
         }
       `}</style>
 
-      {/* ── FIXED FULL-PAGE BACKGROUND ── */}
       <div className="wp-bg">
         <Antigravity
           interactive={false}
@@ -374,11 +388,9 @@ export default function WorksPage() {
         />
       </div>
 
-      {/* ── PAGE CONTENT ── */}
       <div className="wp-wrap">
         <Navbar rightAlign />
 
-        {/* HERO */}
         <div className="wp-hero">
           <button className="wp-back" onClick={() => navigate(-1)}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -390,7 +402,6 @@ export default function WorksPage() {
           <p className="wp-tagline">design, code & everything in between</p>
         </div>
 
-        {/* WORKS */}
         <div className="wp-works">
           <div className="wp-section-header">
             <h2 className="wp-section-title">Works</h2>
@@ -422,54 +433,40 @@ export default function WorksPage() {
           </div>
         </div>
 
-        {/* I BUILD THINGS */}
         <div className="wp-build-head">
-          
           <svg className="wp-build-svg" viewBox="0 0 900 120" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <clipPath id="textClip">
-      <text x="50%" y="105" textAnchor="middle" fontFamily="'Poppins', sans-serif" fontWeight="800" fontSize="120" letterSpacing="-2">i build things</text>
-    </clipPath>
-  </defs>
-
-  {/* base layer — outline only, no fill so it doesn't overlap the circles */}
-  <text
-    x="50%"
-    y="105"
-    textAnchor="middle"
-    fontFamily="'Poppins', sans-serif"
-    fontSize="120"
-    fontWeight="800"
-    letterSpacing="-2"
-    fill="none"
-    stroke="var(--divider)"
-    strokeWidth="1"
-  >
-    i build things
-  </text>
-
-  {/* coloured circles clipped to the text shape */}
-  <g clipPath="url(#textClip)">
-    <circle cx="28"  cy="45"  r="22"  fill="#ED6951" /><circle cx="18"  cy="85"  r="30"  fill="#FF7EDF" />
-    <circle cx="105" cy="30"  r="45"  fill="#5862E9" /><circle cx="80"  cy="80"  r="38"  fill="#E11D48" />
-    <circle cx="125" cy="95"  r="30"  fill="#DCFA40" /><circle cx="195" cy="95"  r="42"  fill="#FF7EDF" />
-    <circle cx="265" cy="30"  r="25"  fill="#DCFA40" /><circle cx="258" cy="75"  r="28"  fill="#ED6951" />
-    <circle cx="300" cy="50"  r="38"  fill="#FF7EDF" /><circle cx="308" cy="100" r="28"  fill="#5862E9" />
-    <circle cx="375" cy="28"  r="42"  fill="#E11D48" /><circle cx="355" cy="90"  r="25"  fill="#DCFA40" />
-    <circle cx="460" cy="20"  r="30"  fill="#ED6951" /><circle cx="450" cy="70"  r="45"  fill="#FF7EDF" />
-    <circle cx="475" cy="100" r="28"  fill="#5862E9" /><circle cx="540" cy="40"  r="40"  fill="#DCFA40" />
-    <circle cx="555" cy="95"  r="35"  fill="#E11D48" /><circle cx="598" cy="30"  r="22"  fill="#FF7EDF" />
-    <circle cx="592" cy="80"  r="28"  fill="#ED6951" /><circle cx="650" cy="50"  r="42"  fill="#5862E9" />
-    <circle cx="680" cy="90"  r="35"  fill="#FF7EDF" /><circle cx="665" cy="20"  r="28"  fill="#DCFA40" />
-    <circle cx="740" cy="30"  r="45"  fill="#E11D48" /><circle cx="720" cy="90"  r="28"  fill="#ED6951" />
-    <circle cx="820" cy="30"  r="38"  fill="#FF7EDF" /><circle cx="808" cy="80"  r="35"  fill="#DCFA40" />
-    <circle cx="840" cy="95"  r="30"  fill="#5862E9" />
-  </g>
-</svg>
+            <defs>
+              <clipPath id="textClip">
+                <text x="50%" y="105" textAnchor="middle" fontFamily="'Poppins', sans-serif" fontWeight="800" fontSize="120" letterSpacing="-2">i build things</text>
+              </clipPath>
+            </defs>
+            <text
+              x="50%" y="105" textAnchor="middle"
+              fontFamily="'Poppins', sans-serif" fontSize="120" fontWeight="800" letterSpacing="-2"
+              fill="none" stroke="var(--divider)" strokeWidth="1"
+            >
+              i build things
+            </text>
+            <g clipPath="url(#textClip)">
+              <circle cx="28"  cy="45"  r="22"  fill="#ED6951" /><circle cx="18"  cy="85"  r="30"  fill="#FF7EDF" />
+              <circle cx="105" cy="30"  r="45"  fill="#5862E9" /><circle cx="80"  cy="80"  r="38"  fill="#E11D48" />
+              <circle cx="125" cy="95"  r="30"  fill="#DCFA40" /><circle cx="195" cy="95"  r="42"  fill="#FF7EDF" />
+              <circle cx="265" cy="30"  r="25"  fill="#DCFA40" /><circle cx="258" cy="75"  r="28"  fill="#ED6951" />
+              <circle cx="300" cy="50"  r="38"  fill="#FF7EDF" /><circle cx="308" cy="100" r="28"  fill="#5862E9" />
+              <circle cx="375" cy="28"  r="42"  fill="#E11D48" /><circle cx="355" cy="90"  r="25"  fill="#DCFA40" />
+              <circle cx="460" cy="20"  r="30"  fill="#ED6951" /><circle cx="450" cy="70"  r="45"  fill="#FF7EDF" />
+              <circle cx="475" cy="100" r="28"  fill="#5862E9" /><circle cx="540" cy="40"  r="40"  fill="#DCFA40" />
+              <circle cx="555" cy="95"  r="35"  fill="#E11D48" /><circle cx="598" cy="30"  r="22"  fill="#FF7EDF" />
+              <circle cx="592" cy="80"  r="28"  fill="#ED6951" /><circle cx="650" cy="50"  r="42"  fill="#5862E9" />
+              <circle cx="680" cy="90"  r="35"  fill="#FF7EDF" /><circle cx="665" cy="20"  r="28"  fill="#DCFA40" />
+              <circle cx="740" cy="30"  r="45"  fill="#E11D48" /><circle cx="720" cy="90"  r="28"  fill="#ED6951" />
+              <circle cx="820" cy="30"  r="38"  fill="#FF7EDF" /><circle cx="808" cy="80"  r="35"  fill="#DCFA40" />
+              <circle cx="840" cy="95"  r="30"  fill="#5862E9" />
+            </g>
+          </svg>
           <span className="wp-build-sometimes">sometimes</span>
         </div>
 
-        {/* PROJECTS */}
         <div className="wp-projects">
           <div className="proj-bento-wrapper">
             <GlobalSpotlight gridRef={gridRef} />
@@ -492,7 +489,6 @@ export default function WorksPage() {
           </div>
         </div>
 
-        {/* FOOTER */}
         <div className="wp-footer">
           <span className="wp-footer-logo" onClick={() => navigate('/home')}>vrinda</span>
           <span className="wp-footer-copy">© 2026 — all rights reserved</span>
