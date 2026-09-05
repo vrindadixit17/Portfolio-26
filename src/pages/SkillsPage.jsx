@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from "react";
 import guava from "../assets/emojis/guava.png";
 import orange from "../assets/emojis/orange.png";
 import tomato from "../assets/emojis/tomato.png";
@@ -6,7 +7,6 @@ import strawberry from "../assets/emojis/strawberry.png";
 import Navbar from "../components/Navbar";
 import TextType from "../components/TextType";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import Antigravity from "../components/Antigravity";
 
@@ -112,7 +112,7 @@ export default function SkillsPage() {
     const q = gsap.utils.selector(containerRef);
     cards.forEach((_, i) => {
       const target = q(`.skill-card-${i}`)[0];
-if (!target) return;
+      if (!target) return;
       gsap.killTweensOf(target);
       const base = baseTransforms[i];
       if (i === hoveredIdx) {
@@ -136,7 +136,6 @@ if (!target) return;
 
   return (
     <>
-      {/* ── FIXED FULL-PAGE BACKGROUND ── */}
       <div style={{
         position: 'fixed', inset: 0,
         width: '100vw', height: '100vh',
@@ -248,15 +247,32 @@ if (!target) return;
         }
         .sp-footer-logo {
           font-family: 'Italianno', cursive; font-size: 1.6rem;
-          color: var(--blue); cursor: pointer;
+          color: var(--pink); cursor: pointer;
         }
         .sp-footer-copy {
-          font-size: 0.65rem; color: var(--blue); letter-spacing: 0.08em;
+          font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.08em;
         }
 
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(24px); }
           to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── MOBILE ── */
+        @media (max-width: 900px) {
+          .skills-cards-row {
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            overflow: visible;
+          }
+          .skill-card {
+            margin-left: 0 !important;
+            transform: none !important;
+            margin-bottom: 16px;
+            width: 90%;
+            max-width: 320px;
+          }
         }
 
         @media (max-width: 600px) {
@@ -292,7 +308,6 @@ if (!target) return;
           <p className="sp-tagline">skills, tools & everything in between</p>
         </div>
 
-        {/* CARDS */}
         <div className="sp-cards-section">
           <div className="skills-cards-row">
             {cards.map((card, idx) => (
@@ -330,7 +345,6 @@ if (!target) return;
           </div>
         </div>
 
-        {/* FOOTER */}
         <div className="sp-footer">
           <span className="sp-footer-logo" onClick={() => navigate('/home')}>vrinda</span>
           <span className="sp-footer-copy">© 2026 — all rights reserved</span>
